@@ -1,2 +1,2 @@
 # SmartCampus-Frontend
-The frontend for the SmartCampus
+The frontend for the SmartCampus.
