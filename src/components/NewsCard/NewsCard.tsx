@@ -1,11 +1,12 @@
 import React from 'react';
 import styles from './NewsCard.module.css'; 
+import Welcome2 from '../../assets/images/Welcome2.png';
 
 const NewsCard: React.FC = () => {
   return (
     <div className={styles.card}>
       <img 
-        src="path/to/image.jpg" 
+        src={Welcome2}
         alt="SmartCampus News" 
         className={styles.image} 
       />
