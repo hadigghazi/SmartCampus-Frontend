@@ -6,6 +6,7 @@ import FacultiesSection from './components/FacultiesSection/FacultiesSection';
 import MajorSuggestorSection from './components/MajorSuggestorSection/MajorSuggestorSection';
 import EventList from './components/EventList/EventList';
 import LifeSection from './components/LifeSection/LifeSection';
+import Footer from './components/Footer/Footer';
 
 const App: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const App: React.FC = () => {
       <MajorSuggestorSection />
       <EventList />
       <LifeSection />
+      <Footer />
     </div>
   );
 };
