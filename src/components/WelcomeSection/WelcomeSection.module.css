@@ -88,6 +88,10 @@
     font-size: 1.75rem; 
   }
 
+  .headingSecondary {
+    font-size: 1rem;
+}
+
   .paragraph {
     font-size: 1rem;
   }
