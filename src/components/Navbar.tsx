@@ -1,15 +1,16 @@
 import React from 'react';
+import NavbarLogo from '../assets/images/NavBar_logo.png';
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="flex justify-between items-center p-6 absolute w-full top-0 left-0 z-10 bg-transparent">
-      <div className="text-2xl font-bold text-[#123962]">🏛️</div>
-      <ul className="flex space-x-8 text-[#123962]">
-        <li><a href="#admissions" className="hover:text-blue-900">Admissions</a></li>
-        <li><a href="#academics" className="hover:text-blue-900">Academics</a></li>
-        <li><a href="#campuses" className="hover:text-blue-900">Campuses</a></li>
-        <li><a href="#library" className="hover:text-blue-900">Library</a></li>
-        <li><a href="#portal" className="hover:text-blue-900">Portal</a></li>
+    <nav className="flex justify-between items-center p-6 absolute w-full top-0 left-0 z-10 bg-transparent font-sans">
+      <img src={NavbarLogo} alt="header_logo" className="transform -translate-y-2 -translate-x-2" />
+      <ul className="flex-1 flex justify-around items-center text-[#123962]">
+        <li className="text-2xl font-bold hover:text-blue-900"><a href="#admissions">Admissions</a></li>
+        <li className="text-2xl font-bold hover:text-blue-900"><a href="#academics">Academics</a></li>
+        <li className="text-2xl font-bold hover:text-blue-900"><a href="#campuses">Campuses</a></li>
+        <li className="text-2xl font-bold hover:text-blue-900"><a href="#library">Library</a></li>
+        <li className="text-2xl font-bold hover:text-blue-900"><a href="#portal">Portal</a></li>
       </ul>
     </nav>
   );
