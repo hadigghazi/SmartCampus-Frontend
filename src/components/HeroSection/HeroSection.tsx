@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from '../Navbar/Navbar';
-import Button from '../Button';
+import Button from '../Button/Button';
 import styles from './HeroSection.module.css';
 
 const HeroSection: React.FC = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import HeroSection from './components/HeroSection/HeroSection';
-import WelcomeSection from './components/WelcomeSection';
+import WelcomeSection from './components/WelcomeSection/WelcomeSection';
 
 const App: React.FC = () => {
   return (
