@@ -10,7 +10,7 @@ const Button: React.FC<ButtonProps> = ({ children, onClick }) => {
   return (
     <button
       onClick={onClick}
-      className={styles.button} // Apply CSS Module class
+      className={styles.button} 
     >
       {children}
     </button>
