@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
-import NewsCard from '../NewsCard/NewsCard';
-import styles from './NewsSection.module.css'; 
+import styles from './FacultiesSection.module.css'; 
 import ArrowButton from '../ArrowButton/ArrowButton';
+import FacultiesCard from '../FacultiesCard/FacultiesCard';
 
-const NewsSection: React.FC = () => {
+const FacultiesSection: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollLeft = () => {
@@ -20,17 +20,17 @@ const NewsSection: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.headingSecondary}>- Announcements And News</h2>
-      <h1 className={styles.headingPrimary}>Latest SmartCampus News</h1>
+      <h2 className={styles.headingSecondary}>- Our Faculties</h2>
+      <h1 className={styles.headingPrimary}>Explore Our Faculties</h1>
       <div className={styles.carouselContainer}>
       <ArrowButton onClick={scrollLeft} direction='left'/>        
       <div className={styles.cardsContainer} ref={scrollRef}>
-          <NewsCard />
-          <NewsCard />
-          <NewsCard />
-          <NewsCard />
-          <NewsCard />
-          <NewsCard />
+          <FacultiesCard />
+          <FacultiesCard />
+          <FacultiesCard />
+          <FacultiesCard />
+          <FacultiesCard />
+          <FacultiesCard />
         </div>
         <ArrowButton onClick={scrollRight} direction='right'/>
       </div>
@@ -38,4 +38,4 @@ const NewsSection: React.FC = () => {
   );
 };
 
-export default NewsSection;
+export default FacultiesSection;

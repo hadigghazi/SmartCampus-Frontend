@@ -2,6 +2,7 @@ import React from 'react';
 import HeroSection from './components/HeroSection/HeroSection';
 import WelcomeSection from './components/WelcomeSection/WelcomeSection';
 import NewsSection from './components/NewsSection/NewsSection';
+import FacultiesSection from './components/FacultiesSection/FacultiesSection';
 
 const App: React.FC = () => {
   return (
@@ -9,6 +10,7 @@ const App: React.FC = () => {
       <HeroSection />
       <WelcomeSection />
       <NewsSection />
+      <FacultiesSection />
     </div>
   );
 };
