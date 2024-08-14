@@ -1,6 +1,5 @@
 import React from 'react';
 import Welcome1 from '../../assets/images/Welcome1.png';
-import Welcome2 from '../../assets/images/Welcome2.png';
 import Button from '../Button/Button';
 import styles from './WelcomeSection.module.css'; // Import the CSS Module
 
