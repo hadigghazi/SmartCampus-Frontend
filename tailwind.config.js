@@ -8,6 +8,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Merriweather', 'sans-serif'],
+        metrophobic: ['Metrophobic', 'sans-serif'],
       },
     },
   },
