@@ -1,0 +1,45 @@
+.eventList {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.headingSecondary {
+    color: #123962; 
+    font-size: 1.5rem; 
+    margin-bottom: 0.5rem;
+    margin-top: 80px;
+}
+  
+.headingPrimary {
+    color: #123962; 
+    font-size: 2.5rem;
+    font-weight: 700; 
+    margin-bottom: 1rem;
+    font-family: 'Merriweather', serif; 
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 50px auto 0 auto; 
+    justify-content: center;
+}
+
+@media (min-width: 600px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
+
+@media (max-width: 768px) {
+    .headingPrimary {
+        font-size: 1.75rem;
+    }
+    .headingSecondary {
+        font-size: 1rem;
+        margin-top: 0;
+    }
+  }

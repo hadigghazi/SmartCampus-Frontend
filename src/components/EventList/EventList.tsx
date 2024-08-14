@@ -14,8 +14,9 @@ const events = [
 const EventList: React.FC = () => {
     return (
         <div className={styles.eventList}>
-            <h2 className={styles.heading}>Latest Events And Deadlines</h2>
-            <div className={styles.grid}>
+                <h2 className={styles.headingSecondary}>- Calendar</h2>
+                <h1 className={styles.headingPrimary}>Latest Events And Deadlines</h1>
+                <div className={styles.grid}>
                 {events.map((event, index) => (
                     <EventItem key={index} date={event.date} month={event.month} description={event.description} />
                 ))}
