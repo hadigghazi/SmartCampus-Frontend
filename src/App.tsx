@@ -3,6 +3,7 @@ import HeroSection from './components/HeroSection/HeroSection';
 import WelcomeSection from './components/WelcomeSection/WelcomeSection';
 import NewsSection from './components/NewsSection/NewsSection';
 import FacultiesSection from './components/FacultiesSection/FacultiesSection';
+import MajorSuggestorSection from './components/MajorSuggestorSection/MajorSuggestorSection';
 
 const App: React.FC = () => {
   return (
@@ -11,6 +12,7 @@ const App: React.FC = () => {
       <WelcomeSection />
       <NewsSection />
       <FacultiesSection />
+      <MajorSuggestorSection />
     </div>
   );
 };

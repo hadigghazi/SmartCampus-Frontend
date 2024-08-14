@@ -1,7 +1,7 @@
 import React from 'react';
 import Welcome1 from '../../assets/images/Welcome1.png';
 import Button from '../Button/Button';
-import styles from './WelcomeSection.module.css'; // Import the CSS Module
+import styles from './WelcomeSection.module.css';
 
 const WelcomeSection: React.FC = () => {
   return (
