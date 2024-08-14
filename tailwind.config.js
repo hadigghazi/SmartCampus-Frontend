@@ -6,6 +6,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        pinkPrimary: '#EEC0DD',
+        bluePrimary: '#123962',
+      },
       fontFamily: {
         sans: ['Merriweather', 'sans-serif'],
         metrophobic: ['Metrophobic', 'sans-serif'],
