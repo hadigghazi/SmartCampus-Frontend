@@ -1,57 +1,56 @@
 .nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.5rem;
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    background-color: transparent;
-    font-family: 'Merriweather', serif;
-    box-sizing: border-box; 
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-color: transparent;
+  font-family: 'Merriweather', serif;
+  box-sizing: border-box; 
+}
+
+.logo {
+  width: 70px; 
+  height: auto; 
+}
+
+.menu {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  color: var(--primary-color);
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  gap: 1rem; 
+}
+
+.menuItem {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.menuItem:hover {
+  color: var(--primary-color);
+}
+
+@media (min-width: 768px) {
   .logo {
-    width: 70px; 
-    height: auto; 
+    width: 130px; 
   }
-  
+
   .menu {
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-    color: var(--primary-color);
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    gap: 1rem; 
+    gap: 5rem; 
   }
-  
+
   .menuItem {
-    font-size: 1rem;
+    font-size: 1.5rem;
     font-weight: 500;
+    margin-top: 20px;
   }
-  
-  .menuItem:hover {
-    color: var(--primary-color);
-  }
-  
-  @media (min-width: 768px) {
-    .logo {
-      width: 130px; 
-    }
-  
-    .menu {
-      gap: 5rem; 
-    }
-  
-    .menuItem {
-      font-size: 1.5rem;
-      font-weight: 500;
-      margin-top: 20px;
-    }
-  }
-  
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './AdmissionsLayout.module.css';
 import headerImage from '../../assets/images/Pages_header.jpg';
+import Navbar from '../../components/Navbar/Navbar';
 
 type AdmissionsLayoutProps = {
   title: string;
@@ -11,6 +12,7 @@ type AdmissionsLayoutProps = {
 const AdmissionsLayout: React.FC<AdmissionsLayoutProps> = ({ title, children }) => {
   return (
     <div className={styles.layout}>
+        <Navbar />
       <div className={styles.header}>
         <img src={headerImage} alt="Admissions Header" className={styles.headerImage} />
         <h1 className={styles.pageTitle}>{title}</h1>
