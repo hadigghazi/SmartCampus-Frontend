@@ -1,10 +1,40 @@
 import React from 'react';
 import AdmissionsLayout from '../AdmissionsLayout';
+import styles from './Centers.module.css';
+import { useNavigate } from 'react-router-dom';
+import StudentImage from '../../../assets/images/student.png';
 
 const Centers: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleCenterClick = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <AdmissionsLayout title="Centers">
-      <p>Here are the admission requirements...</p>
+      <div className={styles.container}>
+        <h2 className={styles.headingSecondary}>- Explore</h2>
+        <h1 className={styles.headingPrimary}>Our Centers</h1>
+        <div className={styles.grid}>
+          <div className={styles.gridItem} onClick={() => handleCenterClick('/languages-center')}>
+            <img src={StudentImage} alt="Languages Center" className={styles.gridImage} />
+            <div className={styles.gridLabel}>Languages Center</div>
+          </div>
+          <div className={styles.gridItem} onClick={() => handleCenterClick('/human-rights-center')}>
+            <img src={StudentImage} alt="Human Rights Center" className={styles.gridImage} />
+            <div className={styles.gridLabel}>Human Rights Center</div>
+          </div>
+          <div className={styles.gridItem} onClick={() => handleCenterClick('/alumni-center')}>
+            <img src={StudentImage} alt="Alumni Center" className={styles.gridImage} />
+            <div className={styles.gridLabel}>Alumni Center</div>
+          </div>
+          <div className={styles.gridItem} onClick={() => handleCenterClick('/research-center')}>
+            <img src={StudentImage} alt="Research Center" className={styles.gridImage} />
+            <div className={styles.gridLabel}>Research Center</div>
+          </div>
+        </div>
+      </div>
     </AdmissionsLayout>
   );
 };
