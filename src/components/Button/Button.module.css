@@ -1,8 +1,8 @@
 .button {
-    background-color: #EEC0DD;
+    background-color: var(--secondary-color);
     font-family: 'Metrophobic', sans-serif; 
     font-weight: 600;
-    color: #123962;
+    color: var(--primary-color);
     padding: 1rem 3.5rem;
     margin-top: 1.25rem; 
     border-radius: 0.5rem; 

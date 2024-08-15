@@ -13,7 +13,7 @@
     justify-content: flex-end;
     height: 100%;
     text-align: center;
-    color: #123962;
+    color: var(--primary-color);
     padding-bottom: 4rem;
     transform: translateY(2rem); 
 }
@@ -28,7 +28,7 @@
 }
 
 .separator {
-    border-top: 10px solid #123962;
+    border-top: 10px solid var(--primary-color);
     flex-grow: 1;
     opacity: 0.85;
     height: 10px;

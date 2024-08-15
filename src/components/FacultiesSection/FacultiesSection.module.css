@@ -5,13 +5,13 @@
   }
   
   .headingSecondary {
-    color: #123962; 
+    color: var(--primary-color); 
     font-size: 1.5rem; 
     margin-bottom: 0.5rem;
   }
   
   .headingPrimary {
-    color: #123962; 
+    color: var(--primary-color); 
     font-size: 2.5rem;
     font-weight: 700; 
     margin-bottom: 1rem;
@@ -38,7 +38,7 @@
   .arrowButton {
     background-color: transparent;
     border: none;
-    color: #123962; 
+    color: var(--primary-color); 
     font-size: 2rem;
     cursor: pointer;
     position: absolute;
