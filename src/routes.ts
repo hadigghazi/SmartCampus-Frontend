@@ -21,6 +21,7 @@ const Registrar = lazy(() => import('./pages/Admissions/Registrar/Registrar'));
 const Dorms = lazy(() => import('./pages/Admissions/Dorms/Dorms'));
 const Transportation = lazy(() => import('./pages/Admissions/Transportation/Transportation'));
 const Centers = lazy(() => import('./pages/Admissions/Centers/Centers'));
+const CenterPage = lazy(() => import('./pages/Admissions/CenterPage/CenterPage')); 
 
 const routes: CustomRouteProps[] = [
   { path: '/', exact: true, component: LandingPage },
@@ -60,6 +61,10 @@ const routes: CustomRouteProps[] = [
   {
     path: '/admissions/centers',
     component: Centers,
+  },
+  {
+    path: '/admissions/centers/:id',
+    component: CenterPage,
   },
 ];
 
