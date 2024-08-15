@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+import AdmissionsLayout from '../AdmissionsLayout';
 
-const ApplyNow = () => {
+const ApplyNow: React.FC = () => {
   return (
-    <div>ApplyNow</div>
-  )
-}
+    <AdmissionsLayout title="ApplyNow">
+      <p>Here are the admission requirements...</p>
+    </AdmissionsLayout>
+  );
+};
 
-export default ApplyNow
+export default ApplyNow;

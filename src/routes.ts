@@ -28,47 +28,38 @@ const routes: CustomRouteProps[] = [
   {
     path: '/admissions/requirements',
     component: AdmissionRequirements,
-    layout: AdmissionsLayout
   },
   {
     path: '/admissions/apply',
     component: ApplyNow,
-    layout: AdmissionsLayout
   },
   {
     path: '/admissions/fees',
     component: Fees,
-    layout: AdmissionsLayout
   },
   {
     path: '/admissions/assessment',
     component: EntranceAssessment,
-    layout: AdmissionsLayout
   },
   {
     path: '/admissions/financial-aid',
     component: FinancialAidAndScholarships,
-    layout: AdmissionsLayout
   },
   {
     path: '/admissions/registrar',
     component: Registrar,
-    layout: AdmissionsLayout
   },
   {
     path: '/admissions/dorms',
     component: Dorms,
-    layout: AdmissionsLayout
   },
   {
     path: '/admissions/transportation',
     component: Transportation,
-    layout: AdmissionsLayout
   },
   {
     path: '/admissions/centers',
     component: Centers,
-    layout: AdmissionsLayout
   },
 ];
 

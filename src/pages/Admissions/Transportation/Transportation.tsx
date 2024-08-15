@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+import AdmissionsLayout from '../AdmissionsLayout';
 
-const Transportation = () => {
+const Transportation: React.FC = () => {
   return (
-    <div>Transportation</div>
-  )
-}
+    <AdmissionsLayout title="Transportation">
+      <p>Here are the admission requirements...</p>
+    </AdmissionsLayout>
+  );
+};
 
-export default Transportation
+export default Transportation;

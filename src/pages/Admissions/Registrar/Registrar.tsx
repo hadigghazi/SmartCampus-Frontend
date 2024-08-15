@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+import AdmissionsLayout from '../AdmissionsLayout';
 
-const Registrar = () => {
+const Registrar: React.FC = () => {
   return (
-    <div>Registrar</div>
-  )
-}
+    <AdmissionsLayout title="Registrar">
+      <p>Here are the admission requirements...</p>
+    </AdmissionsLayout>
+  );
+};
 
-export default Registrar
+export default Registrar;
