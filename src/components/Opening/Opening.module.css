@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Metrophobic&display=swap');
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 100vh;
+  background-color: white;
+  padding: 2rem;
+  margin-top: 7rem; 
+}
+
+.headingSecondary {
+  color: var(--primary-color); 
+  font-size: 1.5rem; 
+  font-weight: 600; 
+  margin-bottom: 0.5rem;
+  font-family: 'Merriweather', sans-serif;
+  text-align: left;
+}
+
+.headingPrimary {
+  color: #123962; 
+  font-size: 2.5rem;
+  font-weight: 700; 
+  margin-bottom: 2rem;
+  font-family: 'Merriweather', serif; 
+  text-align: left;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.openingHoursTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableHeader {
+  background-color: var(--primary-color);
+  color: white;
+  font-family: 'Merriweather', serif;
+  font-size: 1.2rem;
+  padding: 2rem;
+  text-align: left;
+}
+
+.tableCell {
+  font-family: 'Metrophobic', sans-serif;
+  font-size: 1rem;
+  color: var(--primary-color);
+  padding: 2rem;
+  border-bottom: 1px solid #ddd;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .headingPrimary {
+    font-size: 1.75rem; 
+  }
+
+  .headingSecondary {
+    font-size: 1rem;
+  }
+
+  .contentWrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .tableHeader, .tableCell {
+    font-size: 1rem;
+  }
+}

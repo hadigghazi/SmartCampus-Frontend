@@ -4,6 +4,8 @@ import aboutImage from '../../assets/images/Hero_about.jpg';
 import presidentImage from '../../assets/images/president.jpg'; 
 import styles from './AboutPage.module.css'; 
 import VisionMission from '../../components/VisionMission/VisionMission';
+import Footer from '../../components/Footer/Footer';
+import Opening from '../../components/Opening/Opening';
 
 const AboutPage: React.FC = () => {
   return (
@@ -47,6 +49,8 @@ const AboutPage: React.FC = () => {
         </p>
       </div>
       <VisionMission />
+      <Opening />
+      <Footer />
     </div>
   );
 };
