@@ -61,6 +61,7 @@
   
   .footerColumn p {
     font-size: 1em;
+    line-height: 2rem;
     color: var(--secondary-color);
     text-decoration: none;
     font-family: 'Metrophobic', sans-serif; 
