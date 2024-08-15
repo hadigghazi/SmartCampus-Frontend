@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Metrophobic&display=swap');
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 100vh;
+  background-color: white;
+  padding: 2rem;
+  margin-top: 7rem; 
+}
+
+.textContent {
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.headingSecondary {
+  color: var(--primary-color); 
+  font-size: 1.5rem; 
+  font-weight: 600; 
+  margin-bottom: 0.5rem;
+  font-family: 'Merriweather', sans-serif;
+  text-align: left;
+}
+
+.headingPrimary {
+  color: #123962; 
+  font-size: 2.5rem;
+  font-weight: 700; 
+  margin-bottom: 2rem;
+  font-family: 'Merriweather', serif; 
+  text-align: left;
+}
+
+.contentWrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.imageWrapper {
+  flex: 1;
+}
+
+.image {
+  width: 100%;
+  max-width: 500px;
+  height: 500px;
+  border-radius: 0.25rem; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.textWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.paragraph {
+  color: var(--primary-color);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-family: 'Metrophobic', sans-serif; 
+  text-align: left;
+}
+
+.smallTitle {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  font-family: 'Merriweather', serif;
+  text-align: left;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-start;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .headingPrimary {
+    font-size: 1.75rem; 
+  }
+
+  .headingSecondary {
+    font-size: 1rem;
+  }
+
+  .paragraph {
+    font-size: 1rem;
+  }
+
+  .contentWrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .imageWrapper {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 1rem;
+  }
+
+  .paragraph {
+    line-height: 1.6rem;
+  }
+}

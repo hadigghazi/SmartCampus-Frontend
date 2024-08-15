@@ -3,6 +3,7 @@ import HeroSection from '../../components/HeroSection/HeroSection';
 import aboutImage from '../../assets/images/Hero_about.jpg';
 import presidentImage from '../../assets/images/president.jpg'; 
 import styles from './AboutPage.module.css'; 
+import VisionMission from '../../components/VisionMission/VisionMission';
 
 const AboutPage: React.FC = () => {
   return (
@@ -45,6 +46,7 @@ const AboutPage: React.FC = () => {
           Hadi Ghazi President, SmartCampus
         </p>
       </div>
+      <VisionMission />
     </div>
   );
 };
