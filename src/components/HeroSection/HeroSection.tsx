@@ -3,17 +3,36 @@ import Navbar from '../Navbar/Navbar';
 import Button from '../Button/Button';
 import styles from './HeroSection.module.css';
 
-const HeroSection: React.FC = () => {
+interface HeroSectionProps {
+  backgroundImage: string;
+  headingText: string;
+  showButton?: boolean;
+  welcomeText?: string;
+  imageOpacity?: number;
+}
+
+const HeroSection: React.FC<HeroSectionProps> = ({
+  backgroundImage,
+  headingText,
+  showButton = true,
+  welcomeText,
+}) => {
   return (
-    <div className={styles.heroSection}>
+    <div
+      className={styles.heroSection}
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+      }}
+    >
       <Navbar />
       <div className={styles.content}>
+        {welcomeText && <h2 className={styles.welcomeText}>{welcomeText}</h2>}
         <div className={styles.separatorContainer}>
           <hr className={`${styles.separator} ${styles.separatorLeft}`} />
-          <h1 className={styles.heading}>SmartCampus</h1>
+          <h1 className={showButton ? styles.headingLarge : styles.headingSmall}>{headingText}</h1>
           <hr className={`${styles.separator} ${styles.separatorRight}`} />
         </div>
-        <Button className={styles.button}>Apply Now</Button>
+        {showButton && <Button className={styles.button}>Apply Now</Button>}
       </div>
     </div>
   );

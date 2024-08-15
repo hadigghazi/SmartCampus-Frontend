@@ -4,6 +4,7 @@
     background-size: cover;
     background-position: center;
     background-image: url('../../assets/images/Hero.png'); 
+    transition: opacity 0.5s ease;
 }
 
 .content {
@@ -51,6 +52,20 @@
 .button {
     margin-top: 2rem;
     opacity: 0.85;
+}
+
+
+.welcomeText {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.headingLarge {
+    font-size: 4rem;
+}
+
+.headingSmall {
+    font-size: 2.8rem;
 }
 
 @media (max-width: 1024px) {

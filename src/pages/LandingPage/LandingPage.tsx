@@ -7,11 +7,16 @@ import MajorSuggestorSection from '../../components/MajorSuggestorSection/MajorS
 import EventList from '../../components/EventList/EventList'
 import LifeSection from '../../components/LifeSection/LifeSection'
 import Footer from '../../components/Footer/Footer'
+import landingImage from '../../assets/images/Hero.png'
 
 const LandingPage = () => {
   return (
     <div>
-      <HeroSection />
+      <HeroSection
+        backgroundImage={landingImage}
+        headingText="SmartCampus"
+        showButton={true}
+      />
       <WelcomeSection />
       <NewsSection />
       <FacultiesSection />
