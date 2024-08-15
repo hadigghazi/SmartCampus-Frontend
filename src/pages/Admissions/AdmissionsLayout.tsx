@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import styles from './AdmissionsLayout.module.css';
 import headerImage from '../../assets/images/Pages_header.jpg';
 import Navbar from '../../components/Navbar/Navbar';
+import Footer from '../../components/Footer/Footer';
 
 type AdmissionsLayoutProps = {
   title: string;
@@ -97,6 +98,7 @@ const AdmissionsLayout: React.FC<AdmissionsLayoutProps> = ({ title, children }) 
       <div className={styles.content}>
         {children}
       </div>
+      <Footer />
     </div>
   );
 };

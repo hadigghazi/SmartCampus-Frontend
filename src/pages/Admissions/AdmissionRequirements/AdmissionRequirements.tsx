@@ -6,7 +6,8 @@ const AdmissionRequirements: React.FC = () => {
   return (
     <AdmissionsLayout title="Admission Requirements">
       <div className={styles.container}>
-        <h1 className={styles.headingPrimary}>Undergraduate Programs</h1>
+      <h2 className={styles.headingSecondary}>- Requirements</h2>
+      <h1 className={styles.headingPrimary}>Undergraduate Programs</h1>
         <p className={styles.text}>
           SmartCampus offers a range of undergraduate programs across various disciplines, providing students with diverse academic opportunities. Supported by experienced faculty and state-of-the-art facilities, our programs emphasize hands-on learning and critical thinking, preparing students for successful careers and further academic pursuits.
         </p>
@@ -35,7 +36,9 @@ const AdmissionRequirements: React.FC = () => {
           Prospective applicants to SmartCampus must meet the university's undergraduate English language proficiency requirements. This can be done by either taking the SmartCampus Undergraduate English Language Placement Test or by submitting results from internationally recognized English language proficiency examinations (such as IELTS, TOEFL).
         </p>
 
-        <h1 className={styles.headingPrimary}>Graduate Programs</h1>
+        <h2 className={styles.headingSecondary} style={{marginTop: '10rem'}}>- Requirements</h2>
+      <h1 className={styles.headingPrimary}>Graduate Programs</h1>
+        
         <p className={styles.text}>
           SmartCampus offers an array of graduate programs designed to advance your knowledge and expertise in various fields. Our graduate programs are supported by distinguished faculty and state-of-the-art facilities, emphasizing research, innovation, and real-world application. We aim to prepare our students for leadership roles and impactful careers in their chosen disciplines.
         </p>
