@@ -13,7 +13,7 @@ type AdmissionsLayoutProps = {
 const AdmissionsLayout: React.FC<AdmissionsLayoutProps> = ({ title, children }) => {
   return (
     <div className={styles.layout}>
-        <Navbar />
+      <Navbar />
       <div className={styles.header}>
         <img src={headerImage} alt="Admissions Header" className={styles.headerImage} />
         <h1 className={styles.pageTitle}>{title}</h1>

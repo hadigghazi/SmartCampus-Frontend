@@ -1,5 +1,4 @@
-
-  .layout {
+.layout {
     font-family: 'Metrophobic', sans-serif;
   }
   
@@ -67,5 +66,94 @@
   
   .content {
     padding: 2rem;
+  }
+  
+  /* Styles for screens between 768px and 1024px */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .header {
+      text-align: left;
+    }
+    
+    .headerImage {
+      height: auto;
+    }
+    
+    .pageTitle {
+      position: static;
+      margin: 1rem 0;
+      font-size: 2.2rem;
+    }
+    
+    .nav {
+      position: static;
+      background-color: var(--secondary-color);
+      padding: 1rem;
+      box-shadow: none;
+      margin-top: 1rem;
+    }
+    
+    .admissionsTitle {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      text-align: left;
+    }
+    
+    .nav ul {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .nav li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .nav a {
+      font-size: 1.1rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .header {
+      text-align: left;
+    }
+    
+    .headerImage {
+      height: auto;
+    }
+    
+    .pageTitle {
+      position: static;
+      margin: 2rem 0;
+      font-size: 2rem;
+    }
+    
+    .nav {
+      position: static;
+      background-color: var(--secondary-color);
+      padding: 1rem;
+      box-shadow: none;
+      margin-top: 1rem;
+    }
+    
+    .admissionsTitle {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+      text-align: left;
+    }
+    
+    .nav ul {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .nav li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .nav a {
+      font-size: 1rem;
+    }
   }
   
