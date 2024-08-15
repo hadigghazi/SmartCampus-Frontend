@@ -1,9 +1,11 @@
 import React, { lazy, LazyExoticComponent } from 'react';
+import AdmissionsLayout from './pages/Admissions/AdmissionsLayout';
 
 type CustomRouteProps = {
   path: string;
   component: LazyExoticComponent<React.FC<any>>;
   exact?: boolean;
+  layout?: React.FC<any>; 
 };
 
 const LandingPage = lazy(() => import('./pages/LandingPage/LandingPage'));
@@ -21,17 +23,53 @@ const Transportation = lazy(() => import('./pages/Admissions/Transportation/Tran
 const Centers = lazy(() => import('./pages/Admissions/Centers/Centers'));
 
 const routes: CustomRouteProps[] = [
-    { path: '/', exact: true, component: LandingPage },
-    { path: '/about', component: AboutPage },
-    { path: '/admissions/requirements', component: AdmissionRequirements },
-    { path: '/admissions/apply', component: ApplyNow },
-    { path: '/admissions/fees', component: Fees },
-    { path: '/admissions/assessment', component: EntranceAssessment },
-    { path: '/admissions/financial-aid', component: FinancialAidAndScholarships },
-    { path: '/admissions/registrar', component: Registrar },
-    { path: '/admissions/dorms', component: Dorms },
-    { path: '/admissions/transportation', component: Transportation },
-    { path: '/admissions/centers', component: Centers },
+  { path: '/', exact: true, component: LandingPage },
+  { path: '/about', component: AboutPage },
+  {
+    path: '/admissions/requirements',
+    component: AdmissionRequirements,
+    layout: AdmissionsLayout
+  },
+  {
+    path: '/admissions/apply',
+    component: ApplyNow,
+    layout: AdmissionsLayout
+  },
+  {
+    path: '/admissions/fees',
+    component: Fees,
+    layout: AdmissionsLayout
+  },
+  {
+    path: '/admissions/assessment',
+    component: EntranceAssessment,
+    layout: AdmissionsLayout
+  },
+  {
+    path: '/admissions/financial-aid',
+    component: FinancialAidAndScholarships,
+    layout: AdmissionsLayout
+  },
+  {
+    path: '/admissions/registrar',
+    component: Registrar,
+    layout: AdmissionsLayout
+  },
+  {
+    path: '/admissions/dorms',
+    component: Dorms,
+    layout: AdmissionsLayout
+  },
+  {
+    path: '/admissions/transportation',
+    component: Transportation,
+    layout: AdmissionsLayout
+  },
+  {
+    path: '/admissions/centers',
+    component: Centers,
+    layout: AdmissionsLayout
+  },
 ];
 
 export default routes;

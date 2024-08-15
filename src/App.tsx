@@ -7,13 +7,22 @@ const App: React.FC = () => {
     <Router>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
-          {routes.map((route, index) => (
-            <Route
-              key={index}
-              path={route.path}
-              element={<route.component />}
-            />
-          ))}
+          {routes.map((route, index) => {
+            const Element = route.component;
+            const Layout = route.layout || React.Fragment;
+
+            return (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Element />
+                  </Layout>
+                }
+              />
+            );
+          })}
         </Routes>
       </Suspense>
     </Router>

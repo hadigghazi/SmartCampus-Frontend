@@ -1,0 +1,72 @@
+.admissionsLayout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .admissionsHeader {
+    width: 100%;
+  }
+  
+  .headerImage {
+    width: 100%;
+    height: auto;
+  }
+  
+  .contentContainer {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .sidebar {
+    flex: 0 0 250px;
+    padding: 20px;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+  }
+  
+  .sidebarTitle {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .navList {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .navLink {
+    display: block;
+    padding: 10px;
+    color: var(--primary-color);
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  
+  .navLink:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .activeLink {
+    background-color: #d4a373;
+    color: white;
+  }
+  
+  .mainContent {
+    flex: 1;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    margin-left: 20px;
+  }
+  
+  .pageTitle {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+  }
+  
