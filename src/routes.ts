@@ -1,5 +1,4 @@
 import React, { lazy, LazyExoticComponent } from 'react';
-import AdmissionsLayout from './pages/Admissions/AdmissionsLayout';
 
 type CustomRouteProps = {
   path: string;
