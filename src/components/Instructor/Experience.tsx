@@ -19,7 +19,7 @@ const Experience: React.FC = () => {
         src="/models/avatar.glb"
         scale={(7)}
         position={[-11, -7.95, -14]}
-        rotation={[0, 0.5, 0]}
+        rotation={[0, 1, 0]}
        />
     </Canvas>
   );

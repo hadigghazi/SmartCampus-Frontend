@@ -1,9 +1,72 @@
 import React, { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
+import { Group, Mesh, Material } from "three";
 import modelPath from "./classroom.glb";
 
-const Classroom: React.FC = (props) => {
-  const { nodes, materials } = useGLTF(modelPath);
+type GLTFResult = {
+  nodes: {
+    Object_2: Mesh;
+    Object_3: Mesh;
+    Object_4: Mesh;
+    Object_5: Mesh;
+    Object_6: Mesh;
+    Object_7: Mesh;
+    Object_8: Mesh;
+    Object_9: Mesh;
+    Object_10: Mesh;
+    Object_11: Mesh;
+    Object_12: Mesh;
+    Object_13: Mesh;
+    Object_14: Mesh;
+    Object_15: Mesh;
+    Object_16: Mesh;
+    Object_17: Mesh;
+    Object_18: Mesh;
+    Object_19: Mesh;
+    Object_20: Mesh;
+    Object_21: Mesh;
+    Object_22: Mesh;
+    Object_23: Mesh;
+    Object_24: Mesh;
+    Object_25: Mesh;
+    Object_26: Mesh;
+    Object_27: Mesh;
+    Object_28: Mesh;
+    Object_29: Mesh;
+    Object_30: Mesh;
+    Object_31: Mesh;
+    Object_32: Mesh;
+    Object_33: Mesh;
+    Object_34: Mesh;
+    Object_35: Mesh;
+    Object_36: Mesh;
+    Object_37: Mesh;
+    Object_38: Mesh;
+    Object_39: Mesh;
+    Object_40: Mesh;
+    Object_41: Mesh;
+    Object_42: Mesh;
+    Object_43: Mesh;
+    Object_44: Mesh;
+    Object_45: Mesh;
+    Object_46: Mesh;
+    Object_47: Mesh;
+    Object_48: Mesh;
+    Object_49: Mesh;
+    Object_50: Mesh;
+    Object_51: Mesh;
+    Object_52: Mesh;
+    Object_53: Mesh;
+    Object_54: Mesh;
+    Object_55: Mesh;
+  };
+  materials: {
+    [key: string]: Material;
+  };
+};
+
+export default function Classroom(props: JSX.IntrinsicElements["group"]) {
+  const { nodes, materials } = useGLTF(modelPath) as unknown as GLTFResult;
 
   return (
     <group {...props} dispose={null}>
@@ -110,13 +173,13 @@ const Classroom: React.FC = (props) => {
           geometry={nodes.Object_18.geometry}
           material={materials.Lights}
         />
-        <mesh
-          castShadow
-          receiveShadow
+        <lineSegments
           geometry={nodes.Object_19.geometry}
           material={materials.GlobeMat}
         />
-        <lineSegments
+        <mesh
+          castShadow
+          receiveShadow
           geometry={nodes.Object_20.geometry}
           material={materials.Outline}
         />
@@ -298,37 +361,37 @@ const Classroom: React.FC = (props) => {
           castShadow
           receiveShadow
           geometry={nodes.Object_50.geometry}
-          material={materials.PapersMat}
+          material={materials.Outline}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodes.Object_51.geometry}
-          material={materials.PapersMat}
+          material={materials.Outline}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodes.Object_52.geometry}
-          material={materials.Plant1Mat}
+          material={materials.Outline}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodes.Object_53.geometry}
-          material={materials.Plant2Mat}
+          material={materials.Outline}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodes.Object_54.geometry}
-          material={materials.Plant4Mat}
+          material={materials.Outline}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodes.Object_55.geometry}
-          material={materials.TeachersChairMat}
+          material={materials.Outline}
         />
       </group>
     </group>
@@ -336,4 +399,3 @@ const Classroom: React.FC = (props) => {
 }
 
 useGLTF.preload(modelPath);
-export default Classroom;
