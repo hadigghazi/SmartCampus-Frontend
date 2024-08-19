@@ -6,7 +6,9 @@ const Environment: React.FC = () => {
   return (
     <Canvas>
       <OrbitControls />
-      <ambientLight />
+      <ambientLight intensity={1} color={"white"} />
+      <directionalLight position={[0, 5, 0]} intensity={1} castShadow />
+      <pointLight position={[0, 2, 0]} intensity={1} castShadow />
       <Gltf
         src="/models/classroom.glb"
         position={[0, -8, 0]}
