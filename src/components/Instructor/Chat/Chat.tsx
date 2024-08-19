@@ -17,57 +17,63 @@ export const Chat: React.FC = () => {
   const SpeechRecognition =
     window.SpeechRecognition || window.webkitSpeechRecognition;
 
-  const startListening = () => {
-    if (!SpeechRecognition) {
-      console.error("Speech recognition is not supported in this browser.");
-      return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.lang = "en";
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognitionRef.current = recognition;
-
-    recognition.onresult = (event) => {
-      let interimTranscript = "";
-      let finalTranscript = "";
-
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const transcript = event.results[i][0].transcript;
-        if (event.results[i].isFinal) {
-          finalTranscript += transcript + " ";
-        } else {
-          interimTranscript += transcript;
+    const startListening = () => {
+        if (!SpeechRecognition) {
+          console.error("Speech recognition is not supported in this browser.");
+          return;
         }
-      }
-
-      setUserInput(finalTranscript);
-    };
-
-    recognition.onerror = (event) => {
-      console.error("Speech recognition error:", event.error);
-      setIsListening(false);
-    };
-
-    recognition.onend = () => {
-      setIsListening(false);
-      if (userInput.trim() !== "") {
-        handleSubmit(new Event("submit"));
-      }
-    };
-
-    recognition.start();
-    setIsListening(true);
-  };
-
-  const stopListening = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-      setIsListening(false);
-    }
-  };
-
+      
+        console.log("Starting speech recognition");
+      
+        const recognition = new SpeechRecognition();
+        recognition.lang = "en";
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognitionRef.current = recognition;
+      
+        recognition.onresult = (event) => {
+          console.log("Speech recognition result:", event);
+      
+          let interimTranscript = "";
+          let finalTranscript = "";
+      
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcript = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              finalTranscript += transcript + " ";
+            } else {
+              interimTranscript += transcript;
+            }
+          }
+      
+          setUserInput(finalTranscript);
+        };
+      
+        recognition.onerror = (event) => {
+          console.error("Speech recognition error:", event.error);
+          setIsListening(false);
+        };
+      
+        recognition.onend = () => {
+          console.log("Speech recognition ended");
+          setIsListening(false);
+          if (userInput.trim() !== "") {
+            handleSubmit(new Event("submit"));
+          }
+        };
+      
+        recognition.start();
+        setIsListening(true);
+      };
+      
+      const stopListening = () => {
+        if (recognitionRef.current) {
+          console.log("Stopping speech recognition");
+          recognitionRef.current.stop();
+          setIsListening(false);
+        }
+      };
+      
   const speak = (text) => {
     const synthesis = synthesisRef.current;
     const utterance = new SpeechSynthesisUtterance(text);
