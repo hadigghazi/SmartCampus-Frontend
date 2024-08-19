@@ -1,14 +1,13 @@
 import React from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Gltf } from '@react-three/drei';
+import { OrbitControls, Gltf, Environment } from '@react-three/drei';
 
-const Environment: React.FC = () => {
+const Experience: React.FC = () => {
   return (
     <Canvas>
       <OrbitControls />
-      <ambientLight intensity={1} color={"white"} />
-      <directionalLight position={[0, 5, 0]} intensity={1} castShadow />
-      <pointLight position={[0, 2, 0]} intensity={1} castShadow />
+      <Environment preset="sunset" />
+      <ambientLight intensity={0.8} color={"pink"} />
       <Gltf
         src="/models/classroom.glb"
         position={[0, -8, 0]}
@@ -24,4 +23,4 @@ const Environment: React.FC = () => {
   );
 }
 
-export default Environment;
+export default Experience;

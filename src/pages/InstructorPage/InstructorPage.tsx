@@ -1,9 +1,9 @@
 import React from 'react';
-import Environment from '../../components/Instructor/Experience';
+import Experience from '../../components/Instructor/Experience';
 
 const InstructorPage: React.FC = () => {
   return (
-    <Environment />
+    <Experience />
   );
 }
 
