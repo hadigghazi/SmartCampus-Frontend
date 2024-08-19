@@ -114,7 +114,9 @@ export const Chat: React.FC = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+  
     try {
+      // Step 1: Get the AI's response
       const response = await axios.post(
         "http://localhost:3001/api/chatgpt",
         {
@@ -127,14 +129,35 @@ export const Chat: React.FC = () => {
         }
       );
       const generatedText = response.data.response;
+  
+      // Step 2: Update the chat history immediately
       setChatHistory([...chatHistory, { user: userInput, bot: generatedText }]);
       setUserInput("");
+  
+      // Step 3: Store the interaction in the database asynchronously
+      axios.post(
+        "http://localhost:8000/api/ai_instructor_interactions",
+        {
+          user_id: 1, // Hardcoded user ID
+          question: userInput,
+          answer: generatedText,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ).catch((error) => {
+        console.error("Error saving interaction:", error);
+      });
     } catch (error) {
       console.error("Error:", error);
     }
+  
     setLoading(false);
   };
-
+  
+  
   const toggleInput = () => {
     setShowInput(!showInput);
   };

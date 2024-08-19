@@ -5,7 +5,7 @@ import { CameraManager } from "./CameraManager";
 
 const Experience: React.FC = () => {
   return (
-    <Canvas className="canvas" camera={{ position: [-3, 1.5, 0], fov: 50 }}>
+    <Canvas className="canvas" camera={{ position: [-4, 1.5, 0], fov: 40 }}>
       <CameraManager />
       <OrbitControls
         enablePan={false}
