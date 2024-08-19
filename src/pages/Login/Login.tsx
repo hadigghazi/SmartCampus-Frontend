@@ -4,11 +4,13 @@ import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../features/auth/authSlice';
 import { LoginRequest } from '../../features/api/types';
 import { useNavigate } from 'react-router-dom';
+import styles from './Login.module.css';
+import logo from '../../assets/images/NavBar_logo.png'; 
 
 const Login: React.FC = () => {
   const [login] = useLoginMutation();
   const dispatch = useDispatch();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<LoginRequest>({ email: '', password: '' });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +22,7 @@ const Login: React.FC = () => {
     try {
       const user = await login(formData).unwrap();
       dispatch(setCredentials(user));
-      navigate('/'); 
+      navigate('/');
     } catch (error) {
       if (error && 'data' in error) {
         const errorMessage = typeof error.data === 'string' ? error.data : 'An unknown error occurred';
@@ -32,25 +34,36 @@ const Login: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        name="email"
-        value={formData.email}
-        onChange={handleChange}
-        placeholder="Email"
-        required
-      />
-      <input
-        type="password"
-        name="password"
-        value={formData.password}
-        onChange={handleChange}
-        placeholder="Password"
-        required
-      />
-      <button type="submit">Login</button>
-    </form>
+    <div className={styles.wrapper}>
+      <div className={styles.loginContainer}>
+        <div className={styles.header}>
+          <img src={logo} alt="SmartCampus Logo" className={styles.logo} />
+          <div className={styles.title}>SmartCampus</div>
+        </div>
+        <div className={styles.loginTitle}>Login</div>
+        <form onSubmit={handleSubmit}>
+          <input
+            className={styles.inputField}
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Email"
+            required
+          />
+          <input
+            className={styles.inputField}
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Password"
+            required
+          />
+          <button className={styles.submitButton} type="submit">Login</button>
+        </form>
+      </div>
+    </div>
   );
 };
 
