@@ -24,9 +24,20 @@ const CenterPage = lazy(() => import('./pages/Admissions/CenterPage/CenterPage')
 
 const InstructorPage = lazy(() => import('./pages/InstructorPage/InstructorPage')); 
 
+const Login = lazy(() => import('./pages/Login/Login')); 
+const Register = lazy(() => import('./pages/Register/Register')); 
+
 const routes: CustomRouteProps[] = [
   { path: '/', exact: true, component: LandingPage },
   { path: '/about', component: AboutPage },
+  {
+    path: '/login',
+    component: Login,
+  },
+  {
+    path: '/register',
+    component: Register,
+  },
   {
     path: '/admissions/requirements',
     component: AdmissionRequirements,
