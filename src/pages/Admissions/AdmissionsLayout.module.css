@@ -1,5 +1,6 @@
 .layout {
     font-family: 'Metrophobic', sans-serif;
+    margin-top: -100px;
   }
   
   .header {
@@ -35,8 +36,9 @@
   
   .admissionsTitle {
     font-family: 'Merriweather', serif;
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     color: var(--primary-color);
+    font-weight: 600;
     margin-bottom: 1rem;
   }
   
@@ -53,7 +55,7 @@
   .nav a {
     text-decoration: none;
     color: var(--primary-color);
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
   
   .nav a:hover {
@@ -68,8 +70,12 @@
     padding: 2rem;
   }
   
-  /* Styles for screens between 768px and 1024px */
   @media (min-width: 768px) and (max-width: 1024px) {
+
+    .layout {
+      margin-top: 0px;
+    }
+    
     .header {
       text-align: left;
     }
@@ -114,6 +120,11 @@
   }
   
   @media (max-width: 768px) {
+
+    .layout {
+      margin-top: 0px;
+    }
+
     .header {
       text-align: left;
     }
