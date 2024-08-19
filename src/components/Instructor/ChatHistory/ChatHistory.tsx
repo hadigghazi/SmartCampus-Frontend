@@ -62,9 +62,13 @@ export const ChatHistory: React.FC = () => {
       <button className={styles.toggleButton} onClick={toggleHistory}>
         {showHistory ? "Hide History" : "Show History"}
       </button>
+      
       {showHistory && (
         <>
           <h2>Chat History</h2>
+          <button className={styles.clearButton} onClick={clearHistory}>
+            Clear All
+          </button>
           {history.length > 0 ? (
             <ul className={styles.historyList}>
               {history.map((interaction) => (
@@ -87,9 +91,6 @@ export const ChatHistory: React.FC = () => {
           ) : (
             <p>No chat history available.</p>
           )}
-          <button className={styles.clearButton} onClick={clearHistory}>
-            Clear All
-          </button>
         </>
       )}
     </div>

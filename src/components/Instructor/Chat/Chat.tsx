@@ -221,9 +221,9 @@ export const Chat: React.FC = () => {
                   disabled={loading}
                 >
                   <i className={styles.sendIcon}>
-                    {loading ? "Sending..." : "➤"}
+                    {loading ? "Sending..." : "➤ "}
                   </i>
-                  <span>Send</span>
+                  <span> Send</span>
                 </button>
               </form>
             </div>

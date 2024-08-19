@@ -75,15 +75,19 @@
   }
   
   .clearButton {
+    position: fixed;
+    top: 30px; 
+    right: 200px; 
     background-color: var(--primary-color);
     color: #fff;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 30px;
     border-radius: 8px;
     cursor: pointer;
+    pointer-events: auto;
     font-size: 16px;
-    margin-top: 20px;
     transition: background-color 0.3s ease;
+    z-index: 1001;
   }
   
   .clearButton:hover {
