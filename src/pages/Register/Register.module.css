@@ -1,0 +1,89 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--primary-color);
+    padding: 10px; 
+  }
+  
+  .registerContainer {
+    background-color: var(--secondary-color);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 600px; 
+    width: 100%;
+    text-align: center;
+  }
+  
+  .header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .logo {
+    width: 60px; 
+    margin-right: 8px;
+  }
+  
+  .title {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: -10px;
+    color: var(--primary-color);
+  }
+  
+  .registerTitle {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+  }
+  
+  .formGroup {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 8px; 
+    margin-bottom: 12px; 
+  }
+  
+  .inputField, .selectField {
+    width: 100%; 
+    height: 36px;
+    border-radius: 4px;
+    border: 2px solid #fff;
+    background-color: #fff;
+    padding: 0 8px;
+    font-size: 14px; 
+    color: var(--primary-color);
+  }
+  
+  .inputField::placeholder, .selectField {
+    color: var(--primary-color);
+  }
+  
+  .inputField:focus, .selectField:focus {
+    border-color: var(--primary-color);
+    outline: none;
+  }
+  
+  .submitButton {
+    width: 100%;
+    height: 36px; 
+    border-radius: 4px;
+    border: none;
+    background-color: var(--primary-color);
+    color: #fff;
+    font-size: 14px; 
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .submitButton:hover {
+    background-color: #1c0b623f;
+  }
+  
