@@ -49,7 +49,7 @@ const Register: React.FC = () => {
           <img src={logo} alt="SmartCampus Logo" className={styles.logo} />
           <div className={styles.title}>SmartCampus</div>
         </div>
-        <div className={styles.registerTitle}>Register</div>
+        <div className={styles.registerTitle}>Apply Now</div>
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
             <input
@@ -203,7 +203,7 @@ const Register: React.FC = () => {
             />
           </div>
           <button className={styles.submitButton} type="submit">
-            Register
+            Submit
           </button>
         </form>
       </div>

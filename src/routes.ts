@@ -35,7 +35,7 @@ const routes: CustomRouteProps[] = [
     component: Login,
   },
   {
-    path: '/register',
+    path: '/apply',
     component: Register,
   },
   {
