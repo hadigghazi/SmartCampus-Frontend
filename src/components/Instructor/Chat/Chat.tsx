@@ -116,7 +116,6 @@ export const Chat: React.FC = () => {
     setLoading(true);
   
     try {
-      // Step 1: Get the AI's response
       const response = await axios.post(
         "http://localhost:3001/api/chatgpt",
         {
@@ -130,15 +129,13 @@ export const Chat: React.FC = () => {
       );
       const generatedText = response.data.response;
   
-      // Step 2: Update the chat history immediately
       setChatHistory([...chatHistory, { user: userInput, bot: generatedText }]);
       setUserInput("");
   
-      // Step 3: Store the interaction in the database asynchronously
       axios.post(
         "http://localhost:8000/api/ai_instructor_interactions",
         {
-          user_id: 1, // Hardcoded user ID
+          user_id: 1, 
           question: userInput,
           answer: generatedText,
         },
@@ -223,18 +220,12 @@ export const Chat: React.FC = () => {
                   <i className={styles.sendIcon}>
                     {loading ? "Sending..." : "➤ "}
                   </i>
-                  <span> Send</span>
+                  <span>Send</span>
                 </button>
               </form>
             </div>
             {chatHistory.length > 0 && (
               <div className={styles.buttons}>
-                <button
-                  className={styles.confirmButton}
-                  onClick={() => speak("Message confirmed")}
-                >
-                  Confirm
-                </button>
                 <button className={styles.cancelButton} onClick={handleClear}>
                   Clear
                 </button>
