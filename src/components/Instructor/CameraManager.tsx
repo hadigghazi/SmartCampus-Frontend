@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { CameraControls } from "@react-three/drei";
 
 export const CameraManager: React.FC = () => {

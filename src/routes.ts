@@ -21,6 +21,7 @@ const Dorms = lazy(() => import('./pages/Admissions/Dorms/Dorms'));
 const Transportation = lazy(() => import('./pages/Admissions/Transportation/Transportation'));
 const Centers = lazy(() => import('./pages/Admissions/Centers/Centers'));
 const CenterPage = lazy(() => import('./pages/Admissions/CenterPage/CenterPage')); 
+
 const InstructorPage = lazy(() => import('./pages/InstructorPage/InstructorPage')); 
 
 const routes: CustomRouteProps[] = [

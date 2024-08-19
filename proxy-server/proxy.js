@@ -1,12 +1,12 @@
-import express, { Request, Response } from "express";
-import OpenAI from "openai";
-import dotenv from "dotenv";
-import cors from "cors";
+const express = require("express");
+const OpenAI = require("openai");
+const dotenv = require("dotenv");
+const cors = require("cors");
 
 dotenv.config();
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY as string,
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 const app = express();
@@ -14,11 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-interface ChatRequest {
-  message: string;
-}
-
-app.post("/api/chatgpt", async (req: Request<{}, {}, ChatRequest>, res: Response) => {
+app.post("/api/chatgpt", async (req, res) => {
   try {
     console.log("Request Body:", req.body);
 
@@ -34,10 +30,10 @@ app.post("/api/chatgpt", async (req: Request<{}, {}, ChatRequest>, res: Response
   } catch (error) {
     console.error(
       "Error Details:",
-      (error as any).response ? (error as any).response.data : (error as Error).message
+      error.response ? error.response.data : error.message
     );
     res
-      .status((error as any).response ? (error as any).response.status : 500)
+      .status(error.response ? error.response.status : 500)
       .json({ error: "An error occurred" });
   }
 });
