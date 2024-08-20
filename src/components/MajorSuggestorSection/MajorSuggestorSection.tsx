@@ -21,7 +21,7 @@ const MajorSuggestorSection: React.FC = () => {
             Our AI Major Suggestor is a smart tool designed to help students choose the right major based on their interests, strengths, and career goals. By leveraging advanced algorithms and machine learning, it provides personalized recommendations, guiding students toward the most suitable academic path and ensuring a successful and fulfilling educational journey.
           </p>
           <div className={styles.buttonContainer}>
-            <Button>Try It Now</Button>
+            <Button href='/major-suggestor'>Try It Now</Button>
           </div>
         </div>
       </div>
