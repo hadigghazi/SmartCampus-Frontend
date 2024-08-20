@@ -22,7 +22,7 @@ const MajorDetails: React.FC = () => {
         <h1 className={styles.headingPrimary}>{major.name}</h1>
         <p className={styles.text}>{major.description}</p>
 
-        <h2 className={styles.headingSecondary}>- Courses in this Major</h2>
+        <h2 className={styles.headingSecondary}>- Courses in {major.name} Major</h2>
         <div className={styles.coursesList}>
           {courses && courses.length > 0 ? (
             courses.map(course => (
