@@ -52,3 +52,12 @@ export type RegisterRequest = {
     deleted_at: string | null;
   };
   
+  export type Major = {
+    id: number;
+    name: string;
+    description: string;
+    faculty_id: number;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+  }
