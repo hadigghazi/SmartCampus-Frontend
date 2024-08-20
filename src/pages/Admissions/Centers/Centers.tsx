@@ -3,13 +3,18 @@ import AdmissionsLayout from '../AdmissionsLayout';
 import styles from './Centers.module.css';
 import { useNavigate } from 'react-router-dom';
 import StudentImage from '../../../assets/images/student.png';
+import { useGetCentersQuery } from '../../../features/api/centerApi';
 
 const Centers: React.FC = () => {
   const navigate = useNavigate();
+  const { data: centers, error, isLoading } = useGetCentersQuery();
 
-  const handleCenterClick = (path: string) => {
-    navigate(path);
+  const handleCenterClick = (id: number) => {
+    navigate(`/admissions/centers/${id}`);
   };
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error loading centers</p>;
 
   return (
     <AdmissionsLayout title="Centers">
@@ -17,22 +22,16 @@ const Centers: React.FC = () => {
         <h2 className={styles.headingSecondary}>- Explore</h2>
         <h1 className={styles.headingPrimary}>Our Centers</h1>
         <div className={styles.grid}>
-          <div className={styles.gridItem} onClick={() => handleCenterClick('/admissions/centers/languages-center')}>
-            <img src={StudentImage} alt="Languages Center" className={styles.gridImage} />
-            <div className={styles.gridLabel}>Languages Center</div>
-          </div>
-          <div className={styles.gridItem} onClick={() => handleCenterClick('/admissions/centers/human-rights-center')}>
-            <img src={StudentImage} alt="Human Rights Center" className={styles.gridImage} />
-            <div className={styles.gridLabel}>Human Rights Center</div>
-          </div>
-          <div className={styles.gridItem} onClick={() => handleCenterClick('/admissions/centers/alumni-center')}>
-            <img src={StudentImage} alt="Alumni Center" className={styles.gridImage} />
-            <div className={styles.gridLabel}>Alumni Center</div>
-          </div>
-          <div className={styles.gridItem} onClick={() => handleCenterClick('/admissions/centers/research-center')}>
-            <img src={StudentImage} alt="Research Center" className={styles.gridImage} />
-            <div className={styles.gridLabel}>Research Center</div>
-          </div>
+          {centers?.map((center) => (
+            <div
+              key={center.id}
+              className={styles.gridItem}
+              onClick={() => handleCenterClick(center.id)}
+            >
+              <img src={StudentImage} alt={center.name} className={styles.gridImage} />
+              <div className={styles.gridLabel}>{center.name}</div>
+            </div>
+          ))}
         </div>
       </div>
     </AdmissionsLayout>
