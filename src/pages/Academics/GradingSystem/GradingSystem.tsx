@@ -1,9 +1,51 @@
-import AcademicsLayout from "../AcademicsLayout"
+import React from 'react';
+import AcademicsLayout from '../AcademicsLayout';
+import styles from './GradingSystem.module.css';
 
-const GradingSystem = () => {
+const GradingSystem: React.FC = () => {
   return (
-    <AcademicsLayout title="GradingSystem">GradingSystem</AcademicsLayout>
-  )
-}
+    <AcademicsLayout title="Grading System">
+      <div className={styles.container}>
+        <h1 className={styles.heading}>Grading System</h1>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Letter Grade</th>
+              <th>GPA</th>
+              <th>Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A</td>
+              <td>4</td>
+              <td>&gt;=90%</td>
+            </tr>
+            <tr>
+              <td>B</td>
+              <td>3</td>
+              <td>&gt;=80%</td>
+            </tr>
+            <tr>
+              <td>C</td>
+              <td>2</td>
+              <td>&gt;=70%</td>
+            </tr>
+            <tr>
+              <td>D</td>
+              <td>1</td>
+              <td>&gt;=60%</td>
+            </tr>
+            <tr>
+              <td>F</td>
+              <td>0</td>
+              <td>&lt;60%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </AcademicsLayout>
+  );
+};
 
-export default GradingSystem
+export default GradingSystem;
