@@ -1,16 +1,26 @@
 import React from 'react';
-import { Major } from '../../features/api/types';
 import styles from './MajorCard.module.css';
+import desk from '../../assets/images/desk.png';
+import { Link } from 'react-router-dom';
+import { Major } from '../../features/api/types';
 
-interface MajorCardProps {
+type MajorCardProps = {
   major: Major;
-}
+};
 
 const MajorCard: React.FC<MajorCardProps> = ({ major }) => {
   return (
     <div className={styles.card}>
-      <h3 className={styles.name}>{major.name}</h3>
-      <p className={styles.description}>{major.description}</p>
+      <img 
+        src={desk} 
+        alt="Major Image" 
+        className={styles.image} 
+      />
+      <Link to={`/majors/${major.id}`}>
+      <div className={styles.overlay}>
+        <p className={styles.majorName}>{major.name}</p>
+      </div>
+      </Link>
     </div>
   );
 };
