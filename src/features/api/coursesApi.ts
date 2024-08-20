@@ -3,7 +3,7 @@ import { Course } from './types';
 
 export const coursesApi = createApi({
   reducerPath: 'coursesApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/api' }),
   endpoints: (builder) => ({
     getCourses: builder.query<Course[], void>({
       query: () => '/courses',
