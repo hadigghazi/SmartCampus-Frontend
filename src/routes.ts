@@ -29,6 +29,7 @@ const FacultyDetails = lazy(() => import('./pages/Academics/FacultyDetails/Facul
 const LifeOnCampus = lazy(() => import('./pages/LifeOnCampus/LifeOnCampus')); 
 const MajorDetails = lazy(() => import('./pages/Academics/MajorDetails/MajorDetails'));
 const Campuses = lazy(() => import('./pages/Campuses/Campuses'));
+const CampusDetails = lazy(() => import('./pages/CampusDetails/CampusDetails'));
 
 const AIMajorSuggestor = lazy(() => import('./pages/AIMajorSuggestor/AIMajorSuggestor'));
 const InstructorPage = lazy(() => import('./pages/InstructorPage/InstructorPage')); 
@@ -126,6 +127,10 @@ const routes: CustomRouteProps[] = [
   {
     path: 'campuses',
     component: Campuses,
+  },
+  {
+    path: 'campuses/:id',
+    component: CampusDetails,
   },
 ];
 

@@ -19,17 +19,13 @@
     bottom: 0;
     width: 100%;
     background-color: var(--secondary-color);
-    color: white;
+    color: var(--primary-color);
+    font-weight: 600;
     text-align: center;
     padding: 1rem;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
   
   .name {
     margin: 0;
   }
-  
-  .card:hover .overlay {
-    background-color: var(--secondary-color-dark);
-  }
-  
