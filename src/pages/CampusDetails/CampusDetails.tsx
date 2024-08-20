@@ -4,6 +4,7 @@ import { useGetCampusByIdQuery } from '../../features/api/campusesApi';
 import headerImage from '../../assets/images/Pages_header.jpg';
 import styles from './CampusDetails.module.css';
 import Navbar from '../../components/Navbar/Navbar';
+import Footer from '../../components/Footer/Footer';
 
 const CampusDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,6 +26,7 @@ const CampusDetails: React.FC = () => {
       <p className={styles.text}>{campus.location}</p>
         <p className={styles.text}>{campus.description}</p>
     </div>
+    <Footer />
     </div>
   );
 };
