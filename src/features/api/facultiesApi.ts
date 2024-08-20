@@ -1,9 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-interface Faculty {
+type Faculty = {
   id: number;
   name: string;
-  location: string;
   description: string | null;
   created_at: string;
   updated_at: string;

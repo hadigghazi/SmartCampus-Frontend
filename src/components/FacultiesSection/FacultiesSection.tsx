@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import styles from './FacultiesSection.module.css'; 
 import ArrowButton from '../ArrowButton/ArrowButton';
 import FacultiesCard from '../FacultiesCard/FacultiesCard';
+import { useGetFacultiesQuery } from '../../features/api/facultiesApi';
 
 const FacultiesSection: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -18,21 +19,23 @@ const FacultiesSection: React.FC = () => {
     }
   };
 
+  const { data: faculties, error, isLoading } = useGetFacultiesQuery();
+
+  if (isLoading) return <p>Loading...</p>; 
+  if (error) return <p>Error loading faculties</p>;
+
   return (
     <div className={styles.container}>
       <h2 className={styles.headingSecondary}>- Our Faculties</h2>
       <h1 className={styles.headingPrimary}>Explore Our Faculties</h1>
       <div className={styles.carouselContainer}>
-      <ArrowButton onClick={scrollLeft} direction='left'/>        
-      <div className={styles.cardsContainer} ref={scrollRef}>
-          <FacultiesCard />
-          <FacultiesCard />
-          <FacultiesCard />
-          <FacultiesCard />
-          <FacultiesCard />
-          <FacultiesCard />
+        <ArrowButton onClick={scrollLeft} direction='left' />        
+        <div className={styles.cardsContainer} ref={scrollRef}>
+          {faculties?.map((faculty) => (
+            <FacultiesCard key={faculty.id} faculty={faculty} />
+          ))}
         </div>
-        <ArrowButton onClick={scrollRight} direction='right'/>
+        <ArrowButton onClick={scrollRight} direction='right' />
       </div>
     </div>
   );
