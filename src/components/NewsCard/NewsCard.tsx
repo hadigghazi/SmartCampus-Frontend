@@ -1,25 +1,25 @@
 import React from 'react';
-import styles from './NewsCard.module.css'; 
+import styles from './NewsCard.module.css';
+import { News } from '../../features/api/types'; 
+import NewsImage from "../../assets/images/Welcome1.png"
 
-export interface NewsCardProps {
-  news: {
-    title: string;
-    date: string;
-    imageUrl: string;
-  };
-}
+type NewsCardProps = {
+  news: News;
+};
 
 const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
+  const { title, published_date, content } = news;
+
   return (
     <div className={styles.card}>
-      <img 
-        src={news.imageUrl}
-        alt="SmartCampus News" 
-        className={styles.image} 
+      <img
+        src={NewsImage}
+        alt="SmartCampus News"
+        className={styles.image}
       />
       <div className={styles.content}>
-        <p className={styles.date}>{news.date}</p>
-        <h3 className={styles.title}>{news.title}</h3>
+        <p className={styles.date}>{published_date}</p>
+        <h3 className={styles.title}>{title}</h3>
       </div>
     </div>
   );

@@ -1,12 +1,13 @@
 import React, { useRef } from 'react';
-import { useGetNewsQuery } from '../../features/api/newsApi';
 import NewsCard from '../NewsCard/NewsCard';
 import styles from './NewsSection.module.css';
 import ArrowButton from '../ArrowButton/ArrowButton';
+import { useGetNewsQuery } from '../../features/api/newsApi';
 
 const NewsSection: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { data: news = [], isLoading, error } = useGetNewsQuery();
+
+  const { data: news, error, isLoading } = useGetNewsQuery();
 
   const scrollLeft = () => {
     if (scrollRef.current) {
@@ -20,26 +21,21 @@ const NewsSection: React.FC = () => {
     }
   };
 
-  if (isLoading) {
-    return <div>Loading news...</div>;
-  }
-
-  if (error) {
-    return <div>Failed to load news. Please try again later.</div>;
-  }
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error loading news</p>;
 
   return (
     <div className={styles.container}>
       <h2 className={styles.headingSecondary}>- Announcements And News</h2>
       <h1 className={styles.headingPrimary}>Latest SmartCampus News</h1>
       <div className={styles.carouselContainer}>
-        <ArrowButton onClick={scrollLeft} direction="left" />
+        <ArrowButton onClick={scrollLeft} direction='left' />
         <div className={styles.cardsContainer} ref={scrollRef}>
-          {news.map((newsItem) => (
-            <NewsCard key={newsItem.id} news={newsItem} />
+          {news?.map((item) => (
+            <NewsCard key={item.id} news={item} />
           ))}
         </div>
-        <ArrowButton onClick={scrollRight} direction="right" />
+        <ArrowButton onClick={scrollRight} direction='right' />
       </div>
     </div>
   );

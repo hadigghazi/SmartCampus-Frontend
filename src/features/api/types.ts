@@ -40,3 +40,15 @@ export type RegisterRequest = {
     email: string;
   };
   
+  export type News = {
+    id: number;
+    title: string;
+    content: string;
+    published_date: string;
+    author_id: number;
+    category: string;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+  };
+  
