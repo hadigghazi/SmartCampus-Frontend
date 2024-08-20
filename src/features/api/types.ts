@@ -61,3 +61,14 @@ export type RegisterRequest = {
     updated_at: string;
     deleted_at: string | null;
   }
+
+
+export type Campus = {
+    id: number;
+    name: string;
+    location: string;
+    description: string;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+  }
