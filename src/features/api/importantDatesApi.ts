@@ -1,16 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
-type ImportantDate = {
-  id: number;
-  title: string;
-  description: string | null;
-  date: string;
-  end_date: string | null;
-  type: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string | null;
-};
+import { ImportantDate } from './types';
 
 export const importantDatesApi = createApi({
   reducerPath: 'importantDatesApi',

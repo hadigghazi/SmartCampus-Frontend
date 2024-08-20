@@ -1,13 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
-type Faculty = {
-  id: number;
-  name: string;
-  description: string | null;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string | null;
-};
+import { Faculty } from './types'
 
 export const facultiesApi = createApi({
   reducerPath: 'facultiesApi',

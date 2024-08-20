@@ -72,3 +72,37 @@ export type Campus = {
     updated_at: string;
     deleted_at: string | null;
   }
+
+export type Center = {
+    id: number;
+    name: string;
+    vision: string;
+    mission: string;
+    overview: string;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+  }
+
+export type Faculty = {
+    id: number;
+    name: string;
+    description: string | null;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+  };
+
+export type ImportantDate = {
+    id: number;
+    title: string;
+    description: string | null;
+    date: string;
+    end_date: string | null;
+    type: string;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+  };
+  
+  
