@@ -91,6 +91,10 @@
       margin-top: 0px;
     }
 
+    .pageTitle {
+        display: none;
+    }
+
     .header {
       text-align: left;
     }
