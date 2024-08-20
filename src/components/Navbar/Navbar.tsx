@@ -41,7 +41,7 @@ const Navbar: React.FC = () => {
           <Link to="/academics/faculties">Academics</Link>
         </li>
         <li className={styles.menuItem}>
-          <Link to="/admissions/requirements">Campuses</Link>
+          <Link to="/campuses">Campuses</Link>
         </li>
         {isAuthenticated ? (
           <li className={styles.menuItem}>
