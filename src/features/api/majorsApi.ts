@@ -32,6 +32,9 @@ export const majorsApi = createApi({
         method: 'DELETE',
       }),
     }),
+    getMajorsByFaculty: builder.query({
+        query: (facultyId: number) => `majors/faculty/${facultyId}`,
+      }),
   }),
 });
 
@@ -41,4 +44,5 @@ export const {
   useCreateMajorMutation,
   useUpdateMajorMutation,
   useDeleteMajorMutation,
+  useGetMajorsByFacultyQuery
 } = majorsApi;
