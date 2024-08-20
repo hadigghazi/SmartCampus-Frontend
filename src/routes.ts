@@ -10,7 +10,6 @@ type CustomRouteProps = {
 const LandingPage = lazy(() => import('./pages/LandingPage/LandingPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage/AboutPage'));
 
-// Admissions Pages
 const AdmissionRequirements = lazy(() => import('./pages/Admissions/AdmissionRequirements/AdmissionRequirements'));
 const Fees = lazy(() => import('./pages/Admissions/Fees/Fees'));
 const EntranceAssessment = lazy(() => import('./pages/Admissions/EntranceAssessment/EntranceAssessment'));
@@ -21,6 +20,11 @@ const Transportation = lazy(() => import('./pages/Admissions/Transportation/Tran
 const Centers = lazy(() => import('./pages/Admissions/Centers/Centers'));
 const CenterPage = lazy(() => import('./pages/Admissions/CenterPage/CenterPage')); 
 const NewsDetailPage = lazy(() => import('./pages/NewsDetailPage/NewsDetailPage'));
+
+const Faculties = lazy(() => import('./pages/Academics/Faculties/Faculties'));
+const Majors = lazy(() => import('./pages/Academics/Majors/Majors'));
+const GradingSystem = lazy(() => import('./pages/Academics/GradingSystem/GradingSystem'));
+const AcademicCalendar = lazy(() => import('./pages/Academics/AcademicCalendar/AcademicCalendar'));
 
 const InstructorPage = lazy(() => import('./pages/InstructorPage/InstructorPage')); 
 
@@ -81,6 +85,22 @@ const routes: CustomRouteProps[] = [
   {
     path: '/news/:id',
     component: NewsDetailPage,
+  },
+  {
+    path: '/academics/faculties',
+    component: Faculties,
+  },
+  {
+    path: '/academics/majors',
+    component: Majors,
+  },
+  {
+    path: '/academics/grading-system',
+    component: GradingSystem,
+  },
+  {
+    path: '/academics/academic-calendar',
+    component: AcademicCalendar,
   },
 ];
 
