@@ -1,20 +1,25 @@
 import React from 'react';
 import styles from './NewsCard.module.css'; 
-import Welcome2 from '../../assets/images/Welcome2.png';
 
-const NewsCard: React.FC = () => {
+export interface NewsCardProps {
+  news: {
+    title: string;
+    date: string;
+    imageUrl: string;
+  };
+}
+
+const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
   return (
     <div className={styles.card}>
       <img 
-        src={Welcome2}
+        src={news.imageUrl}
         alt="SmartCampus News" 
         className={styles.image} 
       />
       <div className={styles.content}>
-        <p className={styles.date}>20 April, 2024</p>
-        <h3 className={styles.title}>
-          SmartCampus Recognized as a Leader in Modern Education with Cutting-Edge Programs
-        </h3>
+        <p className={styles.date}>{news.date}</p>
+        <h3 className={styles.title}>{news.title}</h3>
       </div>
     </div>
   );
