@@ -118,5 +118,14 @@ export type Course = {
     deleted_at: string | null; 
   };
   
+  export type Dean = {
+    id: number;
+    faculty_id: number;
+    campus_id: number;
+    role_description: string;
+    created_at?: string;
+    updated_at?: string;
+    deleted_at?: string;
+  }
   
   
