@@ -26,6 +26,7 @@ const Majors = lazy(() => import('./pages/Academics/Majors/Majors'));
 const GradingSystem = lazy(() => import('./pages/Academics/GradingSystem/GradingSystem'));
 const AcademicCalendar = lazy(() => import('./pages/Academics/AcademicCalendar/AcademicCalendar'));
 const FacultyDetails = lazy(() => import('./pages/Academics/FacultyDetails/FacultyDetails'));
+const LifeOnCampus = lazy(() => import('./pages/LifeOnCampus/LifeOnCampus')); 
 
 const AIMajorSuggestor = lazy(() => import('./pages/AIMajorSuggestor/AIMajorSuggestor'));
 const InstructorPage = lazy(() => import('./pages/InstructorPage/InstructorPage')); 
@@ -111,6 +112,10 @@ const routes: CustomRouteProps[] = [
   {
     path: '/major-suggestor',
     component: AIMajorSuggestor,
+  },
+  {
+    path: '/life-on-campus',
+    component: LifeOnCampus,
   },
 ];
 
