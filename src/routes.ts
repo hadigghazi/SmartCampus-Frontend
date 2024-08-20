@@ -21,6 +21,7 @@ const Dorms = lazy(() => import('./pages/Admissions/Dorms/Dorms'));
 const Transportation = lazy(() => import('./pages/Admissions/Transportation/Transportation'));
 const Centers = lazy(() => import('./pages/Admissions/Centers/Centers'));
 const CenterPage = lazy(() => import('./pages/Admissions/CenterPage/CenterPage')); 
+const NewsDetailPage = lazy(() => import('./pages/NewsDetailPage/NewsDetailPage'));
 
 const InstructorPage = lazy(() => import('./pages/InstructorPage/InstructorPage')); 
 
@@ -81,6 +82,10 @@ const routes: CustomRouteProps[] = [
   {
     path: '/instructor',
     component: InstructorPage,
+  },
+  {
+    path: '/news/:id',
+    component: NewsDetailPage,
   },
 ];
 
