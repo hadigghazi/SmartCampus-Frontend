@@ -1,0 +1,54 @@
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+type ImportantDate = {
+  id: number;
+  title: string;
+  description: string | null;
+  date: string;
+  end_date: string | null;
+  type: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+};
+
+export const importantDatesApi = createApi({
+  reducerPath: 'importantDatesApi',
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/api/' }),
+  endpoints: (builder) => ({
+    getImportantDates: builder.query<ImportantDate[], void>({
+      query: () => 'important_dates',
+    }),
+    getImportantDateById: builder.query<ImportantDate, number>({
+      query: (id) => `important_dates/${id}`,
+    }),
+    createImportantDate: builder.mutation<void, Partial<ImportantDate>>({
+      query: (newDate) => ({
+        url: 'important_dates',
+        method: 'POST',
+        body: newDate,
+      }),
+    }),
+    updateImportantDate: builder.mutation<void, Partial<ImportantDate> & { id: number }>({
+      query: ({ id, ...updatedDate }) => ({
+        url: `important_dates/${id}`,
+        method: 'PUT',
+        body: updatedDate,
+      }),
+    }),
+    deleteImportantDate: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `important_dates/${id}`,
+        method: 'DELETE',
+      }),
+    }),
+  }),
+});
+
+export const {
+  useGetImportantDatesQuery,
+  useGetImportantDateByIdQuery,
+  useCreateImportantDateMutation,
+  useUpdateImportantDateMutation,
+  useDeleteImportantDateMutation,
+} = importantDatesApi;
