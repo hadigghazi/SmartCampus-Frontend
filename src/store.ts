@@ -6,6 +6,7 @@ import { facultiesApi } from './features/api/facultiesApi';
 import { importantDatesApi } from './features/api/importantDatesApi'; 
 import { majorsApi } from './features/api/majorsApi';
 import { campusesApi } from './features/api/campusesApi';
+import { centersApi } from './features/api/centerApi';
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     [importantDatesApi.reducerPath]: importantDatesApi.reducer,
     [majorsApi.reducerPath]: majorsApi.reducer,
     [campusesApi.reducerPath]: campusesApi.reducer,
+    [centersApi.reducerPath]: centersApi.reducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -24,7 +26,8 @@ export const store = configureStore({
   .concat(facultiesApi.middleware)
   .concat(importantDatesApi.middleware)
   .concat(majorsApi.middleware)
-  .concat(campusesApi.middleware),
+  .concat(campusesApi.middleware)
+  .concat(centersApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;
