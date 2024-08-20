@@ -19,7 +19,7 @@ const EventList: React.FC = () => {
             key={event.id}
             date={new Date(event.date).getDate().toString()}
             month={new Date(event.date).toLocaleString('default', { month: 'long' })}
-            description={event.description || ''}
+            title={event.title || ''}
           />
         ))}
       </div>

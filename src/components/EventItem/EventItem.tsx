@@ -4,10 +4,10 @@ import styles from './EventItem.module.css';
 type EventItemProps = {
   date: string;
   month: string;
-  description: string;
+  title: string;
 }
 
-const EventItem: React.FC<EventItemProps> = ({ date, month, description }) => {
+const EventItem: React.FC<EventItemProps> = ({ date, month, title }) => {
   return (
     <div className={styles.eventItem}>
       <div className={styles.dateBox}>
@@ -15,7 +15,7 @@ const EventItem: React.FC<EventItemProps> = ({ date, month, description }) => {
         <span className={styles.month}>{month}</span>
       </div>
       <div className={styles.description}>
-        {description}
+        {title}
       </div>
     </div>
   );
