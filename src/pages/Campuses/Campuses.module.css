@@ -3,6 +3,26 @@
     margin-top: -100px;
   }
   
+  .container {
+    padding: 2rem;
+    background-color: white;
+    margin-top: 80px;
+  }
+  
+  .headingSecondary {
+    color: var(--primary-color); 
+    font-size: 1.5rem; 
+    margin-bottom: 0.5rem;
+  }
+  
+  .headingPrimary {
+    color: var(--primary-color); 
+    font-size: 2.5rem;
+    font-weight: 700; 
+    margin-bottom: 1rem;
+    font-family: 'Merriweather', serif; 
+  }
+
   .header {
     position: relative;
   }
@@ -25,6 +45,14 @@
 
   .content {
     padding: 2rem;
+  }
+
+  .campuses {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 2rem;
+    gap: 4rem;
   }
   
   @media (min-width: 768px) and (max-width: 1024px) {
