@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './FacultiesCard.module.css'; 
 import Welcome2 from '../../assets/images/Welcome2.png'; 
+import { Link } from 'react-router-dom';
 
 type FacultiesCardProps = {
   faculty: {
@@ -18,9 +19,11 @@ const FacultiesCard: React.FC<FacultiesCardProps> = ({ faculty }) => {
         alt="Faculty Image" 
         className={styles.image} 
       />
+      <Link to={`/faculties/${faculty.id}`}>
       <div className={styles.overlay}>
         <p className={styles.facultyName}>{faculty.name}</p>
       </div>
+      </Link>
     </div>
   );
 };

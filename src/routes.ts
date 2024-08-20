@@ -25,6 +25,7 @@ const Faculties = lazy(() => import('./pages/Academics/Faculties/Faculties'));
 const Majors = lazy(() => import('./pages/Academics/Majors/Majors'));
 const GradingSystem = lazy(() => import('./pages/Academics/GradingSystem/GradingSystem'));
 const AcademicCalendar = lazy(() => import('./pages/Academics/AcademicCalendar/AcademicCalendar'));
+const FacultyDetails = lazy(() => import('./pages/Academics/FacultyDetails/FacultyDetails'));
 
 const InstructorPage = lazy(() => import('./pages/InstructorPage/InstructorPage')); 
 
@@ -101,6 +102,10 @@ const routes: CustomRouteProps[] = [
   {
     path: '/academics/academic-calendar',
     component: AcademicCalendar,
+  },
+  {
+    path: '/faculties/:id',
+    component: FacultyDetails,
   },
 ];
 
