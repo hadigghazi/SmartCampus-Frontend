@@ -9,7 +9,7 @@ export type RegisterRequest = {
     phone_number: string;
     role: 'Student' | 'Admin' | 'Instructor';
     status: 'Pending' | 'Approved' | 'Rejected';
-    date_of_birth: string; 
+    date_of_birth: string;
     nationality: string;
     second_nationality: string;
     country_of_birth: string;
@@ -29,7 +29,9 @@ export type RegisterRequest = {
   };
   
   export type LoginResponse = {
-    token: string;
+    access_token: string;
+    token_type: string;
+    expires_in: number;
     user: User;
   };
   

@@ -1,19 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { User } from './types';
 
-type AuthState = {
+interface AuthState {
   token: string | null;
   user: User | null;
   isAuthenticated: boolean;
 }
 
-type User = {
-  id: number;
-  email: string;
-}
-
 const initialState: AuthState = {
-  token: localStorage.getItem('token') || null,
-  user: null,
+  token: localStorage.getItem('token'),
+  user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null,
   isAuthenticated: !!localStorage.getItem('token'),
 };
 
@@ -26,12 +22,14 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.isAuthenticated = true;
       localStorage.setItem('token', action.payload.token);
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
     },
     logout: (state) => {
       state.token = null;
       state.user = null;
       state.isAuthenticated = false;
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
     },
   },
 });

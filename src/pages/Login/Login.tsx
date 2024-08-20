@@ -5,7 +5,7 @@ import { setCredentials } from '../../features/auth/authSlice';
 import { LoginRequest } from '../../features/api/types';
 import { useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
-import logo from '../../assets/images/NavBar_logo.png'; 
+import logo from '../../assets/images/NavBar_logo.png';
 
 const Login: React.FC = () => {
   const [login] = useLoginMutation();
@@ -20,9 +20,15 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const user = await login(formData).unwrap();
-      dispatch(setCredentials(user));
-      navigate('/');
+      const response = await login(formData).unwrap();
+      const { access_token, user } = response;
+
+      if (access_token && user) {
+        dispatch(setCredentials({ token: access_token, user }));
+        navigate('/');
+      } else {
+        console.error('Login failed: Token or user not found');
+      }
     } catch (error) {
       if (error && 'data' in error) {
         const errorMessage = typeof error.data === 'string' ? error.data : 'An unknown error occurred';

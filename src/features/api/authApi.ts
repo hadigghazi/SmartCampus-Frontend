@@ -1,9 +1,20 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { RegisterRequest, RegisterResponse, LoginRequest, LoginResponse, User } from './types';
+import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, User } from './types';
+import { RootState } from '../../store';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/api/auth' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'http://localhost:8000/api/auth',
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as RootState).auth.token;
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      headers.set('Accept', `application/json`);
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     register: builder.mutation<RegisterResponse, RegisterRequest>({
       query: (userData) => ({
@@ -25,7 +36,7 @@ export const authApi = createApi({
         method: 'POST',
       }),
     }),
-    refreshToken: builder.mutation<RegisterResponse, void>({
+    refreshToken: builder.mutation<LoginResponse, void>({
       query: () => ({
         url: 'refresh',
         method: 'POST',
@@ -44,3 +55,5 @@ export const {
   useRefreshTokenMutation, 
   useGetUserQuery 
 } = authApi;
+
+export default authApi;
