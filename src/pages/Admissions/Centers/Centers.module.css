@@ -51,7 +51,7 @@
   
   .gridLabel {
     background-color: #f3c0e3;
-    color: #4c4c4c;
+    color: var(--primary-color);
     text-align: center;
     padding: 2rem 1rem;
     font-size: 1.6rem;
