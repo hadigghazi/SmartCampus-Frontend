@@ -24,13 +24,6 @@ const Transportation: React.FC = () => {
         <strong>Semester Passes:</strong> Students can purchase bus passes for a semester, which offer unlimited rides within the service period. Passes can be bought at a discounted rate during the registration period.
       </p>
 
-      <h2 className={styles.headingSecondary}>Important Dates</h2>
-      <ul className={styles.list}>
-        <li>Fall 2024 Bus Pass Registration Deadline: August 15, 2024</li>
-        <li>Spring 2024 Bus Pass Registration Deadline: January 10, 2025</li>
-        <li>Summer 2024 Bus Pass Registration Deadline: June 10, 2025</li>
-      </ul>
-
       <h2 className={styles.headingSecondary}>Contact Information</h2>
       <p className={styles.text}>
         For more details about our campus bus services, including route maps and schedules, please contact the Bus Services Office:

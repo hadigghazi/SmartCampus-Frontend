@@ -30,13 +30,6 @@ const Centers: React.FC = () => {
         <li>Confirmation: After processing your application and payment, you will receive a confirmation of your room assignment.</li>
       </ol>
 
-      <h2 className={styles.headingSecondary}>Important Dates</h2>
-      <ul className={styles.list}>
-        <li>Fall 2024-25 Application Deadline: September 15, 2024</li>
-        <li>Spring 2024-25 Application Deadline: February 4, 2025</li>
-        <li>Summer 2024-25 Application Deadline: June 15, 2025</li>
-      </ul>
-
       <h2 className={styles.headingSecondary}>Contact Information</h2>
       <p className={styles.text}>
         For more details about our dormitories or to start your application, please contact the Dormitory Office:
