@@ -12,7 +12,6 @@ const AboutPage = lazy(() => import('./pages/AboutPage/AboutPage'));
 
 // Admissions Pages
 const AdmissionRequirements = lazy(() => import('./pages/Admissions/AdmissionRequirements/AdmissionRequirements'));
-const ApplyNow = lazy(() => import('./pages/Admissions/ApplyNow/ApplyNow'));
 const Fees = lazy(() => import('./pages/Admissions/Fees/Fees'));
 const EntranceAssessment = lazy(() => import('./pages/Admissions/EntranceAssessment/EntranceAssessment'));
 const FinancialAidAndScholarships = lazy(() => import('./pages/Admissions/FinancialAidAndScholarships/FinancialAidAndScholarships'));
@@ -36,16 +35,12 @@ const routes: CustomRouteProps[] = [
     component: Login,
   },
   {
-    path: '/apply',
-    component: Register,
-  },
-  {
     path: '/admissions/requirements',
     component: AdmissionRequirements,
   },
   {
     path: '/admissions/apply',
-    component: ApplyNow,
+    component: Register,
   },
   {
     path: '/admissions/fees',

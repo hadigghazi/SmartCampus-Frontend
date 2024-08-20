@@ -3,6 +3,7 @@ import { useRegisterMutation } from '../../features/api/authApi';
 import { RegisterRequest } from '../../features/api/types';
 import styles from './Register.module.css';
 import logo from '../../assets/images/NavBar_logo.png'; 
+import AdmissionsLayout from '../Admissions/AdmissionsLayout';
 
 const Register: React.FC = () => {
   const [register] = useRegisterMutation();
@@ -43,6 +44,7 @@ const Register: React.FC = () => {
   };
 
   return (
+    <AdmissionsLayout title='Apply Now'>
     <div className={styles.wrapper}>
       <div className={styles.registerContainer}>
         <div className={styles.header}>
@@ -208,6 +210,7 @@ const Register: React.FC = () => {
         </form>
       </div>
     </div>
+    </AdmissionsLayout>
   );
 };
 
