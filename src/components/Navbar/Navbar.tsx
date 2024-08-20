@@ -17,12 +17,10 @@ const Navbar: React.FC = () => {
     try {
       await logout().unwrap();
 
-      // Clear token and user data from Redux state and local storage
       dispatch(logoutAction());
       localStorage.removeItem('token');
       localStorage.removeItem('user');
 
-      // Refresh the page to reset the state of the app
       window.location.reload();
     } catch (error) {
       console.error('Logout failed:', error);
