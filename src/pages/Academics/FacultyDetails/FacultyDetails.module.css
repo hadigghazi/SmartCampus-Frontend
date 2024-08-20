@@ -37,12 +37,15 @@
   }
 
 
-.majorsContainer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+
+  .majorsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    justify-content: space-evenly;
+    row-gap: 3rem;
+    margin-top: 20px;
   }
-  
+
   @media (max-width: 768px) {
     .headingPrimary {
       font-size: 1.75rem;

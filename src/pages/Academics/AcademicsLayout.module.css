@@ -144,7 +144,7 @@
       background-color: var(--secondary-color);
       padding: 1rem;
       box-shadow: none;
-      margin-top: 1rem;
+      margin-top: -2rem;
     }
     
     .admissionsTitle {

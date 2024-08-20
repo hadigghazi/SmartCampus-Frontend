@@ -6,6 +6,7 @@ import { useGetMajorsByFacultyQuery } from '../../../features/api/majorsApi';
 import styles from './FacultyDetails.module.css';
 import AcademicsLayout from '../AcademicsLayout';
 import MajorCard from '../../../components/MajorCard/MajorCard';
+import { Major } from '../../../features/api/types';
 
 const FacultyDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,9 +22,11 @@ const FacultyDetails: React.FC = () => {
         <h2 className={styles.headingSecondary}>- About The Faculty</h2>
         <h1 className={styles.headingPrimary}>{faculty.name}</h1>
         <p className={styles.text}>{faculty?.description}</p>
+        <h2 className={styles.headingSecondary}>- Our Majors</h2>
+      <h1 className={styles.headingPrimary}>Explore Majors In The Faculty</h1>
         <div className={styles.majorsContainer}>
           {majors.length > 0 ? (
-            majors.map((major) => (
+            majors.map((major: Major) => (
               <MajorCard key={major.id} major={major} />
             ))
           ) : (
