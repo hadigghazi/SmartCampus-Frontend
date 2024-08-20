@@ -1,0 +1,170 @@
+.layout {
+    font-family: 'Metrophobic', sans-serif;
+    margin-top: -100px;
+  }
+  
+  .header {
+    position: relative;
+  }
+  
+  .headerImage {
+    width: 100%;
+    height: auto;
+  }
+  
+  .pageTitle {
+    position: absolute;
+    bottom: 5%;
+    left: 2%;
+    color: var(--primary-color);
+    font-size: 2.8rem;
+    font-weight: 500;
+    z-index: 1;
+    font-family: 'Merriweather', serif;
+  }
+  
+  .nav {
+    position: absolute;
+    top: 90%;
+    right: 5%;
+    background-color: var(--secondary-color);
+    padding: 2rem 5rem;
+    z-index: 1;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-50%);
+  }
+  
+  .admissionsTitle {
+    font-family: 'Merriweather', serif;
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 2rem;
+  }
+  
+  .nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .nav li {
+    margin-bottom: 2rem;
+  }
+  
+  .nav a {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-size: 1rem;
+  }
+  
+  .nav a:hover {
+    text-decoration: underline;
+  }
+  
+  .active {
+    text-decoration: underline;
+  }
+  
+  .content {
+    padding: 2rem;
+  }
+  
+  @media (min-width: 768px) and (max-width: 1024px) {
+
+    .layout {
+      margin-top: 0px;
+    }
+    
+    .header {
+      text-align: left;
+    }
+    
+    .headerImage {
+      height: auto;
+    }
+    
+    .pageTitle {
+      position: static;
+      margin: 1rem 0;
+      font-size: 2.2rem;
+    }
+    
+    .nav {
+      position: static;
+      background-color: var(--secondary-color);
+      padding: 1rem;
+      box-shadow: none;
+      margin-top: 1rem;
+    }
+    
+    .admissionsTitle {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      text-align: left;
+    }
+    
+    .nav ul {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .nav li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .nav a {
+      font-size: 1.1rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+
+    .layout {
+      margin-top: 0px;
+    }
+
+    .header {
+      text-align: left;
+    }
+    
+    .headerImage {
+      height: auto;
+    }
+    
+    .pageTitle {
+      position: static;
+      margin: 2rem 0;
+      font-size: 2rem;
+    }
+    
+    .nav {
+      position: static;
+      background-color: var(--secondary-color);
+      padding: 1rem;
+      box-shadow: none;
+      margin-top: 1rem;
+    }
+    
+    .admissionsTitle {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+      text-align: left;
+    }
+    
+    .nav ul {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .nav li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .nav a {
+      font-size: 1rem;
+    }
+  }
+  
