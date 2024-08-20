@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetNewsByIdQuery } from '../../features/api/newsApi';
 import styles from './NewsDetailPage.module.css'; 
-import AdmissionsLayout from '../Admissions/AdmissionsLayout';
+import AcademicsLayout from '../Academics/AcademicsLayout';
 
 const NewsDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>(); 
@@ -14,7 +14,7 @@ const NewsDetailPage: React.FC = () => {
   if (!news) return <p>No news found</p>;
 
   return (
-   <AdmissionsLayout title={news.category}>
+   <AcademicsLayout title={news.category}>
     <div className={styles.container}>
       <div className={styles.imageContainer}>
         
@@ -25,7 +25,7 @@ const NewsDetailPage: React.FC = () => {
         <p>{news.content}</p>
       </div>
     </div>
-    </AdmissionsLayout>
+    </AcademicsLayout>
   );
 };
 

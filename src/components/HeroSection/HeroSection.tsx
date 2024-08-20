@@ -32,7 +32,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           <h1 className={showButton ? styles.headingLarge : styles.headingSmall}>{headingText}</h1>
           <hr className={`${styles.separator} ${styles.separatorRight}`} />
         </div>
-        {showButton && <Button className={styles.button}>Apply Now</Button>}
+        {showButton && <Button href="/admissions/apply">Apply Now</Button>
+        }
       </div>
     </div>
   );

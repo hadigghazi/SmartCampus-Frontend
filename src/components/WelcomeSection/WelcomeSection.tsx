@@ -27,7 +27,7 @@ const WelcomeSection: React.FC = () => {
 
           <div className={styles.buttonContainer}>
             <Button href="/about">Read More</Button>
-            <Button>Apply Now</Button>
+            <Button href="/admissions/apply">Apply Now</Button>
           </div>
         </div>
       </div>

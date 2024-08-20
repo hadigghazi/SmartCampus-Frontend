@@ -32,7 +32,9 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className={styles.nav}>
+      <Link to="/">
       <img src={NavbarLogo} alt="header_logo" className={styles.logo} />
+      </Link>
       <ul className={styles.menu}>
         <li className={styles.menuItem}>
           <Link to="/admissions/requirements">Admissions</Link>
