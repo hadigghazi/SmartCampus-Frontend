@@ -122,6 +122,7 @@ export type Course = {
     id: number;
     faculty_id: number;
     campus_id: number;
+    name: string;
     role_description: string;
     created_at?: string;
     updated_at?: string;
