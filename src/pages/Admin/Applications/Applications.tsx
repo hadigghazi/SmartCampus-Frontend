@@ -22,13 +22,19 @@ const Applications: React.FC = () => {
 
   const filteredUsers = users?.filter((user) => {
     const fullName = `${user.first_name} ${user.middle_name} ${user.last_name}`.toLowerCase();
-    const matchesSearchTerm = searchTerms.every(term => fullName.includes(term));
+    const userIdString = user.id.toString();
+  
+    const matchesSearchTerm = searchTerms.every(term => 
+      fullName.includes(term) || userIdString.includes(term)
+    );
+  
     const matchesStatus = statusFilter === 'All' || user.status === statusFilter;
     const matchesDateRange = (!startDate || new Date(user.created_at!) >= new Date(startDate)) &&
       (!endDate || new Date(user.created_at!) <= new Date(endDate));
-
+  
     return matchesSearchTerm && matchesStatus && matchesDateRange;
   });
+  
 
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;

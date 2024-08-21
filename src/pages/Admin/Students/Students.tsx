@@ -44,8 +44,15 @@ const Students: React.FC = () => {
 
   const filteredStudents = students?.filter((student: Student) => {
     const fullName = `${student?.user?.first_name} ${student?.user?.middle_name} ${student?.user?.last_name}`.toLowerCase();
-    return searchTerms.every(term => fullName.includes(term));
+    
+    const studentId = student.id.toString();
+    
+    return searchTerms.every(term => {
+      const lowerCaseTerm = term.toLowerCase();
+      return fullName.includes(lowerCaseTerm) || studentId.includes(lowerCaseTerm);
+    });
   });
+  
 
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
@@ -83,7 +90,7 @@ const Students: React.FC = () => {
         <div className={styles.filters}>
           <input
             type="text"
-            placeholder="Search by name"
+            placeholder="Search by name or ID"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={styles.inputField}
