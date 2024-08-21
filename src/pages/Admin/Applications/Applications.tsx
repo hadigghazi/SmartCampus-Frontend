@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useGetUsersQuery, useDeleteUserMutation } from '../../../features/api/usersApi';
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../AdminLayout';
-import styles from './Applications.module.css'; // Import the CSS module
+import styles from './Applications.module.css';
 
 const Applications: React.FC = () => {
   const { data: users, isLoading, error } = useGetUsersQuery();
@@ -11,12 +11,13 @@ const Applications: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState('All');
   const [startDate, setStartDate] = useState<string | undefined>(undefined);
   const [endDate, setEndDate] = useState<string | undefined>(undefined);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [entriesPerPage, setEntriesPerPage] = useState(20); 
   const navigate = useNavigate();
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Something went wrong!</p>;
 
-  // Split search term into parts and filter users based on those parts
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
 
   const filteredUsers = users?.filter((user) => {
@@ -28,6 +29,12 @@ const Applications: React.FC = () => {
 
     return matchesSearchTerm && matchesStatus && matchesDateRange;
   });
+
+  const indexOfLastEntry = currentPage * entriesPerPage;
+  const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
+  const currentEntries = filteredUsers?.slice(indexOfFirstEntry, indexOfLastEntry);
+
+  const totalPages = Math.ceil((filteredUsers?.length || 0) / entriesPerPage);
 
   const handleUserClick = (userId: number) => {
     navigate(`/applications/${userId}`);
@@ -46,6 +53,15 @@ const Applications: React.FC = () => {
   const resetDateRange = () => {
     setStartDate(undefined);
     setEndDate(undefined);
+  };
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleEntriesPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setEntriesPerPage(Number(event.target.value));
+    setCurrentPage(1); 
   };
 
   return (
@@ -89,6 +105,20 @@ const Applications: React.FC = () => {
             Reset Dates
           </button>
         </div>
+        <div className={styles.paginationControls}>
+          <label htmlFor="entriesPerPage">Entries per page:</label>
+          <select 
+            id="entriesPerPage"
+            value={entriesPerPage}
+            onChange={handleEntriesPerPageChange}
+            className={styles.selectField}
+          >
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={30}>30</option>
+            <option value={50}>50</option>
+          </select>
+        </div>
         <div className={styles.tableWrapper}>
           <table className={styles.table}>
             <thead>
@@ -101,7 +131,7 @@ const Applications: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredUsers?.map((user) => (
+              {currentEntries?.map((user) => (
                 <tr key={user.id}>
                   <td className={styles.tableCell}>{user.id}</td>
                   <td className={styles.tableCell}>{user.first_name} {user.middle_name} {user.last_name}</td>
@@ -115,6 +145,22 @@ const Applications: React.FC = () => {
               ))}
             </tbody>
           </table>
+        </div>
+        {/* Pagination Controls */}
+        <div className={styles.pagination}>
+          <button 
+            disabled={currentPage === 1} 
+            onClick={() => handlePageChange(currentPage - 1)}
+          >
+            Previous
+          </button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button 
+            disabled={currentPage === totalPages} 
+            onClick={() => handlePageChange(currentPage + 1)}
+          >
+            Next
+          </button>
         </div>
       </div>
     </AdminLayout>
