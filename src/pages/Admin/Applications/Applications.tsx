@@ -37,7 +37,7 @@ const Applications: React.FC = () => {
   const totalPages = Math.ceil((filteredUsers?.length || 0) / entriesPerPage);
 
   const handleUserClick = (userId: number) => {
-    navigate(`/applications/${userId}`);
+    navigate(`/admin/applications/${userId}`);
   };
 
   const handleDeleteUser = async (userId: number) => {

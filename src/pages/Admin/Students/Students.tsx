@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../AdminLayout';
 import styles from './Students.module.css';
 
-// Define an interface for the student and user details
-interface Student {
+type Student = {
   id: number;
   user_id: number;
   government_id: string;
@@ -41,16 +40,13 @@ const Students: React.FC = () => {
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Something went wrong!</p>;
 
-  // Process the search term
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
 
-  // Filter students based on the search term
   const filteredStudents = students?.filter((student: Student) => {
     const fullName = `${student?.user?.first_name} ${student?.user?.middle_name} ${student?.user?.last_name}`.toLowerCase();
     return searchTerms.every(term => fullName.includes(term));
   });
 
-  // Handle pagination
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
   const currentEntries = filteredStudents?.slice(indexOfFirstEntry, indexOfFirstEntry + entriesPerPage);
@@ -58,7 +54,7 @@ const Students: React.FC = () => {
   const totalPages = Math.ceil((filteredStudents?.length || 0) / entriesPerPage);
 
   const handleStudentClick = (studentId: number) => {
-    navigate(`/students/${studentId}`);
+    navigate(`/admin/students/${studentId}`);
   };
 
   const handleDeleteStudent = async (studentId: number) => {
@@ -130,7 +126,6 @@ const Students: React.FC = () => {
             </tbody>
           </table>
         </div>
-        {/* Pagination Controls */}
         <div className={styles.pagination}>
           <button 
             disabled={currentPage === 1} 
