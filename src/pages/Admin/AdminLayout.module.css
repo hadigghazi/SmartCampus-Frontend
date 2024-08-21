@@ -3,8 +3,6 @@
   }
   
 .content {
-    margin-top: 35px; 
-    margin-left: 80px; 
     padding: 20px;
     flex-grow: 1;
   }
