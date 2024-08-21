@@ -20,25 +20,32 @@ const ApplicationDetails: React.FC = () => {
     user_id: userId,
     government_id: '',
     civil_status_number: '',
-    passport_number: '',
-    visa_status: '',
+    passport_number: '', 
+    visa_status: '', 
     native_language: '',
     secondary_language: '',
-    current_semester_id: '',
-    additional_info: '',
+    current_semester_id: 0,
+    additional_info: '', 
     transportation: false,
     dorm_residency: false,
     emergency_contact_id: 0,
-    created_at: '',
-    updated_at: '',
-    deleted_at: '',
+    created_at: '', 
+    updated_at: '', 
+    deleted_at: '', 
   });
 
   useEffect(() => {
     if (user && student) {
       setFormData({
         ...student,
-        user_id: userId
+        user_id: userId,
+        passport_number: student.passport_number || '', 
+        visa_status: student.visa_status || '', 
+        current_semester_id: student.current_semester_id || 0, 
+        additional_info: student.additional_info || '', 
+        created_at: student.created_at || '', 
+        updated_at: student.updated_at || '', 
+        deleted_at: student.deleted_at || '', 
       });
     }
   }, [user, student, userId]);
@@ -47,7 +54,7 @@ const ApplicationDetails: React.FC = () => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === 'checkbox' ? checked : name === 'current_semester_id' ? parseInt(value, 10) : value,
     }));
   };
 
@@ -137,7 +144,7 @@ const ApplicationDetails: React.FC = () => {
                       type="text"
                       id="passport_number"
                       name="passport_number"
-                      value={formData.passport_number || ''}
+                      value={formData.passport_number}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -148,7 +155,7 @@ const ApplicationDetails: React.FC = () => {
                       type="text"
                       id="visa_status"
                       name="visa_status"
-                      value={formData.visa_status || ''}
+                      value={formData.visa_status}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -227,28 +234,21 @@ const ApplicationDetails: React.FC = () => {
                       type="number"
                       id="emergency_contact_id"
                       name="emergency_contact_id"
-                      value={formData.emergency_contact_id}
+                      value={formData.emergency_contact_id || ''}
                       onChange={handleInputChange}
-                      required
                     />
                   </div>
-                </form>
 
-                <div className={styles.actionButtons}>
-                  <button className={styles.acceptBtn} onClick={handleAccept}>Accept Application</button>
-                  <button className={styles.rejectBtn} onClick={handleReject}>Reject Application</button>
-                </div>
+                  <div className={styles.formActions}>
+                    <button type="button" className={styles.acceptBtn} onClick={handleAccept}>Accept Application</button>
+                    <button type="button" className={styles.rejectBtn} onClick={handleReject}>Reject Application</button>
+                  </div>
+                </form>
               </div>
             )}
-
-            {user.status === 'Approved' || user.status === 'Rejected' ? (
-              <div className={styles.statusInfo}>
-                <p>Application has been {user.status.toLowerCase()}.</p>
-              </div>
-            ) : null}
           </div>
         ) : (
-          <p>No user data available</p>
+          <p>No user data available.</p>
         )}
       </div>
     </AdminLayout>
