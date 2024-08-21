@@ -35,10 +35,6 @@ export type RegisterRequest = {
     user: User;
   };
   
-  export type User = {
-    id: number;
-    email: string;
-  };
   
   export type News = {
     id: number;
@@ -129,4 +125,44 @@ export type Course = {
     deleted_at?: string;
   }
   
-  
+export type User = {
+  id: number;
+  first_name: string;
+  middle_name: string;
+  last_name: string;
+  mother_full_name: string;
+  email: string;
+  password: string;
+  phone_number?: string;
+  role: 'Student' | 'Admin' | 'Instructor';
+  status: 'Pending' | 'Approved' | 'Rejected';
+  date_of_birth?: string;
+  nationality?: string;
+  second_nationality?: string;
+  country_of_birth?: string;
+  gender: 'Male' | 'Female';
+  marital_status: 'Single' | 'Married' | 'Divorced' | 'Widowed';
+  profile_picture?: string;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
+};
+
+export type Student = {
+  id: number;
+  user_id: number;
+  government_id: string;
+  civil_status_number: string;
+  passport_number?: string;
+  visa_status?: string;
+  native_language: string;
+  secondary_language: string;
+  current_semester_id?: number;
+  additional_info?: string;
+  transportation: boolean;
+  dorm_residency: boolean;
+  emergency_contact_id: number;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
+};
