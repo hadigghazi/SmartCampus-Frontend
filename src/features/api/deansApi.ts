@@ -46,5 +46,3 @@ export const {
   useDeleteDeanMutation,
   useGetDeansByCampusQuery,
 } = deansApi;
-
-export default deansApi;
