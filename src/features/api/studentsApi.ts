@@ -36,6 +36,9 @@ export const studentsApi = createApi({
         method: 'DELETE',
       }),
     }),
+    getStudentsWithUserDetails: builder.query({
+        query: () => 'students-with-users',
+      }),
   }),
 });
 
@@ -45,5 +48,6 @@ export const {
   useCreateStudentMutation,
   useUpdateStudentMutation,
   useDeleteStudentMutation,
-  useGetStudentByIdQuery
+  useGetStudentByIdQuery,
+  useGetStudentsWithUserDetailsQuery
 } = studentsApi;

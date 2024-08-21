@@ -1,73 +1,151 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useGetStudentsQuery, useDeleteStudentMutation } from '../../../features/api/studentsApi';
-import { useGetUsersQuery } from '../../../features/api/usersApi';
+import React, { useState } from 'react';
+import { useGetStudentsWithUserDetailsQuery, useDeleteStudentMutation } from '../../../features/api/studentsApi';
+import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../AdminLayout';
 import styles from './Students.module.css';
 
+// Define an interface for the student and user details
+interface Student {
+  id: number;
+  user_id: number;
+  government_id: string;
+  civil_status_number: string;
+  passport_number: string;
+  visa_status: string;
+  native_language: string;
+  secondary_language: string;
+  current_semester_id: number;
+  additional_info: string;
+  transportation: number;
+  dorm_residency: number;
+  emergency_contact_id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  user: {
+    id: number;
+    first_name: string;
+    middle_name: string;
+    last_name: string;
+  };
+}
+
 const Students: React.FC = () => {
-  const { data: students, isLoading: studentsLoading, error: studentsError } = useGetStudentsQuery();
-  const { data: users = [], isLoading: usersLoading, error: usersError } = useGetUsersQuery();
+  const { data: students, isLoading, error } = useGetStudentsWithUserDetailsQuery({});
   const [deleteStudent] = useDeleteStudentMutation();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [entriesPerPage, setEntriesPerPage] = useState(20);
+  const navigate = useNavigate();
 
-  const [userMap, setUserMap] = useState<{ [key: number]: any }>({});
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Something went wrong!</p>;
 
-  useEffect(() => {
-    if (users) {
-      const map: { [key: number]: any } = {};
-      users.forEach(user => {
-        map[user.id] = user;
-      });
-      setUserMap(map);
+  // Process the search term
+  const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
+
+  // Filter students based on the search term
+  const filteredStudents = students?.filter((student: Student) => {
+    const fullName = `${student?.user?.first_name} ${student?.user?.middle_name} ${student?.user?.last_name}`.toLowerCase();
+    return searchTerms.every(term => fullName.includes(term));
+  });
+
+  // Handle pagination
+  const indexOfLastEntry = currentPage * entriesPerPage;
+  const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
+  const currentEntries = filteredStudents?.slice(indexOfFirstEntry, indexOfFirstEntry + entriesPerPage);
+
+  const totalPages = Math.ceil((filteredStudents?.length || 0) / entriesPerPage);
+
+  const handleStudentClick = (studentId: number) => {
+    navigate(`/students/${studentId}`);
+  };
+
+  const handleDeleteStudent = async (studentId: number) => {
+    try {
+      await deleteStudent(studentId).unwrap();
+      alert('Student deleted successfully!');
+    } catch (err) {
+      console.error('Error deleting student:', err);
+      alert('Failed to delete student.');
     }
-  }, [users]);
+  };
 
-  if (studentsLoading || usersLoading) return <p>Loading...</p>;
-  if (studentsError || usersError) return <p>Something went wrong!</p>;
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
-  const handleDelete = async (id: number) => {
-    if (window.confirm('Are you sure you want to delete this student?')) {
-      try {
-        await deleteStudent(id).unwrap();
-      } catch (error) {
-        console.error('Failed to delete student:', error);
-      }
-    }
+  const handleEntriesPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setEntriesPerPage(Number(event.target.value));
+    setCurrentPage(1);
   };
 
   return (
     <AdminLayout>
-      <div className={styles.studentsContainer}>
-        <h1 className={styles.headingPrimary}>Students List</h1>
-        <table className={styles.studentsTable}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Full Name</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {students && students.map(student => {
-              const user = userMap[student.user_id];
-              return (
+      <div className={styles.container}>
+        <h2 className={styles.headingPrimary}>Students</h2>
+        <div className={styles.filters}>
+          <input
+            type="text"
+            placeholder="Search by name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={styles.inputField}
+          />
+        </div>
+        <div className={styles.paginationControls}>
+          <label htmlFor="entriesPerPage">Entries per page:</label>
+          <select 
+            id="entriesPerPage"
+            value={entriesPerPage}
+            onChange={handleEntriesPerPageChange}
+            className={styles.selectField}
+          >
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={30}>30</option>
+            <option value={50}>50</option>
+          </select>
+        </div>
+        <div className={styles.tableWrapper}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th className={styles.tableHeader}>ID</th>
+                <th className={styles.tableHeader}>Full Name</th>
+                <th className={styles.tableHeader}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentEntries?.map((student: Student) => (
                 <tr key={student.id}>
-                  <td>{student.id}</td>
-                  <td>{user ? `${user.first_name || ''} ${user.last_name || ''}` : 'Loading...'}</td>
-                  <td>
-                    <Link to={`/admin/students/${student.id}`} className={styles.viewLink}>View</Link>
-                    <button
-                      onClick={() => handleDelete(student.id)}
-                      className={styles.deleteButton}
-                    >
-                      Delete
-                    </button>
+                  <td className={styles.tableCell}>{student?.id}</td>
+                  <td className={styles.tableCell}>{student?.user?.first_name} {student?.user?.middle_name} {student?.user?.last_name}</td>
+                  <td className={`${styles.tableCell} ${styles.tableActions}`}>
+                    <button onClick={() => handleStudentClick(student.id)}>View</button>
+                    <button onClick={() => handleDeleteStudent(student.id)}>Delete</button>
                   </td>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {/* Pagination Controls */}
+        <div className={styles.pagination}>
+          <button 
+            disabled={currentPage === 1} 
+            onClick={() => handlePageChange(currentPage - 1)}
+          >
+            Previous
+          </button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button 
+            disabled={currentPage === totalPages} 
+            onClick={() => handlePageChange(currentPage + 1)}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </AdminLayout>
   );
