@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Campus } from './types';
+import { Campus, Faculty } from './types';
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const campusesApi = createApi({
@@ -32,6 +32,12 @@ export const campusesApi = createApi({
         method: 'DELETE',
       }),
     }),
+    getFacultiesByCampus: builder.query<Faculty[], number>({
+      query: (id) => `campuses/${id}/faculties`,
+    }),
+    getMajorsByFacultyAndCampus: builder.query({
+      query: ({ facultyId, campusId }) => `majors/${facultyId}/campuses/${campusId}`,
+    }),
   }),
 });
 
@@ -41,4 +47,6 @@ export const {
   useCreateCampusMutation,
   useUpdateCampusMutation,
   useDeleteCampusMutation,
+  useGetFacultiesByCampusQuery,
+  useGetMajorsByFacultyAndCampusQuery
 } = campusesApi;

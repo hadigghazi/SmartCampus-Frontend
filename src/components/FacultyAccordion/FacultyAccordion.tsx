@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useGetMajorsByFacultyAndCampusQuery } from '../../features/api/majorsApi';
+import { useGetMajorsByFacultyAndCampusQuery } from '../../features/api/campusesApi';
 import styles from './FacultyAccordion.module.css';
 
 interface FacultyAccordionProps {
@@ -31,13 +30,13 @@ const FacultyAccordion: React.FC<FacultyAccordionProps> = ({ facultyId, facultyN
           ) : majors && majors.length > 0 ? (
             <ul>
               {majors.map((major) => (
-                <li key={major.id}>
-                  <Link to={`/majors/${major.id}`}>{major.name}</Link>
+                <li key={major.major_id}>
+                  {major.major_name}
                 </li>
               ))}
             </ul>
           ) : (
-            <p>No majors available</p>
+            <p>No majors available for this faculty.</p>
           )}
         </div>
       )}
