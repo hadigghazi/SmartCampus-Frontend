@@ -1,15 +1,12 @@
-import BurgerMenu from "../../../components/BurgerMenu/BurgerMenu"
+import React from 'react';
+import AdminLayout from '../AdminLayout';
 
-
-const Applications = () => {
+const Applications: React.FC = () => {
   return (
-    <div>
-    <BurgerMenu />
-    <div>
+    <AdminLayout>
       <h2>Applications</h2>
-    </div>
-  </div>
-  )
-}
+    </AdminLayout>
+  );
+};
 
-export default Applications
+export default Applications;
