@@ -1,10 +1,10 @@
-import MyBurgerMenu from "../../../components/MyBurgerMenu/MyBurgerMenu"
+import BurgerMenu from "../../../components/BurgerMenu/BurgerMenu"
 
 
 const Applications = () => {
   return (
     <div>
-    <MyBurgerMenu />
+    <BurgerMenu />
     <div>
       <h2>Applications</h2>
     </div>

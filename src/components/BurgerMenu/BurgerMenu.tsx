@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { slide as Menu } from 'react-burger-menu';
-import './MyBurgerMenu.css';
+import './BurgerMenu.css';
+import logo from '../../assets/images/menu_logo.png';
 
-const MyBurgerMenu: React.FC = () => {
+const BurgerMenu: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const toggleAccordion = (index: number) => {
@@ -11,6 +12,11 @@ const MyBurgerMenu: React.FC = () => {
 
   return (
     <Menu>
+      <div className='menu_container'>
+      <div className="menu-logo">
+        <img src={logo} alt="Menu Logo" />
+      </div>
+
       <div className="accordion-item">
         <div
           className={`accordion-title ${activeIndex === 0 ? 'active' : ''}`}
@@ -66,8 +72,9 @@ const MyBurgerMenu: React.FC = () => {
           </div>
         )}
       </div>
+      </div>
     </Menu>
   );
 };
 
-export default MyBurgerMenu;
+export default BurgerMenu;
