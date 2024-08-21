@@ -1,0 +1,40 @@
+.accordion {
+    margin-bottom: 1rem;
+  }
+  
+  .accordionHeader {
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    cursor: pointer;
+    text-align: left;
+    font-weight: bold;
+    width: 100%;
+  }
+  
+  .accordionContent {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-top: none;
+    background-color: #fff;
+  }
+  
+  .accordionContent ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .accordionContent li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .accordionContent a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .accordionContent a:hover {
+    text-decoration: underline;
+  }
+  
