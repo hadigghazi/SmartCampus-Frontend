@@ -1,34 +1,40 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { User } from './types'; 
+
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const usersApi = createApi({
   reducerPath: 'usersApi',
-  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }), 
+  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }),
   endpoints: (builder) => ({
-    getUsers: builder.query({
+    getUsers: builder.query<User[], void>({
       query: () => '/users',
     }),
-    getUserById: builder.query({
+    
+    getUserById: builder.query<User, number>({
       query: (id) => `/users/${id}`,
     }),
-    updateUserStatus: builder.mutation({
-      query: ({ id, status }) => ({
-        url: `/users/${id}`,
-        method: 'PATCH',
-        body: { status },
+
+    createUser: builder.mutation<User, Partial<User>>({
+      query: (newUser) => ({
+        url: '/users',
+        method: 'POST',
+        body: newUser,
       }),
     }),
-    getStudents: builder.query({
-      query: () => '/students',
+
+    updateUser: builder.mutation<User, Partial<User> & { id: number }>({
+      query: ({ id, ...updatedUser }) => ({
+        url: `/users/${id}`,
+        method: 'PUT',
+        body: updatedUser,
+      }),
     }),
-    getStudentByUserId: builder.query({
-      query: (userId) => `/students/user/${userId}`,
-    }),
-    createStudent: builder.mutation({
-      query: (studentData) => ({
-        url: `/students`,
-        method: 'POST',
-        body: studentData,
+
+    deleteUser: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `/users/${id}`,
+        method: 'DELETE',
       }),
     }),
   }),
@@ -37,8 +43,7 @@ export const usersApi = createApi({
 export const {
   useGetUsersQuery,
   useGetUserByIdQuery,
-  useUpdateUserStatusMutation,
-  useGetStudentsQuery,
-  useGetStudentByUserIdQuery,
-  useCreateStudentMutation,
+  useCreateUserMutation,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
 } = usersApi;
