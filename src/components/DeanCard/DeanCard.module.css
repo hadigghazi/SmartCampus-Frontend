@@ -1,0 +1,29 @@
+.deanCard {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    max-width: 300px;
+    margin: 16px auto;
+  }
+  
+  .deanImage {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 12px;
+  }
+  
+  .deanName {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .deanDescription {
+    font-size: 1rem;
+    color: #555;
+  }
+  
