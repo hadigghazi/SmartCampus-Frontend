@@ -35,20 +35,6 @@ const CampusDetails: React.FC = () => {
         <p className={styles.text}>{campus.location}</p>
         <p className={styles.text}>{campus.description}</p>
 
-        <h2 className={styles.headingSecondary} style={{ marginTop: '7rem' }}> - Faculties and Majors</h2>
-        {faculties && faculties.length > 0 ? (
-          faculties.map((faculty) => (
-            <FacultyAccordion
-              key={faculty.id}
-              facultyId={faculty.id}
-              facultyName={faculty.name}
-              campusId={Number(id)}
-            />
-          ))
-        ) : (
-          <p>No faculties found for this campus.</p>
-        )}
-
         <h2 className={styles.headingSecondary} style={{ marginTop: '7rem' }}> - Deans Of Faculties</h2>
         <h1 className={styles.headingPrimary}>Meet The Team</h1>
         {deans && deans.length > 0 ? (
@@ -65,6 +51,22 @@ const CampusDetails: React.FC = () => {
         ) : (
           <p>No deans found for this campus.</p>
         )}
+
+<h2 className={styles.headingSecondary} style={{ marginTop: '7rem' }}> - Available Majors</h2>
+        <h1 className={styles.headingPrimary}>Majors In {campus.name}</h1>
+        {faculties && faculties.length > 0 ? (
+          faculties.map((faculty) => (
+            <FacultyAccordion
+              key={faculty.id}
+              facultyId={faculty.id}
+              facultyName={faculty.name}
+              campusId={Number(id)}
+            />
+          ))
+        ) : (
+          <p>No faculties found for this campus.</p>
+        )}
+
       </div>
       <Footer />
     </div>
