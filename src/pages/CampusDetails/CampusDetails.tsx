@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetCampusByIdQuery } from '../../features/api/campusesApi';
 import { useGetDeansByCampusQuery } from '../../features/api/deansApi';

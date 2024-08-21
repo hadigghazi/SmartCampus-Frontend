@@ -36,6 +36,9 @@ export const majorsApi = createApi({
     getMajorsByFaculty: builder.query({
         query: (facultyId: number) => `majors/faculty/${facultyId}`,
       }),
+    getMajorsByFacultyAndCampus: builder.query<Major[], { facultyId: number; campusId: number }>({
+        query: ({ facultyId, campusId }) => `majors_faculties_campuses?faculty_id=${facultyId}&campus_id=${campusId}`,
+      }),
   }),
 });
 
@@ -45,5 +48,6 @@ export const {
   useCreateMajorMutation,
   useUpdateMajorMutation,
   useDeleteMajorMutation,
-  useGetMajorsByFacultyQuery
+  useGetMajorsByFacultyQuery,
+  useGetMajorsByFacultyAndCampusQuery
 } = majorsApi;
