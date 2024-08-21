@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Campus } from './types';
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const campusesApi = createApi({
   reducerPath: 'campusesApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/api' }), 
+  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }), 
   endpoints: (builder) => ({
     getCampuses: builder.query<Campus[], void>({
       query: () => '/campuses',

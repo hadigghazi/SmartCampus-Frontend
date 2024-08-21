@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Center } from './types';
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const centersApi = createApi({
   reducerPath: 'centersApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/api' }), 
+  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }), 
   endpoints: (builder) => ({
     getCenters: builder.query<Center[], void>({
       query: () => 'centers',

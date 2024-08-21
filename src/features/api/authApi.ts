@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, User } from './types';
 import { RootState } from '../../store';
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/api/auth',
+    baseUrl: apiUrl,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;
       if (token) {
@@ -18,32 +19,32 @@ export const authApi = createApi({
   endpoints: (builder) => ({
     register: builder.mutation<RegisterResponse, RegisterRequest>({
       query: (userData) => ({
-        url: 'register',
+        url: 'auth/register',
         method: 'POST',
         body: userData,
       }),
     }),
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (credentials) => ({
-        url: 'login',
+        url: 'auth/login',
         method: 'POST',
         body: credentials,
       }),
     }),
     logout: builder.mutation<void, void>({
       query: () => ({
-        url: 'logout',
+        url: 'auth/logout',
         method: 'POST',
       }),
     }),
     refreshToken: builder.mutation<LoginResponse, void>({
       query: () => ({
-        url: 'refresh',
+        url: 'auth/refresh',
         method: 'POST',
       }),
     }),
     getUser: builder.query<User, void>({
-      query: () => 'me',
+      query: () => 'auth/me',
     }),
   }),
 });

@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Major } from '../api/types';
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const majorsApi = createApi({
   reducerPath: 'majorsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/api' }), 
+  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }), 
   tagTypes: ['Major'],
   endpoints: (builder) => ({
     getMajors: builder.query<Major[], void>({
