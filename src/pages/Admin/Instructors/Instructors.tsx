@@ -2,26 +2,13 @@ import React, { useState } from 'react';
 import { useGetInstructorsWithUserDetailsQuery, useDeleteInstructorMutation } from '../../../features/api/instructorsApi';
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../AdminLayout';
-import styles from './Instructors.module.css';
-import Swal from 'sweetalert2';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-type Instructor = {
-  id: number;
-  user_id: number;
-  department_id: number;
-  specialization: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string | null;
-  user: {
-    id: number;
-    first_name: string;
-    middle_name: string;
-    last_name: string;
-  };
-}
+import Table from '../../../components/Table/Table';
+import SearchInput from '../../../components/SearchInput/SearchInput';
+import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
+import Pagination from '../../../components/Pagination/Pagination';
+import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
+import { toast } from 'react-toastify';
 
 const Instructors: React.FC = () => {
   const { data: instructors, isLoading, error } = useGetInstructorsWithUserDetailsQuery({});
@@ -36,15 +23,10 @@ const Instructors: React.FC = () => {
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
 
-  const filteredInstructors = instructors?.filter((instructor: Instructor) => {
-    const fullName = `${instructor?.user?.first_name} ${instructor?.user?.middle_name} ${instructor?.user?.last_name}`.toLowerCase();
-    
+  const filteredInstructors = instructors?.filter((instructor) => {
+    const fullName = `${instructor.user.first_name} ${instructor.user.middle_name} ${instructor.user.last_name}`.toLowerCase();
     const instructorId = instructor.id.toString();
-    
-    return searchTerms.every(term => {
-      const lowerCaseTerm = term.toLowerCase();
-      return fullName.includes(lowerCaseTerm) || instructorId.includes(lowerCaseTerm);
-    });
+    return searchTerms.every(term => fullName.includes(term) || instructorId.includes(term));
   });
 
   const indexOfLastEntry = currentPage * entriesPerPage;
@@ -57,21 +39,10 @@ const Instructors: React.FC = () => {
     navigate(`/admin/instructors/${instructorId}`);
   };
 
-  
-const handleDeleteInstructor = async (instructorId: number) => {
+  const handleDeleteInstructor = async (instructorId: number) => {
     try {
-      const result = await Swal.fire({
-        title: 'Are you sure?',
-        text: 'You are about to delete this instructor!',
-        icon: 'warning',
-        showCancelButton: true,
-        color: '#123962',
-        confirmButtonColor: '#ff0000',
-        cancelButtonColor: '#123962',
-        confirmButtonText: 'Yes, delete it!',
-      });
-  
-      if (result.isConfirmed) {
+      const isConfirmed = await ConfirmationDialog('Are you sure?', 'You are about to delete this instructor!');
+      if (isConfirmed) {
         await deleteInstructor(instructorId).unwrap();
         toast.success('Instructor deleted successfully!');
       }
@@ -81,84 +52,36 @@ const handleDeleteInstructor = async (instructorId: number) => {
     }
   };
 
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const handleEntriesPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setEntriesPerPage(Number(event.target.value));
-    setCurrentPage(1);
-  };
-
   return (
     <AdminLayout>
-      <div className={styles.container}>
-        <h2 className={styles.headingPrimary}>Instructors</h2>
-        <div className={styles.filters}>
-          <input
-            type="text"
-            placeholder="Search by name or ID"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className={styles.inputField}
-          />
-        </div>
-        <div className={styles.paginationControls}>
-          <label htmlFor="entriesPerPage">Entries per page:</label>
-          <select 
-            id="entriesPerPage"
-            value={entriesPerPage}
-            onChange={handleEntriesPerPageChange}
-            className={styles.selectField}
-          >
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={30}>30</option>
-            <option value={50}>50</option>
-          </select>
-        </div>
-        <div className={styles.tableWrapper}>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th className={styles.tableHeader}>ID</th>
-                <th className={styles.tableHeader}>Full Name</th>
-                <th className={styles.tableHeader}>Specialization</th>
-                <th className={styles.tableHeader}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentEntries?.map((instructor: Instructor) => (
-                <tr key={instructor.id}>
-                  <td className={styles.tableCell}>{instructor?.id}</td>
-                  <td className={styles.tableCell}>{instructor?.user?.first_name} {instructor?.user?.middle_name} {instructor?.user?.last_name}</td>
-                  <td className={styles.tableCell}>{instructor?.specialization}</td>
-                  <td className={`${styles.tableCell} ${styles.tableActions}`}>
-                    <button onClick={() => handleInstructorClick(instructor.id)}>View</button>
-                    <button onClick={() => handleDeleteInstructor(instructor.id)}>Delete</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className={styles.pagination}>
-          <button 
-            disabled={currentPage === 1} 
-            onClick={() => handlePageChange(currentPage - 1)}
-          >
-            Previous
-          </button>
-          <span>Page {currentPage} of {totalPages}</span>
-          <button 
-            disabled={currentPage === totalPages} 
-            onClick={() => handlePageChange(currentPage + 1)}
-          >
-            Next
-          </button>
-        </div>
+      <div className="container">
+        <h2 className="headingPrimary">Instructors</h2>
+        <SearchInput value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+        <EntriesPerPage value={entriesPerPage} onChange={(e) => {
+          setEntriesPerPage(Number(e.target.value));
+          setCurrentPage(1);
+        }} />
+        <Table
+          columns={[
+            { header: 'ID', accessor: 'id' },
+            { header: 'Full Name', accessor: 'user.full_name' },
+            { header: 'Specialization', accessor: 'specialization' }
+          ]}
+          data={currentEntries || []}
+          actions={(instructor) => (
+            <>
+              <button onClick={() => handleInstructorClick(instructor.id)}>View</button>
+              <button onClick={() => handleDeleteInstructor(instructor.id)}>Delete</button>
+            </>
+          )}
+        />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
-      <ToastContainer />
+      <ToastNotifications />
     </AdminLayout>
   );
 };
