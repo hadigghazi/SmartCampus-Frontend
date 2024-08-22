@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useGetCoursesQuery, useDeleteCourseMutation } from '../../../features/api/coursesApi';
+import React, { useState, useEffect } from 'react';
+import { useGetCoursesQuery, useDeleteCourseMutation, useAddCourseMutation } from '../../../features/api/coursesApi';
 import { useGetFacultiesQuery } from '../../../features/api/facultiesApi';
 import { useGetMajorsByFacultyQuery } from '../../../features/api/majorsApi';
 import { useNavigate } from 'react-router-dom';
@@ -18,17 +18,33 @@ const Courses: React.FC = () => {
   const { data: faculties } = useGetFacultiesQuery();
   const [selectedFaculty, setSelectedFaculty] = useState<number | 'all'>('all');
   const [selectedMajor, setSelectedMajor] = useState<number | 'all'>('all');
-  const { data: majors } = useGetMajorsByFacultyQuery(selectedFaculty !== 'all' ? selectedFaculty : undefined);
+  const { data: majors, refetch: refetchMajors } = useGetMajorsByFacultyQuery(selectedFaculty !== 'all' ? selectedFaculty : undefined);
   const [deleteCourse] = useDeleteCourseMutation();
+  const [addCourse] = useAddCourseMutation();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
+  const [showModal, setShowModal] = useState(false);
+  const [courseData, setCourseData] = useState({
+    code: '',
+    name: '',
+    description: '',
+    credits: 0,
+    faculty_id: selectedFaculty === 'all' ? undefined : selectedFaculty,
+    major_id: selectedMajor === 'all' ? undefined : selectedMajor,
+  });
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (selectedFaculty !== 'all') {
+      refetchMajors();
+    }
+  }, [selectedFaculty, refetchMajors]);
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Something went wrong!</p>;
 
-  // Filter courses based on selected faculty, major, and search term
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
   const filteredCourses = courses?.filter((course) => {
     const matchesFaculty = selectedFaculty === 'all' || course.faculty_id === selectedFaculty;
@@ -42,7 +58,6 @@ const Courses: React.FC = () => {
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
   const currentEntries = filteredCourses?.slice(indexOfFirstEntry, indexOfLastEntry);
-
   const totalPages = Math.ceil((filteredCourses?.length || 0) / entriesPerPage);
 
   const handleDeleteCourse = async (courseId: number) => {
@@ -71,12 +86,49 @@ const Courses: React.FC = () => {
     navigate(`/admin/courses/${courseId}`);
   };
 
+  const handleAddCourseClick = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setCourseData({
+      code: '',
+      name: '',
+      description: '',
+      credits: 0,
+      faculty_id: selectedFaculty === 'all' ? undefined : selectedFaculty,
+      major_id: selectedMajor === 'all' ? undefined : selectedMajor,
+    });
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setCourseData(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await addCourse(courseData).unwrap();
+      toast.success('Course added successfully!');
+      handleCloseModal();
+    } catch (err) {
+      console.error('Error adding course:', err);
+      toast.error('Failed to add course.');
+    }
+  };
+
   return (
     <AdminLayout>
       <div className={styles.container}>
         <h1 className={styles.headingPrimary}>Courses</h1>
+        <button onClick={handleAddCourseClick} className={styles.addButton}>Add Course</button>
         <div className={styles.filters}>
-        <SearchInput value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+          <SearchInput value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
           <select
             value={selectedFaculty}
             className={styles.selectField}
@@ -99,11 +151,15 @@ const Courses: React.FC = () => {
             disabled={selectedFaculty === 'all'}
           >
             <option value="all">All Majors</option>
-            {majors?.map((major) => (
-              <option key={major.id} value={major.id}>
-                {major.name}
-              </option>
-            ))}
+            {majors?.length > 0 ? (
+              majors.map((major) => (
+                <option key={major.id} value={major.id}>
+                  {major.name}
+                </option>
+              ))
+            ) : (
+              <option value="">No majors available</option>
+            )}
           </select>
         </div>
         <EntriesPerPage value={entriesPerPage} onChange={handleEntriesPerPageChange} />
@@ -123,6 +179,92 @@ const Courses: React.FC = () => {
         />
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       </div>
+
+      {showModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContent}>
+            <h2>Add New Course</h2>
+            <form onSubmit={handleSubmit} className={styles.form}>
+              <label>
+                Course Code:
+                <input
+                  type="text"
+                  name="code"
+                  value={courseData.code}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <label>
+                Course Name:
+                <input
+                  type="text"
+                  name="name"
+                  value={courseData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <label>
+                Description:
+                <input
+                  type="text"
+                  name="description"
+                  value={courseData.description}
+                  onChange={handleChange}
+                />
+              </label>
+              <label>
+                Credits:
+                <input
+                  type="number"
+                  name="credits"
+                  value={courseData.credits}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <label>
+                Faculty:
+                <select
+                  name="faculty_id"
+                  value={courseData.faculty_id || ''}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select Faculty</option>
+                  {faculties?.map((faculty) => (
+                    <option key={faculty.id} value={faculty.id}>
+                      {faculty.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Major:
+                <select
+                  name="major_id"
+                  value={courseData.major_id || ''}
+                  onChange={handleChange}
+                  disabled={!courseData.faculty_id}
+                  required
+                >
+                  <option value="">Select Major</option>
+                  {majors?.map((major) => (
+                    <option key={major.id} value={major.id}>
+                      {major.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <div className={styles.modalButtons}>
+                <button type="submit">Add Course</button>
+                <button type="button" onClick={handleCloseModal}>Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       <ToastNotifications />
     </AdminLayout>
   );
