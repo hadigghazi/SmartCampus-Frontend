@@ -5,6 +5,9 @@ import { useCreateStudentMutation, useGetStudentByUserIdQuery } from '../../../f
 import AdminLayout from '../AdminLayout';
 import styles from './ApplicationDetails.module.css'; 
 import defaultProfile from '../../../assets/images/profileImage.jpg';
+import Swal from 'sweetalert2';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ApplicationDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -60,25 +63,53 @@ const ApplicationDetails: React.FC = () => {
 
   const handleAccept = async () => {
     try {
-      if (!student) {
-        await createStudent(formData).unwrap();
+        const result = await Swal.fire({
+          title: 'Are you sure?',
+          text: 'Do you want to accept this application and create the student?',
+          icon: 'question',
+          showCancelButton: true,
+          color: '#123962',
+          confirmButtonColor: '#123962',
+          cancelButtonColor: '#ff0000',
+          confirmButtonText: 'Yes, accept!',
+          cancelButtonText: 'Cancel',
+        });
+  
+        if (result.isConfirmed) {
+          if (!student) {
+            await createStudent(formData).unwrap();
+          }
+          await updateUserStatus({ id: userId, status: 'Approved' }).unwrap();
+          toast.success('Application accepted successfully!');
+        }
+      } catch (err) {
+        console.error('Error accepting application:', err);
+        toast.error('Failed to accept application.');
       }
-      await updateUserStatus({ id: userId, status: 'Approved' }).unwrap();
-      alert('Application accepted and student created successfully!');
-    } catch (err) {
-      console.error('Error accepting application:', err);
-      alert('Failed to accept application.');
-    }
   };
 
   const handleReject = async () => {
     try {
-      await updateUserStatus({ id: userId, status: 'Rejected' }).unwrap();
-      alert('Application rejected successfully!');
-    } catch (err) {
-      console.error('Error rejecting application:', err);
-      alert('Failed to reject application.');
-    }
+        const result = await Swal.fire({
+          title: 'Are you sure?',
+          text: 'Do you want to reject this application?',
+          icon: 'warning',
+          showCancelButton: true,
+          color: '#123962',
+          confirmButtonColor: '#ff0000',
+          cancelButtonColor: '#123962',
+          confirmButtonText: "Yes, reject!",
+          cancelButtonText: 'Cancel',
+        });
+  
+        if (result.isConfirmed) {
+          await updateUserStatus({ id: userId, status: 'Rejected' }).unwrap();
+          toast.success('Application rejected successfully!');
+        }
+      } catch (err) {
+        console.error('Error rejecting application:', err);
+        toast.error('Failed to reject application.');
+      }
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -251,6 +282,7 @@ const ApplicationDetails: React.FC = () => {
           <p>No user data available.</p>
         )}
       </div>
+      <ToastContainer />
     </AdminLayout>
   );
 };

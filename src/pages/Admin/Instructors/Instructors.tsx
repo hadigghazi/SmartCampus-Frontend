@@ -3,6 +3,9 @@ import { useGetInstructorsWithUserDetailsQuery, useDeleteInstructorMutation } fr
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../AdminLayout';
 import styles from './Instructors.module.css';
+import Swal from 'sweetalert2';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type Instructor = {
   id: number;
@@ -54,13 +57,27 @@ const Instructors: React.FC = () => {
     navigate(`/admin/instructors/${instructorId}`);
   };
 
-  const handleDeleteInstructor = async (instructorId: number) => {
+  
+const handleDeleteInstructor = async (instructorId: number) => {
     try {
-      await deleteInstructor(instructorId).unwrap();
-      alert('Instructor deleted successfully!');
+      const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: 'You are about to delete this instructor!',
+        icon: 'warning',
+        showCancelButton: true,
+        color: '#123962',
+        confirmButtonColor: '#ff0000',
+        cancelButtonColor: '#123962',
+        confirmButtonText: 'Yes, delete it!',
+      });
+  
+      if (result.isConfirmed) {
+        await deleteInstructor(instructorId).unwrap();
+        toast.success('Instructor deleted successfully!');
+      }
     } catch (err) {
       console.error('Error deleting instructor:', err);
-      alert('Failed to delete instructor.');
+      toast.error('Failed to delete instructor.');
     }
   };
 
@@ -141,6 +158,7 @@ const Instructors: React.FC = () => {
           </button>
         </div>
       </div>
+      <ToastContainer />
     </AdminLayout>
   );
 };

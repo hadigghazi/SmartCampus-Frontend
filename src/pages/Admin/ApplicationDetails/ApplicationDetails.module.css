@@ -85,11 +85,11 @@
   }
   
   .acceptBtn {
-    background-color: #28a745; /* Green */
+    background-color: var(--primary-color); 
   }
   
   .rejectBtn {
-    background-color: #dc3545; /* Red */
+    background-color: #ff0000; 
   }
   
   .statusInfo {

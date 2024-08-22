@@ -32,7 +32,7 @@ const Campuses = lazy(() => import('./pages/Campuses/Campuses'));
 const CampusDetails = lazy(() => import('./pages/CampusDetails/CampusDetails'));
 const CourseInfo = lazy(() => import('./pages/Academics/CourseInfo/CourseInfo'));
 const Applications = lazy(() => import('./pages/Admin/Applications/Applications'));
-const ApplicationDetails = lazy(() => import('./pages/Admin/ApplicationDetails/ApplicatiionDetails'));
+const ApplicationDetails = lazy(() => import('./pages/Admin/ApplicationDetails/ApplicationDetails'));
 
 const AIMajorSuggestor = lazy(() => import('./pages/AIMajorSuggestor/AIMajorSuggestor'));
 const InstructorPage = lazy(() => import('./pages/InstructorPage/InstructorPage')); 

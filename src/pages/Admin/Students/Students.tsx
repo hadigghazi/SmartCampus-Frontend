@@ -3,6 +3,9 @@ import { useGetStudentsWithUserDetailsQuery, useDeleteStudentMutation } from '..
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../AdminLayout';
 import styles from './Students.module.css';
+import Swal from 'sweetalert2';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type Student = {
   id: number;
@@ -64,13 +67,27 @@ const Students: React.FC = () => {
     navigate(`/admin/students/${studentId}`);
   };
 
+
   const handleDeleteStudent = async (studentId: number) => {
     try {
-      await deleteStudent(studentId).unwrap();
-      alert('Student deleted successfully!');
+      const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: 'You are about to delete this student!',
+        icon: 'warning',
+        showCancelButton: true,
+        color: '#123962',
+        confirmButtonColor: '#ff0000',
+        cancelButtonColor: '#123962',
+        confirmButtonText: 'Yes, delete it!',
+      });
+  
+      if (result.isConfirmed) {
+        await deleteStudent(studentId).unwrap();
+        toast.success('Student deleted successfully!');
+      }
     } catch (err) {
       console.error('Error deleting student:', err);
-      alert('Failed to delete student.');
+      toast.error('Failed to delete student.');
     }
   };
 
@@ -149,6 +166,7 @@ const Students: React.FC = () => {
           </button>
         </div>
       </div>
+      <ToastContainer />
     </AdminLayout>
   );
 };

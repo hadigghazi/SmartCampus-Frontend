@@ -3,6 +3,9 @@ import { useGetUsersQuery, useDeleteUserMutation } from '../../../features/api/u
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../AdminLayout';
 import styles from './Applications.module.css';
+import Swal from 'sweetalert2';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Applications: React.FC = () => {
   const { data: users, isLoading, error } = useGetUsersQuery();
@@ -47,12 +50,25 @@ const Applications: React.FC = () => {
   };
 
   const handleDeleteUser = async (userId: number) => {
-    try {
-      await deleteUser(userId).unwrap();
-      alert('User deleted successfully!');
-    } catch (err) {
-      console.error('Error deleting user:', err);
-      alert('Failed to delete user.');
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      color: '#123962',
+      confirmButtonColor: '#ff0000',
+      cancelButtonColor: '#123962',
+      confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await deleteUser(userId).unwrap();
+        toast.success('User deleted successfully!');
+      } catch (err) {
+        console.error('Error deleting user:', err);
+        toast.error('Failed to delete user.');
+      }
     }
   };
 
@@ -152,7 +168,6 @@ const Applications: React.FC = () => {
             </tbody>
           </table>
         </div>
-        {/* Pagination Controls */}
         <div className={styles.pagination}>
           <button 
             disabled={currentPage === 1} 
@@ -169,6 +184,7 @@ const Applications: React.FC = () => {
           </button>
         </div>
       </div>
+      <ToastContainer />
     </AdminLayout>
   );
 };
