@@ -4,18 +4,18 @@
     font-weight: 700; 
     font-family: 'Merriweather', serif; 
     text-align: left;
-  }
+}
 
-  .headingSecondary {
+.headingSecondary {
     color: var(--primary-color); 
     font-size: 1.5rem; 
     font-weight: 600; 
     margin-bottom: 2rem;
     font-family: 'Merriweather', sans-serif;
     text-align: left;
-  }
+}
 
-  .headingTertiary{
+.headingTertiary {
     color: var(--primary-color); 
     font-size: 2rem; 
     font-weight: 600; 
@@ -23,7 +23,7 @@
     margin-bottom: 1rem;
     font-family: 'Merriweather', sans-serif;
     text-align: left;
-  }
+}
 
 .content {
     padding: 2rem;
@@ -38,9 +38,9 @@
     line-height: 1.6;
     font-size: 1.6rem;
     margin: 1rem 0;
-  }
-  
-  .optionsList {
+}
+
+.optionsList {
     display: flex;
     flex-wrap: wrap;
     justify-content: center; 
@@ -49,9 +49,9 @@
     margin: 0 auto; 
     padding: 0;
     list-style: none;
-  }
-  
-  .optionItem {
+}
+
+.optionItem {
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 16px;
@@ -61,22 +61,93 @@
     max-width: 300px;
     flex: 1 1 250px; 
     color: var(--secondary-color);
-  }
-  
-  .optionImage {
+}
+
+.optionImage {
     width: 100%;
     height: auto;
     border-radius: 5px;
     margin-bottom: 12px;
-  }
-  
-  .optionHeading {
+}
+
+.optionHeading {
     font-size: 1.3rem;
     font-weight: bold;
     margin-bottom: 8px;
-  }
-  
-  .optionText {
+}
+
+.optionText {
     font-size: 1rem;
-  }
-  
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .headingPrimary {
+        font-size: 2rem;
+    }
+    .headingSecondary {
+        font-size: 1.3rem;
+    }
+    .headingTertiary {
+        font-size: 1.7rem;
+        margin-top: 5rem;
+    }
+    .content {
+        width: 90%;
+        padding: 1.5rem;
+    }
+    .optionItem {
+        max-width: 100%;
+        flex: 1 1 100%; 
+    }
+}
+
+@media (max-width: 768px) {
+    .headingPrimary {
+        font-size: 1.8rem;
+    }
+    .headingSecondary {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+    }
+    .headingTertiary {
+        font-size: 1.5rem;
+        margin-top: 4rem;
+    }
+    .content {
+        width: 95%;
+        padding: 1rem;
+    }
+    .optionText {
+        font-size: 1.4rem;
+    }
+    .optionsList {
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .headingPrimary {
+        font-size: 1.5rem;
+    }
+    .headingSecondary {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+    .headingTertiary {
+        font-size: 1.3rem;
+        margin-top: 3rem;
+    }
+    .content {
+        width: 100%;
+        padding: 1rem;
+    }
+    .optionItem {
+        padding: 12px;
+        max-width: 100%;
+        flex: 1 1 100%; 
+    }
+    .optionText {
+        font-size: 1.2rem;
+    }
+}
