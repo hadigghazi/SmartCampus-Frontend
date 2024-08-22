@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Course } from './types';
+import { Course, CourseOption } from './types';
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const coursesApi = createApi({
@@ -38,6 +38,9 @@ export const coursesApi = createApi({
         method: 'DELETE',
       }),
     }),
+    getCourseOptions: builder.query<CourseOption[], number>({
+      query: (id) => `/courses/${id}/options`,
+    }),
   }),
 });
 
@@ -49,4 +52,5 @@ export const {
   useAddCourseMutation,
   useUpdateCourseMutation,
   useDeleteCourseMutation,
+  useGetCourseOptionsQuery
 } = coursesApi;

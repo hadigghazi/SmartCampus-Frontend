@@ -1,0 +1,32 @@
+.headingPrimary {
+    color: var(--primary-color); 
+    font-size: 2.5rem;
+    font-weight: 700; 
+    font-family: 'Merriweather', serif; 
+    text-align: left;
+  }
+
+  .headingSecondary {
+    color: var(--primary-color); 
+    font-size: 1.5rem; 
+    font-weight: 600; 
+    margin-bottom: 2rem;
+    font-family: 'Merriweather', sans-serif;
+    text-align: left;
+  }
+
+.content {
+    padding: 2rem;
+    color: var(--primary-color);
+    width: 80%;
+    margin: 0 auto;
+}
+
+.text {
+    color: var(--primary-color);
+    font-family: 'Metrophobic', sans-serif;
+    line-height: 1.6;
+    font-size: 1.6rem;
+    margin: 1rem 0;
+  }
+  

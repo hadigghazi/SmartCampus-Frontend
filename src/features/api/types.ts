@@ -176,3 +176,12 @@ export type Instructor = {
   updated_at: string;
   deleted_at: string | null;
 }
+
+export type CourseOption = {
+  id: number;
+  instructor_name: string;
+  campus_name: string;
+  schedule: string; 
+  available_seats: number;
+  semester_name: string;
+};
