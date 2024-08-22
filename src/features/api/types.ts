@@ -227,3 +227,16 @@ export type Announcement = {
   updated_at: string; 
   deleted_at?: string; 
 };
+
+export type LibraryBook = {
+  id: number;
+  title: string;
+  author: string;
+  isbn: string;
+  copies: number;
+  publication_year: number;
+  campus_id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string | null;
+};
