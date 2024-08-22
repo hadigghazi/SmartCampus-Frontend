@@ -33,6 +33,9 @@ export const instructorsApi = createApi({
         method: 'DELETE',
       }),
     }),
+    getInstructorsWithUserDetails: builder.query({
+        query: () => 'instructors-with-users',
+      }),
   }),
 });
 
@@ -42,4 +45,5 @@ export const {
   useAddInstructorMutation,
   useUpdateInstructorMutation,
   useDeleteInstructorMutation,
+  useGetInstructorsWithUserDetailsQuery
 } = instructorsApi;

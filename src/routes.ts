@@ -38,6 +38,8 @@ const AIMajorSuggestor = lazy(() => import('./pages/AIMajorSuggestor/AIMajorSugg
 const InstructorPage = lazy(() => import('./pages/InstructorPage/InstructorPage')); 
 const Students = lazy(() => import('./pages/Admin/Students/Students'));
 const StudentDetails = lazy(() => import('./pages/Admin/StudentDetails/StudentDetails'));
+const Instructors = lazy(() => import('./pages/Admin/Instructors/Instructors'));
+const InstructorDetails = lazy(() => import('./pages/Admin/InstructorDetails/InstructorDetails'));
 
 const Login = lazy(() => import('./pages/Login/Login')); 
 const Register = lazy(() => import('./pages/Register/Register')); 
@@ -156,6 +158,14 @@ const routes: CustomRouteProps[] = [
   {
     path: '/admin/students/:id',
     component: StudentDetails,
+  },
+  {
+    path: '/admin/instructors',
+    component: Instructors,
+  },
+  {
+    path: '/admin/instructors/:id',
+    component: InstructorDetails,
   },
 ];
 
