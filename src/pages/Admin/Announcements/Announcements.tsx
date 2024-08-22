@@ -163,13 +163,13 @@ const Announcements: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <button onClick={handleAddAnnouncement} className={styles.addButton}>Add Announcement</button>
+    <h1 className={styles.headingPrimary}>Announcements</h1>
       <div className={styles.filters}>
         <SearchInput value={searchText} onChange={handleSearch} />
         <select
           value={selectedVisibility}
           onChange={handleVisibilityChange}
-          className={styles.filterSelect}
+          className={styles.selectField}
         >
           <option value="All">All Visibility</option>
           {visibilityOptions.map(option => (
@@ -179,15 +179,16 @@ const Announcements: React.FC = () => {
         <select
           value={selectedCategory}
           onChange={handleCategoryChange}
-          className={styles.filterSelect}
+          className={styles.selectField}
         >
           <option value="All">All Categories</option>
           {categoryOptions.map(option => (
             <option key={option} value={option}>{option}</option>
           ))}
         </select>
-        <EntriesPerPage value={pageSize} onChange={handleEntriesPerPageChange} />
+        <button onClick={handleAddAnnouncement} className={styles.addButton}>Add Announcement</button>
       </div>
+      <EntriesPerPage value={pageSize} onChange={handleEntriesPerPageChange} />
       <div className={styles.wrapper}>
         <Table
           columns={columns}
