@@ -1,0 +1,50 @@
+.container {
+    padding: 20px;
+  }
+
+  
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 100vh;
+    color: var(--primary-color);
+    background-color: white;
+    padding: 2rem;
+  }
+  
+  .headingPrimary {
+    color: var(--primary-color); 
+    font-size: 2.5rem;
+    font-weight: 700; 
+    margin-bottom: 2rem;
+    font-family: 'Merriweather', serif; 
+    text-align: left;
+  }
+
+  .headingSecondary {
+    color: var(--primary-color); 
+    font-size: 1.5rem; 
+    font-weight: 600; 
+    margin-bottom: 0.5rem;
+    font-family: 'Merriweather', sans-serif;
+    text-align: left;
+  }
+  
+  .addButton {
+    margin-bottom: 20px;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom:25px;
+    margin-top: 25px;
+  }
+  
+  .deleteButton , .editButton{
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  

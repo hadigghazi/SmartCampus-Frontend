@@ -35,6 +35,7 @@ const Applications = lazy(() => import('./pages/Admin/Applications/Applications'
 const ApplicationDetails = lazy(() => import('./pages/Admin/ApplicationDetails/ApplicationDetails'));
 const Courses = lazy(() => import('./pages/Admin/Courses/Courses'));
 const CourseDetails = lazy(() => import('./pages/Admin/CourseDetails/CourseDetails'));
+const Announcements = lazy(() => import('./pages/Admin/Announcements/Announcements'));
 
 const AIMajorSuggestor = lazy(() => import('./pages/AIMajorSuggestor/AIMajorSuggestor'));
 const InstructorPage = lazy(() => import('./pages/InstructorPage/InstructorPage')); 
@@ -176,6 +177,10 @@ const routes: CustomRouteProps[] = [
   {
     path: '/admin/courses/:id',
     component: CourseDetails,
+  },
+  {
+    path: '/admin/announcements',
+    component: Announcements,
   },
 ];
 
