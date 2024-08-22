@@ -3,32 +3,32 @@ import { Announcement } from './types';
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const announcementsApi = createApi({
-  reducerPath: 'announcementsApi',
+  reducerPath: '/announcementsApi',
   baseQuery: fetchBaseQuery({ baseUrl: apiUrl }), 
   endpoints: (builder) => ({
     getAnnouncements: builder.query<Announcement[], void>({
-      query: () => 'announcements',
+      query: () => '/announcements',
     }),
     getAnnouncementById: builder.query<Announcement, number>({
-      query: (id) => `announcements/${id}`,
+      query: (id) => `/announcements/${id}`,
     }),
     createAnnouncement: builder.mutation<Announcement, Partial<Announcement>>({
       query: (announcement) => ({
-        url: 'announcements',
+        url: '/announcements',
         method: 'POST',
         body: announcement,
       }),
     }),
-    updateAnnouncement: builder.mutation<Announcement, Partial<Announcement> & { id: number }>({
-      query: ({ id, ...announcement }) => ({
-        url: `announcements/${id}`,
-        method: 'PUT',
-        body: announcement,
+    updateAnnouncement: builder.mutation<void, Announcement>({
+        query: (announcement) => ({
+          url: `/announcements/${announcement.id}`,
+          method: 'PUT',
+          body: announcement,
+        }),
       }),
-    }),
     deleteAnnouncement: builder.mutation<void, number>({
       query: (id) => ({
-        url: `announcements/${id}`,
+        url: `/announcements/${id}`,
         method: 'DELETE',
       }),
     }),

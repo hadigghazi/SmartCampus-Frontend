@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useGetAnnouncementsQuery, useDeleteAnnouncementMutation, useCreateAnnouncementMutation, useUpdateAnnouncementMutation } from '../../../features/api/announcementsApi';
 import { useGetUserQuery } from '../../../features/api/authApi';
 import Table from '../../../components/Table/Table'; 
 import Pagination from '../../../components/Pagination/Pagination'; 
 import SearchInput from '../../../components/SearchInput/SearchInput'; 
 import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage'; 
-import AnnouncementModal from '../../../components/AnnouncementModal/AnnouncementModal';
 import styles from './Announcements.module.css'; 
 import { Announcement } from '../../../features/api/types';
 
-const visibilityOptions = ['Public', 'Private', 'Restricted']; // Example options
-const categoryOptions = ['General', 'Urgent', 'Event']; // Example options
+const visibilityOptions = ['General', 'Instructors', 'Students', 'Admins'];
+const categoryOptions = ['General', 'Urgent', 'Event'];
 
 const Announcements: React.FC = () => {
-  const dispatch = useDispatch();
-  const { data: announcements = [], isLoading } = useGetAnnouncementsQuery();
+  const { data: announcements = [] } = useGetAnnouncementsQuery();
   const { data: user } = useGetUserQuery();
   const [deleteAnnouncement] = useDeleteAnnouncementMutation();
   const [createAnnouncement] = useCreateAnnouncementMutation();
@@ -23,11 +20,36 @@ const Announcements: React.FC = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [editingAnnouncement, setEditingAnnouncement] = useState<Announcement | null>(null);
+  const [formValues, setFormValues] = useState({
+    title: '',
+    content: '',
+    visibility: '',
+    category: '',
+  });
+
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [selectedVisibility, setSelectedVisibility] = useState<string>('All');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+
+  useEffect(() => {
+    if (editingAnnouncement) {
+      setFormValues({
+        title: editingAnnouncement.title,
+        content: editingAnnouncement.content,
+        visibility: editingAnnouncement.visibility,
+        category: editingAnnouncement.category,
+      });
+    } else {
+      setFormValues({
+        title: '',
+        content: '',
+        visibility: '',
+        category: '',
+      });
+    }
+  }, [editingAnnouncement]);
 
   const handleAddAnnouncement = () => {
     setEditingAnnouncement(null);
@@ -48,13 +70,21 @@ const Announcements: React.FC = () => {
     }
   };
 
-  const handleSaveAnnouncement = async (announcement: Announcement) => {
+  const handleSaveAnnouncement = async () => {
     try {
-      if (announcement.id) {
-        await updateAnnouncement(announcement).unwrap();
+      if (editingAnnouncement) {
+        await updateAnnouncement({
+          ...editingAnnouncement,
+          ...formValues,
+          updated_at: new Date().toISOString(),
+        }).unwrap();
         console.log('Announcement updated successfully');
       } else {
-        await createAnnouncement({ ...announcement, author_id: user?.id }).unwrap();
+        await createAnnouncement({
+          ...formValues,
+          author_id: user?.id || 0,
+          published_date: new Date().toISOString().split('T')[0], 
+        }).unwrap();
         console.log('Announcement created successfully');
       }
       setShowModal(false);
@@ -86,8 +116,24 @@ const Announcements: React.FC = () => {
     setCurrentPage(1);
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormValues(prevValues => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormValues(prevValues => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
   const filteredAnnouncements = announcements
-    .filter(a =>
+    .filter(a => 
       a.title.toLowerCase().includes(searchText.toLowerCase()) &&
       (selectedVisibility === 'All' || a.visibility === selectedVisibility) &&
       (selectedCategory === 'All' || a.category === selectedCategory)
@@ -155,15 +201,69 @@ const Announcements: React.FC = () => {
         />
       </div>
       {showModal && (
-        <AnnouncementModal
-          visible={showModal}
-          onClose={() => setShowModal(false)}
-          onSave={handleSaveAnnouncement}
-          announcement={editingAnnouncement}
-          authorName={user?.name || ''}
-          visibilityOptions={visibilityOptions}
-          categoryOptions={categoryOptions}
-        />
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContent}>
+            <h2>{editingAnnouncement ? 'Edit Announcement' : 'Add Announcement'}</h2>
+            <form className={styles.form}>
+              <label>
+                Title:
+                <input
+                  type="text"
+                  name="title"
+                  value={formValues.title}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <label>
+                Content:
+                <textarea
+                  name="content"
+                  value={formValues.content}
+                  onChange={handleChange}
+                  rows={4}
+                  required
+                />
+              </label>
+              <label>
+                Visibility:
+                <select
+                  name="visibility"
+                  value={formValues.visibility}
+                  onChange={handleSelectChange}
+                  required
+                >
+                  <option value="">Select visibility</option>
+                  {visibilityOptions.map(option => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Category:
+                <select
+                  name="category"
+                  value={formValues.category}
+                  onChange={handleSelectChange}
+                  required
+                >
+                  <option value="">Select category</option>
+                  {categoryOptions.map(option => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+              <div>
+                <button type="button" className={styles.addButton} onClick={handleSaveAnnouncement}>
+                  Save
+                </button>
+                <button type="button" className={styles.addButton} onClick={() => setShowModal(false)}>
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       )}
     </div>
   );
