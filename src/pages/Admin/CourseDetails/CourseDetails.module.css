@@ -15,6 +15,16 @@
     text-align: left;
   }
 
+  .headingTertiary{
+    color: var(--primary-color); 
+    font-size: 2rem; 
+    font-weight: 600; 
+    margin-top: 7rem;
+    margin-bottom: 1rem;
+    font-family: 'Merriweather', sans-serif;
+    text-align: left;
+  }
+
 .content {
     padding: 2rem;
     color: var(--primary-color);
@@ -28,5 +38,45 @@
     line-height: 1.6;
     font-size: 1.6rem;
     margin: 1rem 0;
+  }
+  
+  .optionsList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto; 
+    padding: 0;
+    list-style: none;
+  }
+  
+  .optionItem {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--primary-color);
+    max-width: 300px;
+    flex: 1 1 250px; 
+    color: var(--secondary-color);
+  }
+  
+  .optionImage {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 12px;
+  }
+  
+  .optionHeading {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .optionText {
+    font-size: 1rem;
   }
   

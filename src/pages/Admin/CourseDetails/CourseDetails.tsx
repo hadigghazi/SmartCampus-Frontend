@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetCourseByIdQuery, useGetCourseOptionsQuery } from '../../../features/api/coursesApi';
 import styles from './CourseDetails.module.css';
+import personalImage from '../../../assets/images/profileImage.jpg';
 
 const CourseDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,11 +22,12 @@ const CourseDetails: React.FC = () => {
       <p className={styles.text}>{course.credits} Credits</p>
       <p className={styles.text}>{course.description}</p>
 
-      <h3 className={styles.headingTertiary}>Course Options</h3>
+      <h3 className={styles.headingTertiary}>- Course Options</h3>
       {courseOptions && courseOptions.length > 0 ? (
         <ul className={styles.optionsList}>
           {courseOptions.map(option => (
             <li key={option.id} className={styles.optionItem}>
+            <img src={personalImage} alt={`${option.instructor_name}`} className={styles.optionImage} />
               <h4 className={styles.optionHeading}>{option.instructor_name}</h4>
               <p className={styles.optionText}>Campus: {option.campus_name}</p>
               <p className={styles.optionText}>Schedule: {option.schedule}</p>
