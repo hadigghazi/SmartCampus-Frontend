@@ -18,6 +18,15 @@
     text-align: left;
   }
 
+  .headingSecondary {
+    color: var(--primary-color); 
+    font-size: 1.5rem; 
+    font-weight: 600; 
+    margin-bottom: 0.5rem;
+    font-family: 'Merriweather', sans-serif;
+    text-align: left;
+  }
+
   .filters {
     display: flex;
     gap: 1rem;
@@ -55,6 +64,29 @@
   .resetButton:hover {
     background-color: #ddd;
   }
+
+  .btnContainer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .acceptBtn, .rejectBtn {
+    padding: 0.4rem 0.75rem;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: .8rem;
+    color: #fff;
+    margin-right: 1rem;
+  }
+  
+  .acceptBtn {
+    background-color: var(--primary-color); 
+  }
+  
+  .rejectBtn {
+    background-color: #ff0000; 
+  }
  
   @media (max-width: 768px) {
     .container {
@@ -66,7 +98,6 @@
     }
   }
   
-  /* Courses.module.css */
 .modalOverlay {
     position: fixed;
     top: 0;
@@ -83,8 +114,9 @@
     background: white;
     padding: 20px;
     border-radius: 5px;
-    width: 400px;
+    width: 440px;
     max-width: 90%;
+    color: var(--primary-color);
   }
   
   .form {
@@ -94,18 +126,21 @@
   
   .form label {
     margin-bottom: 10px;
+    font-family: 'Metrophobic', sans-serif;
   }
   
   .form input, .form select {
-    margin-top: 5px;
+    margin-top: 2px;
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
+    margin-left: 30px;
   }
   
   .addButton {
-    background-color: #007bff;
+    background-color: var(--primary-color);
     color: white;
+    height: 41px;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
@@ -113,6 +148,6 @@
   }
   
   .addButton:hover {
-    background-color: #0056b3;
+    background-color: #063568e0;
   }
   
