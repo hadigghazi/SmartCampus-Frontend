@@ -166,3 +166,13 @@ export type Student = {
   updated_at?: string;
   deleted_at?: string;
 };
+
+export type Instructor = {
+  id: number;
+  user_id: number;
+  department_id: number;
+  specialization: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
