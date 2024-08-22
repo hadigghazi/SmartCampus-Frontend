@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useGetCoursesQuery, useDeleteCourseMutation } from '../../../features/api/coursesApi'; // Adjust the path as necessary
+import { useNavigate } from 'react-router-dom'; 
 import AdminLayout from '../AdminLayout';
+import styles from './Courses.module.css';
 import Table from '../../../components/Table/Table';
 import SearchInput from '../../../components/SearchInput/SearchInput';
 import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
@@ -15,6 +17,7 @@ const Courses: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
+  const navigate = useNavigate(); 
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Something went wrong!</p>;
@@ -23,10 +26,10 @@ const Courses: React.FC = () => {
 
   const filteredCourses = courses?.filter((course) => {
     const courseName = course.name.toLowerCase();
-    const courseIdString = course.id.toString();
+    const courseCodeString = course.code.toLowerCase(); // Ensure course code is also lowercased
 
     return searchTerms.every(term =>
-      courseName.includes(term) || courseIdString.includes(term)
+      courseName.includes(term) || courseCodeString.includes(term)
     );
   });
 
@@ -58,6 +61,10 @@ const Courses: React.FC = () => {
     setCurrentPage(1);
   };
 
+  const handleViewCourse = (courseId: number) => {
+    navigate(`/admin/courses/${courseId}`);
+  };
+
   const columns = [
     { header: 'Course Code', accessor: 'code' },
     { header: 'Course Name', accessor: 'name' },
@@ -66,19 +73,22 @@ const Courses: React.FC = () => {
 
   return (
     <AdminLayout>
-      <h2>Course Management</h2>
-      <SearchInput value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-      <EntriesPerPage value={entriesPerPage} onChange={handleEntriesPerPageChange} />
-      <Table
-        columns={columns}
-        data={currentEntries || []}
-        actions={(course) => (
-          <div>
-            <button onClick={() => handleDeleteCourse(course.id)}>Delete</button>
-          </div>
-        )}
-      />
-      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+      <div className={styles.container}>
+        <h1 className={styles.headingPrimary}>Courses</h1>
+        <SearchInput value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+        <EntriesPerPage value={entriesPerPage} onChange={handleEntriesPerPageChange} />
+        <Table
+          columns={columns}
+          data={currentEntries || []}
+          actions={(course) => (
+            <>
+              <button onClick={() => handleViewCourse(course.id)}>View</button>
+              <button onClick={() => handleDeleteCourse(course.id)}>Delete</button>
+            </>
+          )}
+        />
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+      </div>
       <ToastNotifications />
     </AdminLayout>
   );
