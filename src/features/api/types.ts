@@ -178,10 +178,39 @@ export type Instructor = {
 }
 
 export type CourseOption = {
+  id?: number;
+  course_id: number;
+  instructor_id: number;
+  campus_id: number;
+  schedule: string;
+  semester_id: number;
+  room_id: number;
+  capacity: number;
+  instructor_name?: string;
+  campus_name?: string;
+  available_seats?: number;
+  semester_name?: string;
+  room?: string;
+}
+
+
+export type Semester = {
   id: number;
-  instructor_name: string;
-  campus_name: string;
-  schedule: string; 
-  available_seats: number;
-  semester_name: string;
-};
+  name: string; 
+  start_date: string; 
+  end_date: string; 
+  is_current: boolean; 
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string; 
+}
+export type Room = {
+  id: number;
+  number: string;
+  block_id: number; 
+  capacity?: number; 
+  description?: string; 
+  created_at?: string; 
+  updated_at?: string; 
+  deleted_at?: string; 
+}

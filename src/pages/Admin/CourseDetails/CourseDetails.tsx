@@ -1,30 +1,37 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-//import { useGetCourseByIdQuery, useGetCourseOptionsQuery, useGetInstructorsQuery, useGetCampusesQuery, useGetSemestersQuery, useGetRoomsQuery } from '../../../features/api/';
 import styles from './CourseDetails.module.css';
 import personalImage from '../../../assets/images/profileImage.jpg';
 import { useGetCourseByIdQuery, useGetCourseOptionsQuery } from '../../../features/api/coursesApi';
-import { useGetInstructorsQuery } from '../../../features/api/instructorsApi';
 import { useGetCampusesQuery } from '../../../features/api/campusesApi';
+import { useGetSemestersQuery } from '../../../features/api/semesterApi';
+import { useGetRoomsQuery } from '../../../features/api/roomsApi';
+import { useCreateCourseOptionMutation } from '../../../features/api/coursesApi'; 
+import { useGetInstructorsWithUserDetailsQuery } from '../../../features/api/instructorsApi';
+import { CourseOption } from '../../../features/api/types';
 
 const CourseDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-
+  
   const { data: course, error: courseError, isLoading: courseLoading } = useGetCourseByIdQuery(Number(id));
   const { data: courseOptions, error: optionsError, isLoading: optionsLoading } = useGetCourseOptionsQuery(Number(id));
-  const { data: instructors } = useGetInstructorsQuery();
+  const { data: instructors } = useGetInstructorsWithUserDetailsQuery();
   const { data: campuses } = useGetCampusesQuery();
   const { data: semesters } = useGetSemestersQuery();
   const { data: rooms } = useGetRoomsQuery();
 
   const [showModal, setShowModal] = useState(false);
-  const [newOptionData, setNewOptionData] = useState({
-    instructor_id: '',
-    campus_id: '',
+  const [newOptionData, setNewOptionData] = useState<CourseOption>({
+    course_id: Number(id),
+    instructor_id: 0,
+    campus_id: 0,
     schedule: '',
-    semester_id: '',
-    room_id: ''
+    semester_id: 0,
+    room_id: 0,
+    capacity: 0
   });
+
+  const [addCourseOption, { error: addError }] = useCreateCourseOptionMutation(); 
 
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -37,11 +44,16 @@ const CourseDetails: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Implement API call to add the course option
-    console.log(newOptionData);
-    handleCloseModal();
+    
+    try {
+      await addCourseOption(newOptionData).unwrap();
+      console.log('Course option added successfully');
+      handleCloseModal();
+    } catch (error) {
+      console.error('Failed to add course option:', error);
+    }
   };
 
   if (courseLoading || optionsLoading) return <div>Loading...</div>;
@@ -54,27 +66,27 @@ const CourseDetails: React.FC = () => {
       <h2 className={styles.headingSecondary}>{course.code}</h2>
       <p className={styles.text}>{course.credits} Credits</p>
       <p className={styles.text}>{course.description}</p>
-
+     <div className={styles.header_container}>
       <h3 className={styles.headingTertiary}>- Course Options</h3>
+      <button onClick={handleOpenModal} className={styles.addButton}>Add Instructor</button>
+      </div>
       {courseOptions && courseOptions.length > 0 ? (
         <ul className={styles.optionsList}>
           {courseOptions.map(option => (
             <li key={option.id} className={styles.optionItem}>
-              <img src={personalImage} alt={`${option.instructor_name}`} className={styles.optionImage} />
-              <h4 className={styles.optionHeading}>{option.instructor_name}</h4>
-              <p className={styles.optionText}>Campus: {option.campus_name}</p>
-              <p className={styles.optionText}>Schedule: {option.schedule}</p>
-              <p className={styles.optionText}>Available Seats: {option.available_seats}</p>
-              <p className={styles.optionText}>Semester: {option.semester_name}</p>
-              <p className={styles.optionText}>Room: {option.room}</p>
+              <img src={personalImage} alt={`${option?.instructor_name}`} className={styles.optionImage} />
+              <h4 className={styles.optionHeading}>{option?.instructor_name}</h4>
+              <p className={styles.optionText}>Campus: {option?.campus_name}</p>
+              <p className={styles.optionText}>Schedule: {option?.schedule}</p>
+              <p className={styles.optionText}>Available Seats: {option?.available_seats}</p>
+              <p className={styles.optionText}>Semester: {option?.semester_name}</p>
+              <p className={styles.optionText}>Room: {option?.room}</p>
             </li>
           ))}
         </ul>
       ) : (
         <p className={styles.text}>No options available for this course.</p>
       )}
-
-      <button onClick={handleOpenModal} className={styles.addButton}>Add Instructor</button>
 
       {showModal && (
         <div className={styles.modalOverlay}>
@@ -87,7 +99,7 @@ const CourseDetails: React.FC = () => {
                   <option value="">Select Instructor</option>
                   {instructors?.map(instructor => (
                     <option key={instructor.id} value={instructor.id}>
-                      {instructor.user.first_name} {instructor.user.middle_name} {instructor.user.last_name}
+                      {instructor?.user?.first_name} {instructor?.user?.middle_name} {instructor?.user?.last_name}
                     </option>
                   ))}
                 </select>
@@ -124,10 +136,14 @@ const CourseDetails: React.FC = () => {
                   <option value="">Select Room</option>
                   {rooms?.map(room => (
                     <option key={room.id} value={room.id}>
-                      {room.block.name} - {room.number}
+                      {room.number}
                     </option>
                   ))}
                 </select>
+              </label>
+              <label>
+                Capacity:
+                <input type="number" name="capacity" value={newOptionData.capacity} onChange={handleChange} required />
               </label>
               <div className={styles.btnContainer}>
                 <button type="submit" className={styles.acceptBtn}>Add Option</button>

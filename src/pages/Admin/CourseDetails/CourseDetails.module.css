@@ -40,6 +40,36 @@
     margin: 1rem 0;
 }
 
+.header_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+}
+
+.btnContainer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .acceptBtn, .rejectBtn {
+    padding: 0.4rem 0.75rem;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: .8rem;
+    color: #fff;
+    margin-right: 1rem;
+  }
+
+  .acceptBtn {
+    background-color: var(--primary-color); 
+  }
+  
+  .rejectBtn {
+    background-color: #ff0000; 
+  }
+
 .optionsList {
     display: flex;
     flex-wrap: wrap;
@@ -59,7 +89,6 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: var(--primary-color);
     max-width: 300px;
-    flex: 1 1 250px; 
     color: var(--secondary-color);
 }
 
@@ -80,7 +109,6 @@
     font-size: 1rem;
 }
 
-/* Responsive Adjustments */
 @media (max-width: 1024px) {
     .headingPrimary {
         font-size: 2rem;
@@ -200,6 +228,7 @@
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    transform: translateY(-25px);
   }
   
   .addButton:hover {
