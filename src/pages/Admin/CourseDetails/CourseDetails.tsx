@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './CourseDetails.module.css';
 import personalImage from '../../../assets/images/profileImage.jpg';
-import { useGetCourseByIdQuery, useGetCourseOptionsQuery } from '../../../features/api/coursesApi';
+import { useGetCourseByIdQuery, useGetCourseOptionsQuery, useCreateCourseOptionMutation, useDeleteCourseOptionMutation, useUpdateCourseOptionMutation } from '../../../features/api/coursesApi';
 import { useGetCampusesQuery } from '../../../features/api/campusesApi';
 import { useGetSemestersQuery } from '../../../features/api/semesterApi';
 import { useGetRoomsQuery } from '../../../features/api/roomsApi';
-import { useCreateCourseOptionMutation } from '../../../features/api/coursesApi'; 
 import { useGetInstructorsWithUserDetailsQuery } from '../../../features/api/instructorsApi';
 import { CourseOption } from '../../../features/api/types';
 
@@ -21,6 +20,8 @@ const CourseDetails: React.FC = () => {
   const { data: rooms } = useGetRoomsQuery();
 
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<CourseOption | null>(null);
   const [newOptionData, setNewOptionData] = useState<CourseOption>({
     course_id: Number(id),
     instructor_id: 0,
@@ -31,10 +32,22 @@ const CourseDetails: React.FC = () => {
     capacity: 0
   });
 
-  const [addCourseOption, { error: addError }] = useCreateCourseOptionMutation(); 
+  const [addCourseOption] = useCreateCourseOptionMutation(); 
+  const [deleteCourseOption] = useDeleteCourseOptionMutation();
+  const [updateCourseOption] = useUpdateCourseOptionMutation();
 
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+
+  const handleOpenEditModal = (option: CourseOption) => {
+    setSelectedOption(option);
+    setShowEditModal(true);
+  };
+  
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+    setSelectedOption(null);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -53,6 +66,39 @@ const CourseDetails: React.FC = () => {
       handleCloseModal();
     } catch (error) {
       console.error('Failed to add course option:', error);
+    }
+  };
+
+  const handleDelete = async (optionId: number) => {
+    try {
+      await deleteCourseOption(optionId).unwrap();
+      console.log('Course option deleted successfully');
+    } catch (error) {
+      console.error('Failed to delete course option:', error);
+    }
+  };
+
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    if (selectedOption) {
+      const { name, value } = e.target;
+      setSelectedOption(prevState => ({
+        ...prevState!,
+        [name]: value
+      }));
+    }
+  };
+
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (selectedOption) {
+      try {
+        await updateCourseOption(selectedOption).unwrap();
+        console.log('Course option updated successfully');
+        handleCloseEditModal();
+      } catch (error) {
+        console.error('Failed to update course option:', error);
+      }
     }
   };
 
@@ -81,6 +127,10 @@ const CourseDetails: React.FC = () => {
               <p className={styles.optionText}>Available Seats: {option?.available_seats}</p>
               <p className={styles.optionText}>Semester: {option?.semester_name}</p>
               <p className={styles.optionText}>Room: {option?.room}</p>
+              <div className={styles.btnsContainer}>
+              <button onClick={() => handleDelete(option.id)} className={styles.deleteButton}>Delete</button>
+              <button onClick={() => handleOpenEditModal(option)} className={styles.editButton}>Edit</button>
+              </div>
             </li>
           ))}
         </ul>
@@ -148,6 +198,72 @@ const CourseDetails: React.FC = () => {
               <div className={styles.btnContainer}>
                 <button type="submit" className={styles.acceptBtn}>Add Option</button>
                 <button type="button" onClick={handleCloseModal} className={styles.rejectBtn}>Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showEditModal && selectedOption && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContent}>
+            <h2 className={styles.headingSecondary}>Edit Course Option</h2>
+            <form onSubmit={handleEditSubmit} className={styles.form}>
+              <label>
+                Instructor:
+                <select name="instructor_id" value={selectedOption.instructor_id} onChange={handleEditChange} required>
+                  <option value="">Select Instructor</option>
+                  {instructors?.map(instructor => (
+                    <option key={instructor.id} value={instructor.id}>
+                      {instructor?.user?.first_name} {instructor?.user?.middle_name} {instructor?.user?.last_name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Campus:
+                <select name="campus_id" value={selectedOption.campus_id} onChange={handleEditChange} required>
+                  <option value="">Select Campus</option>
+                  {campuses?.map(campus => (
+                    <option key={campus.id} value={campus.id}>
+                      {campus.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Schedule:
+                <input type="text" name="schedule" value={selectedOption.schedule} onChange={handleEditChange} required />
+              </label>
+              <label>
+                Semester:
+                <select name="semester_id" value={selectedOption.semester_id} onChange={handleEditChange} required>
+                  <option value="">Select Semester</option>
+                  {semesters?.map(semester => (
+                    <option key={semester.id} value={semester.id}>
+                      {semester.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Room:
+                <select name="room_id" value={selectedOption.room_id} onChange={handleEditChange} required>
+                  <option value="">Select Room</option>
+                  {rooms?.map(room => (
+                    <option key={room.id} value={room.id}>
+                      {room.number}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Capacity:
+                <input type="number" name="capacity" value={selectedOption.capacity} onChange={handleEditChange} required />
+              </label>
+              <div className={styles.btnContainer}>
+                <button type="submit" className={styles.acceptBtn}>Save Changes</button>
+                <button type="button" onClick={handleCloseEditModal} className={styles.rejectBtn}>Cancel</button>
               </div>
             </form>
           </div>

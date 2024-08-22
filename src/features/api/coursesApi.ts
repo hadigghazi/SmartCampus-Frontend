@@ -48,6 +48,19 @@ export const coursesApi = createApi({
         body: newOption,
       }),
     }),
+    updateCourseOption: builder.mutation<void, Partial<CourseOption>>({
+      query: (option) => ({
+        url: `/course-instructors/${option.id}`,
+        method: 'PUT',
+        body: option,
+      }),
+    }),
+    deleteCourseOption: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `/course-instructors/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -60,5 +73,7 @@ export const {
   useUpdateCourseMutation,
   useDeleteCourseMutation,
   useGetCourseOptionsQuery,
-  useCreateCourseOptionMutation
+  useCreateCourseOptionMutation,
+  useDeleteCourseOptionMutation,
+  useUpdateCourseOptionMutation
 } = coursesApi;
