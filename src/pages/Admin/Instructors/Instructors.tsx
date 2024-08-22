@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGetInstructorsWithUserDetailsQuery, useDeleteInstructorMutation } from '../../../features/api/instructorsApi';
 import { useNavigate } from 'react-router-dom';
+import styles from './Instructors.module.css'
 import AdminLayout from '../AdminLayout';
 import Table from '../../../components/Table/Table';
 import SearchInput from '../../../components/SearchInput/SearchInput';
@@ -9,6 +10,17 @@ import Pagination from '../../../components/Pagination/Pagination';
 import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
 import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 import { toast } from 'react-toastify';
+
+type Instructor = {
+  id: number;
+  user_id: number;
+  specialization: string;
+  user: {
+    first_name: string;
+    middle_name: string;
+    last_name: string;
+  };
+};
 
 const Instructors: React.FC = () => {
   const { data: instructors, isLoading, error } = useGetInstructorsWithUserDetailsQuery({});
@@ -19,19 +31,24 @@ const Instructors: React.FC = () => {
   const navigate = useNavigate();
 
   if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Something went wrong!</p>;
+  if (error) {
+    console.error('Error fetching instructors:', error);
+    return <p>Something went wrong!</p>;
+  }
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
 
-  const filteredInstructors = instructors?.filter((instructor) => {
-    const fullName = `${instructor.user.first_name} ${instructor.user.middle_name} ${instructor.user.last_name}`.toLowerCase();
+  const filteredInstructors = instructors?.filter((instructor: Instructor) => {
+    const fullName = `${instructor.user.first_name} ${instructor.user.middle_name || ''} ${instructor.user.last_name}`.toLowerCase();
     const instructorId = instructor.id.toString();
-    return searchTerms.every(term => fullName.includes(term) || instructorId.includes(term));
+    return searchTerms.every(term => {
+      return fullName.includes(term) || instructorId.includes(term);
+    });
   });
 
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  const currentEntries = filteredInstructors?.slice(indexOfFirstEntry, indexOfFirstEntry + entriesPerPage);
+  const currentEntries = filteredInstructors?.slice(indexOfFirstEntry, indexOfLastEntry);
 
   const totalPages = Math.ceil((filteredInstructors?.length || 0) / entriesPerPage);
 
@@ -54,8 +71,8 @@ const Instructors: React.FC = () => {
 
   return (
     <AdminLayout>
-      <div className="container">
-        <h2 className="headingPrimary">Instructors</h2>
+      <div className={styles.container}>
+        <h2 className={styles.headingPrimary}>Instructors</h2>
         <SearchInput value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
         <EntriesPerPage value={entriesPerPage} onChange={(e) => {
           setEntriesPerPage(Number(e.target.value));
@@ -64,11 +81,11 @@ const Instructors: React.FC = () => {
         <Table
           columns={[
             { header: 'ID', accessor: 'id' },
-            { header: 'Full Name', accessor: 'user.full_name' },
+            { header: 'Full Name', accessor: (instructor: Instructor) => `${instructor.user.first_name} ${instructor.user.middle_name || ''} ${instructor.user.last_name}` },
             { header: 'Specialization', accessor: 'specialization' }
           ]}
           data={currentEntries || []}
-          actions={(instructor) => (
+          actions={(instructor: Instructor) => (
             <>
               <button onClick={() => handleInstructorClick(instructor.id)}>View</button>
               <button onClick={() => handleDeleteInstructor(instructor.id)}>Delete</button>

@@ -1,3 +1,4 @@
+
 .container {
     display: flex;
     flex-direction: column;
@@ -17,6 +18,7 @@
     text-align: left;
   }
   
+
   @media (max-width: 768px) {
     .container {
       padding: 1rem;
@@ -25,5 +27,5 @@
     .headingPrimary {
       font-size: 1.75rem; 
     }
-  }
+}
   
