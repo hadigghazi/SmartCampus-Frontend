@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { useGetUsersQuery, useDeleteUserMutation } from '../../../features/api/usersApi';
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../AdminLayout';
+import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
+import SearchInput from '../../../components/SearchInput/SearchInput';
+import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
+import Pagination from '../../../components/Pagination/Pagination';
+import Table from '../../../components/Table/Table';
 import styles from './Applications.module.css';
-import Swal from 'sweetalert2';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 const Applications: React.FC = () => {
   const { data: users, isLoading, error } = useGetUsersQuery();
@@ -15,7 +19,7 @@ const Applications: React.FC = () => {
   const [startDate, setStartDate] = useState<string | undefined>(undefined);
   const [endDate, setEndDate] = useState<string | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
-  const [entriesPerPage, setEntriesPerPage] = useState(20); 
+  const [entriesPerPage, setEntriesPerPage] = useState(20);
   const navigate = useNavigate();
 
   if (isLoading) return <p>Loading...</p>;
@@ -26,18 +30,17 @@ const Applications: React.FC = () => {
   const filteredUsers = users?.filter((user) => {
     const fullName = `${user.first_name} ${user.middle_name} ${user.last_name}`.toLowerCase();
     const userIdString = user.id.toString();
-  
-    const matchesSearchTerm = searchTerms.every(term => 
+
+    const matchesSearchTerm = searchTerms.every(term =>
       fullName.includes(term) || userIdString.includes(term)
     );
-  
+
     const matchesStatus = statusFilter === 'All' || user.status === statusFilter;
     const matchesDateRange = (!startDate || new Date(user.created_at!) >= new Date(startDate)) &&
       (!endDate || new Date(user.created_at!) <= new Date(endDate));
-  
+
     return matchesSearchTerm && matchesStatus && matchesDateRange;
   });
-  
 
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
@@ -50,18 +53,12 @@ const Applications: React.FC = () => {
   };
 
   const handleDeleteUser = async (userId: number) => {
-    const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'You won\'t be able to revert this!',
-      icon: 'warning',
-      showCancelButton: true,
-      color: '#123962',
-      confirmButtonColor: '#ff0000',
-      cancelButtonColor: '#123962',
-      confirmButtonText: 'Yes, delete it!'
-    });
+    const isConfirmed = await ConfirmationDialog(
+      'Are you sure?',
+      'You won\'t be able to revert this!'
+    );
 
-    if (result.isConfirmed) {
+    if (isConfirmed) {
       try {
         await deleteUser(userId).unwrap();
         toast.success('User deleted successfully!');
@@ -77,29 +74,14 @@ const Applications: React.FC = () => {
     setEndDate(undefined);
   };
 
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const handleEntriesPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setEntriesPerPage(Number(event.target.value));
-    setCurrentPage(1); 
-  };
-
   return (
     <AdminLayout>
       <div className={styles.container}>
         <h2 className={styles.headingPrimary}>Applications</h2>
         <div className={styles.filters}>
-          <input
-            type="text"
-            placeholder="Search by name or ID"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className={styles.inputField}
-          />
-          <select 
-            value={statusFilter} 
+          <SearchInput value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+          <select
+            value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             className={styles.selectField}
           >
@@ -120,71 +102,36 @@ const Applications: React.FC = () => {
             onChange={(e) => setEndDate(e.target.value)}
             className={styles.inputField}
           />
-          <button 
-            onClick={resetDateRange} 
-            className={styles.resetButton}
-          >
+          <button onClick={resetDateRange} className={styles.resetButton}>
             Reset Dates
           </button>
         </div>
-        <div className={styles.paginationControls}>
-          <label htmlFor="entriesPerPage">Entries per page:</label>
-          <select 
-            id="entriesPerPage"
-            value={entriesPerPage}
-            onChange={handleEntriesPerPageChange}
-            className={styles.selectField}
-          >
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={30}>30</option>
-            <option value={50}>50</option>
-          </select>
-        </div>
-        <div className={styles.tableWrapper}>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th className={styles.tableHeader}>ID</th>
-                <th className={styles.tableHeader}>Name</th>
-                <th className={styles.tableHeader}>Status</th>
-                <th className={styles.tableHeader}>Date</th>
-                <th className={styles.tableHeader}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentEntries?.map((user) => (
-                <tr key={user.id}>
-                  <td className={styles.tableCell}>{user.id}</td>
-                  <td className={styles.tableCell}>{user.first_name} {user.middle_name} {user.last_name}</td>
-                  <td className={styles.tableCell}>{user.status}</td>
-                  <td className={styles.tableCell}>{user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}</td>
-                  <td className={`${styles.tableCell} ${styles.tableActions}`}>
-                    <button onClick={() => handleUserClick(user.id)}>View</button>
-                    <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className={styles.pagination}>
-          <button 
-            disabled={currentPage === 1} 
-            onClick={() => handlePageChange(currentPage - 1)}
-          >
-            Previous
-          </button>
-          <span>Page {currentPage} of {totalPages}</span>
-          <button 
-            disabled={currentPage === totalPages} 
-            onClick={() => handlePageChange(currentPage + 1)}
-          >
-            Next
-          </button>
-        </div>
+        <EntriesPerPage value={entriesPerPage} onChange={(e) => {
+          setEntriesPerPage(Number(e.target.value));
+          setCurrentPage(1);
+        }} />
+        <Table
+          columns={[
+            { header: 'ID', accessor: 'id' },
+            { header: 'Name', accessor: (user) => `${user.first_name} ${user.middle_name} ${user.last_name}` },
+            { header: 'Status', accessor: 'status' },
+            { header: 'Date', accessor: (user) => user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A' },
+          ]}
+          data={currentEntries || []}
+          actions={(user) => (
+            <>
+              <button onClick={() => handleUserClick(user.id)}>View</button>
+              <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
+            </>
+          )}
+        />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
+        />
       </div>
-      <ToastContainer />
+      <ToastNotifications />
     </AdminLayout>
   );
 };
