@@ -214,3 +214,16 @@ export type Room = {
   updated_at?: string; 
   deleted_at?: string; 
 }
+
+export type Announcement = {
+  id: number;
+  title: string;
+  content: string;
+  published_date: string; 
+  author_id: number;
+  visibility: string;
+  category: string;
+  created_at: string; 
+  updated_at: string; 
+  deleted_at?: string; 
+};
