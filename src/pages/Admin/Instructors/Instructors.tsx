@@ -39,7 +39,7 @@ const Instructors: React.FC = () => {
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
 
   const filteredInstructors = instructors?.filter((instructor: Instructor) => {
-    const fullName = `${instructor.user.first_name} ${instructor.user.middle_name || ''} ${instructor.user.last_name}`.toLowerCase();
+    const fullName = `${instructor?.user?.first_name} ${instructor?.user?.middle_name || ''} ${instructor?.user?.last_name}`.toLowerCase();
     const instructorId = instructor.id.toString();
     return searchTerms.every(term => {
       return fullName.includes(term) || instructorId.includes(term);
@@ -81,7 +81,7 @@ const Instructors: React.FC = () => {
         <Table
           columns={[
             { header: 'ID', accessor: 'id' },
-            { header: 'Full Name', accessor: (instructor: Instructor) => `${instructor.user.first_name} ${instructor.user.middle_name || ''} ${instructor.user.last_name}` },
+            { header: 'Full Name', accessor: (instructor: Instructor) => `${instructor?.user?.first_name} ${instructor?.user?.middle_name || ''} ${instructor?.user?.last_name}` },
             { header: 'Specialization', accessor: 'specialization' }
           ]}
           data={currentEntries || []}

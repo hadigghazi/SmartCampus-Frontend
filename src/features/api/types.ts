@@ -238,4 +238,16 @@ export type LibraryBook = {
   copies: number;
   pages: number;
   campus_id: number; 
+  created_at: string; 
+  updated_at: string; 
+  deleted_at?: string; 
+}
+
+export type Department = {
+  id: number;
+  name: string;
+  description: string;
+  created_at: string; 
+  updated_at: string; 
+  deleted_at?: string; 
 }
