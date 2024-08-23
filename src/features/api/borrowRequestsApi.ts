@@ -17,11 +17,11 @@ export const borrowRequestsApi = createApi({
     }),
     deleteBorrowRequest: builder.mutation({
       query: (id: number) => ({
-        url: `borrow-requests/${id}`,
+        url: `book_borrows/${id}`,
         method: 'DELETE',
       }),
     }),
   }),
 });
 
-export const { useGetBorrowRequestsByBookIdQuery, useUpdateBorrowRequestStatusMutation } = borrowRequestsApi;
+export const { useGetBorrowRequestsByBookIdQuery, useUpdateBorrowRequestStatusMutation, useDeleteBorrowRequestMutation } = borrowRequestsApi;

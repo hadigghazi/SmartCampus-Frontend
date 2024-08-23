@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetLibraryBookByIdQuery } from '../../../features/api/libraryBooksApi';
 import { useGetCampusByIdQuery } from '../../../features/api/campusesApi';
-import { useGetBorrowRequestsByBookIdQuery, useUpdateBorrowRequestStatusMutation } from '../../../features/api/borrowRequestsApi';
+import { useGetBorrowRequestsByBookIdQuery, useUpdateBorrowRequestStatusMutation, useDeleteBorrowRequestMutation } from '../../../features/api/borrowRequestsApi';
 import { useGetStudentsWithUserDetailsQuery } from '../../../features/api/studentsApi';
 import AdminLayout from '../AdminLayout';
 import Table from '../../../components/Table/Table';
@@ -18,6 +18,7 @@ const BookDetails: React.FC = () => {
 
   const { data: borrowRequests, isLoading: borrowRequestsLoading, error: borrowRequestsError } = useGetBorrowRequestsByBookIdQuery(Number(bookId));
   const [updateStatus] = useUpdateBorrowRequestStatusMutation();
+  const [deleteRequest] = useDeleteBorrowRequestMutation();
   const { data: students, isLoading: studentsLoading, error: studentsError } = useGetStudentsWithUserDetailsQuery();
 
   useEffect(() => {
@@ -39,6 +40,15 @@ const BookDetails: React.FC = () => {
     updateStatus({ id: requestId, status }).unwrap().catch(error => console.error('Failed to update status:', error));
   };
 
+  const handleDeleteRequest = (requestId: number) => {
+    deleteRequest(requestId).unwrap().catch(error => console.error('Failed to delete request:', error));
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-CA'); 
+  };
+
   const columns = [
     { header: 'Student ID', accessor: 'student_id' },
     { 
@@ -48,8 +58,8 @@ const BookDetails: React.FC = () => {
         return student ? `${student.user.first_name} ${student.user.middle_name} ${student.user.last_name}` : 'Unknown';
       }
     },
-    { header: 'Request Date', accessor: 'created_at' },
-    { header: 'Due Date', accessor: 'due_date' },
+    { header: 'Request Date', accessor: (item: any) => formatDate(item.created_at) },
+    { header: 'Due Date', accessor: (item: any) => formatDate(item.due_date) },
     { header: 'Status', accessor: 'status' },
   ];
 
@@ -73,6 +83,9 @@ const BookDetails: React.FC = () => {
               data={borrowRequests}
               actions={(request) => (
                 <>
+                  {request.status !== 'Borrowed' && request.status !== 'Requested' && (
+                    <button onClick={() => handleDeleteRequest(request.id)}>Delete</button>
+                  )}
                   {request.status === 'Requested' && (
                     <>
                       <button onClick={() => handleStatusChange(request.id, 'Borrowed')}>Accept</button>
