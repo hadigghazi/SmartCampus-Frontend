@@ -39,6 +39,7 @@ const Announcements = lazy(() => import('./pages/Admin/Announcements/Announcemen
 const LibraryBooks = lazy(() => import('./pages/Admin/LibraryBooks/LibraryBooks'));
 const BookDetails = lazy(() => import('./pages/Admin/BookDetails/BookDetails'));
 const BorrowRequests = lazy(() => import('./pages/Admin/BorrowRequests/BorrowRequests'));
+const MajorsAdmin = lazy(() => import('./pages/Admin/Majors/Majors'));
 
 const AIMajorSuggestor = lazy(() => import('./pages/AIMajorSuggestor/AIMajorSuggestor'));
 const InstructorPage = lazy(() => import('./pages/InstructorPage/InstructorPage')); 
@@ -196,6 +197,10 @@ const routes: CustomRouteProps[] = [
   {
     path: '/admin/borrow-requests',
     component: BorrowRequests,
+  },
+  {
+    path: '/admin/majors',
+    component: MajorsAdmin,
   },
 ];
 
