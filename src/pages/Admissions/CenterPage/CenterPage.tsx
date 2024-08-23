@@ -2,7 +2,7 @@ import React from 'react';
 import AdmissionsLayout from '../AdmissionsLayout';
 import styles from './CenterPage.module.css';
 import { useParams } from 'react-router-dom';
-import { useGetCenterByIdQuery } from '../../../features/api/centerApi';
+import { useGetCenterByIdQuery } from '../../../features/api/centersApi';
 
 const CenterPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

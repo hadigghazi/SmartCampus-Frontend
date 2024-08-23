@@ -3,7 +3,7 @@ import AdmissionsLayout from '../AdmissionsLayout';
 import styles from './Centers.module.css';
 import { useNavigate } from 'react-router-dom';
 import StudentImage from '../../../assets/images/student.png';
-import { useGetCentersQuery } from '../../../features/api/centerApi';
+import { useGetCentersQuery } from '../../../features/api/centersApi';
 
 const Centers: React.FC = () => {
   const navigate = useNavigate();

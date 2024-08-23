@@ -6,7 +6,7 @@ import { facultiesApi } from './features/api/facultiesApi';
 import { importantDatesApi } from './features/api/importantDatesApi'; 
 import { majorsApi } from './features/api/majorsApi';
 import { campusesApi } from './features/api/campusesApi';
-import { centersApi } from './features/api/centerApi';
+import { centersApi } from './features/api/centersApi';
 import { coursesApi } from './features/api/coursesApi';
 import { deansApi } from './features/api/deansApi';
 import { usersApi } from './features/api/usersApi';
