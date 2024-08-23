@@ -51,7 +51,7 @@ const BookDetails: React.FC = () => {
     setBorrowRequests((prevRequests) =>
       prevRequests.filter((request) => request.id !== requestId)
     );
-
+    
     deleteRequest(requestId)
       .unwrap()
       .catch(error => {
@@ -95,7 +95,7 @@ const BookDetails: React.FC = () => {
           <p className={styles.text}>Pages: {book.pages}</p>
           <p className={styles.text}>Description: {book.description}</p>
 
-          <h2 className={styles.headingSecondary}>Borrow Requests</h2>
+          <h2 className={styles.headingSecondary} style={{marginTop: '7rem'}}>Borrows</h2>
           {borrowRequests && borrowRequests.length > 0 ? (
             <Table
               columns={columns}

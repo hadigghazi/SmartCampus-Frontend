@@ -5,6 +5,9 @@ export const borrowRequestsApi = createApi({
   reducerPath: 'borrowRequestsApi',
   baseQuery: fetchBaseQuery({ baseUrl: apiUrl }),
   endpoints: (builder) => ({
+    getBorrowRequests: builder.query({
+      query: () => '/book_borrows',
+    }),
     getBorrowRequestsByBookId: builder.query({
       query: (bookId) => `book_borrows/by_book/${bookId}`,
     }),
@@ -24,4 +27,4 @@ export const borrowRequestsApi = createApi({
   }),
 });
 
-export const { useGetBorrowRequestsByBookIdQuery, useUpdateBorrowRequestStatusMutation, useDeleteBorrowRequestMutation } = borrowRequestsApi;
+export const { useGetBorrowRequestsByBookIdQuery, useUpdateBorrowRequestStatusMutation, useDeleteBorrowRequestMutation, useGetBorrowRequestsQuery } = borrowRequestsApi;
