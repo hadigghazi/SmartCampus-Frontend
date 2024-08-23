@@ -90,6 +90,10 @@ const LibraryBooks: React.FC = () => {
     navigate(`/admin/books/${bookId}`);
   };
 
+  const handleBorrowClick = () => {
+    navigate(`/admin/borrow-requests`);
+  };
+
   const handleAddBookClick = () => {
     setShowModal(true);
   };
@@ -162,6 +166,7 @@ const LibraryBooks: React.FC = () => {
           <button onClick={handleAddBookClick} className={styles.addButton}>Add Book</button>
         </div>
         <EntriesPerPage value={entriesPerPage} onChange={handleEntriesPerPageChange} />
+        <button onClick={handleBorrowClick} className={styles.addButton} style={{marginBottom: "2rem"}}>All Borrow Requests</button>
         <Table
           columns={[
             { header: 'ISBN', accessor: 'isbn' as keyof LibraryBook },
