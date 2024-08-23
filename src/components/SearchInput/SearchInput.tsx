@@ -11,7 +11,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, onChange }) => {
     <div className={styles.filters}>
       <input
         type="text"
-        placeholder="Search by name or ID"
+        placeholder="Search..."
         value={value}
         onChange={onChange}
         className={styles.inputField}

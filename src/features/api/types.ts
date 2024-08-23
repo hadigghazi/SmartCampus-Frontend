@@ -230,13 +230,12 @@ export type Announcement = {
 
 export type LibraryBook = {
   id: number;
+  isbn: string;
   title: string;
   author: string;
-  isbn: string;
-  copies: number;
+  description: string;
   publication_year: number;
-  campus_id: number;
-  created_at: string;
-  updated_at: string;
-  deleted_at?: string | null;
-};
+  copies: number;
+  pages: number;
+  campus_id: number; 
+}

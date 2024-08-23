@@ -17,11 +17,9 @@ const Courses: React.FC = () => {
   const { data: courses, isLoading, error } = useGetCoursesQuery();
   const { data: faculties } = useGetFacultiesQuery();
   
-  // Filter Section State
   const [selectedFacultyFilter, setSelectedFacultyFilter] = useState<number | 'all'>('all');
   const [selectedMajorFilter, setSelectedMajorFilter] = useState<number | 'all'>('all');
   
-  // Modal Section State
   const [selectedFacultyModal, setSelectedFacultyModal] = useState<number | 'all'>('all');
   const [selectedMajorModal, setSelectedMajorModal] = useState<number | 'all'>('all');
   
