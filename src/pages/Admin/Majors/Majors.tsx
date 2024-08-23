@@ -217,8 +217,10 @@ const Majors: React.FC = () => {
                   ))}
                 </select>
               </label>
-              <button type="submit" className={styles.submitButton}>{majorData.id ? 'Update Major' : 'Add Major'}</button>
-              <button type="button" onClick={handleCloseModal} className={styles.cancelButton}>Cancel</button>
+              <div className={styles.btnContainer}>
+              <button type="submit" className={styles.acceptBtn}>{majorData.id ? 'Update Major' : 'Add Major'}</button>
+              <button type="button" onClick={handleCloseModal} className={styles.rejectBtn}>Cancel</button>
+               </div>
             </form>
           </div>
         </div>
