@@ -192,7 +192,7 @@ const Centers: React.FC = () => {
                 />
               </label>
               <div className={styles.btnContainer}>
-                <button type="submit" className={styles.acceptBtn}>{centerData.id ? 'Update Center' : 'Add Center'}</button>
+                <button type="submit" className={styles.acceptBtn}>{centerData.id ? 'Edit Center' : 'Add Center'}</button>
                 <button type="button" onClick={handleCloseModal} className={styles.rejectBtn}>Cancel</button>
               </div>
             </form>
