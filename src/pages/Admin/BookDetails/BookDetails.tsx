@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetLibraryBookByIdQuery } from '../../../features/api/libraryBooksApi';
 import { useGetCampusByIdQuery } from '../../../features/api/campusesApi';
@@ -16,37 +16,53 @@ const BookDetails: React.FC = () => {
     skip: !campusId,
   });
 
-  const { data: borrowRequests, isLoading: borrowRequestsLoading, error: borrowRequestsError } = useGetBorrowRequestsByBookIdQuery(Number(bookId));
+  const { data: initialBorrowRequests, isLoading: borrowRequestsLoading, error: borrowRequestsError } = useGetBorrowRequestsByBookIdQuery(Number(bookId));
+  const [borrowRequests, setBorrowRequests] = useState(initialBorrowRequests || []);
   const [updateStatus] = useUpdateBorrowRequestStatusMutation();
   const [deleteRequest] = useDeleteBorrowRequestMutation();
   const { data: students, isLoading: studentsLoading, error: studentsError } = useGetStudentsWithUserDetailsQuery();
 
   useEffect(() => {
-    if (borrowRequests) {
-      borrowRequests.forEach((request) => {
-        const currentDate = new Date();
-        const dueDate = new Date(request.due_date);
-        if (request.status === 'Borrowed' && currentDate > dueDate) {
-          updateStatus({ id: request.id, status: 'Overdue' }).unwrap().catch(error => console.error('Failed to update status:', error));
-        }
-      });
+    if (initialBorrowRequests) {
+      setBorrowRequests(initialBorrowRequests);
     }
-  }, [borrowRequests, updateStatus]);
-
-  if (bookLoading || campusLoading || borrowRequestsLoading || studentsLoading) return <p>Loading...</p>;
-  if (bookError || campusError || borrowRequestsError || studentsError) return <p>Something went wrong!</p>;
+  }, [initialBorrowRequests]);
 
   const handleStatusChange = (requestId: number, status: string) => {
-    updateStatus({ id: requestId, status }).unwrap().catch(error => console.error('Failed to update status:', error));
+    const originalRequests = [...borrowRequests];
+
+    setBorrowRequests((prevRequests) =>
+      prevRequests.map((request) =>
+        request.id === requestId ? { ...request, status } : request
+      )
+    );
+
+    updateStatus({ id: requestId, status })
+      .unwrap()
+      .catch(error => {
+        console.error('Failed to update status:', error);
+        setBorrowRequests(originalRequests);
+      });
   };
 
   const handleDeleteRequest = (requestId: number) => {
-    deleteRequest(requestId).unwrap().catch(error => console.error('Failed to delete request:', error));
+    const originalRequests = [...borrowRequests];
+
+    setBorrowRequests((prevRequests) =>
+      prevRequests.filter((request) => request.id !== requestId)
+    );
+
+    deleteRequest(requestId)
+      .unwrap()
+      .catch(error => {
+        console.error('Failed to delete request:', error);
+        setBorrowRequests(originalRequests);
+      });
   };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-CA'); 
+    return date.toLocaleDateString('en-CA');
   };
 
   const columns = [
@@ -62,6 +78,9 @@ const BookDetails: React.FC = () => {
     { header: 'Due Date', accessor: (item: any) => formatDate(item.due_date) },
     { header: 'Status', accessor: 'status' },
   ];
+
+  if (bookLoading || campusLoading || borrowRequestsLoading || studentsLoading) return <p>Loading...</p>;
+  if (bookError || campusError || borrowRequestsError || studentsError) return <p>Something went wrong!</p>;
 
   return (
     <AdminLayout>
