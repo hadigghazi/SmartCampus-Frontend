@@ -15,6 +15,12 @@ export const borrowRequestsApi = createApi({
         body: { status },
       }),
     }),
+    deleteBorrowRequest: builder.mutation({
+      query: (id: number) => ({
+        url: `borrow-requests/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
