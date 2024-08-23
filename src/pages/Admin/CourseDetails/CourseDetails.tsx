@@ -8,6 +8,7 @@ import { useGetSemestersQuery } from '../../../features/api/semesterApi';
 import { useGetRoomsQuery } from '../../../features/api/roomsApi';
 import { useGetInstructorsWithUserDetailsQuery } from '../../../features/api/instructorsApi';
 import { CourseOption } from '../../../features/api/types';
+import AdminLayout from '../AdminLayout';
 
 const CourseDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -107,6 +108,7 @@ const CourseDetails: React.FC = () => {
   if (!course) return <div>Course not found</div>;
 
   return (
+    <AdminLayout>
     <div className={styles.content}>
       <h1 className={styles.headingPrimary}>{course.name}</h1>
       <h2 className={styles.headingSecondary}>{course.code}</h2>
@@ -270,6 +272,7 @@ const CourseDetails: React.FC = () => {
         </div>
       )}
     </div>
+    </AdminLayout>
   );
 };
 

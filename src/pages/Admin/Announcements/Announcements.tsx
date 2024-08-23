@@ -7,6 +7,7 @@ import SearchInput from '../../../components/SearchInput/SearchInput';
 import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage'; 
 import styles from './Announcements.module.css'; 
 import { Announcement } from '../../../features/api/types';
+import AdminLayout from '../AdminLayout';
 
 const visibilityOptions = ['General', 'Instructors', 'Students', 'Admins'];
 const categoryOptions = ['General', 'Urgent', 'Event'];
@@ -162,6 +163,7 @@ const Announcements: React.FC = () => {
   );
 
   return (
+    <AdminLayout>
     <div className={styles.container}>
     <h1 className={styles.headingPrimary}>Announcements</h1>
       <div className={styles.filters}>
@@ -267,6 +269,7 @@ const Announcements: React.FC = () => {
         </div>
       )}
     </div>
+    </AdminLayout>
   );
 };
 
