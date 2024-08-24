@@ -34,6 +34,9 @@ export const blocksApi = createApi({
         method: 'DELETE',
       }),
     }),
+    getBlocksByCampus: builder.query<Block[], string>({
+        query: (campusId) => `/blocks-by-campus/${campusId}`,
+      }),
   }),
 });
 
@@ -43,4 +46,5 @@ export const {
   useCreateBlockMutation,
   useUpdateBlockMutation,
   useDeleteBlockMutation,
+  useGetBlocksByCampusQuery
 } = blocksApi;

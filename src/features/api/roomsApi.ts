@@ -34,6 +34,9 @@ export const roomsApi = createApi({
         method: 'DELETE',
       }),
     }),
+    getRoomsByBlock: builder.query<Room[], string>({
+      query: (blockId) => `/rooms-by-block/${blockId}`,
+    }),
   }),
 });
 
@@ -43,4 +46,5 @@ export const {
   useCreateRoomMutation,
   useUpdateRoomMutation,
   useDeleteRoomMutation,
+  useGetRoomsByBlockQuery
 } = roomsApi;

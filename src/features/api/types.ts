@@ -264,13 +264,14 @@ export type Block = {
 
 export type Exam = {
   id: number;
-  course_id: number;
-  instructor_id: number;
+  course_name: string;
   date: string;
-  time: string; 
+  time: string;
   duration: number;
-  room_id: number;
-  created_at: string; 
-  updated_at: string; 
-  deleted_at?: string; 
+  room_number: string;
+  block_name: string;
+  campus_name: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
 };
