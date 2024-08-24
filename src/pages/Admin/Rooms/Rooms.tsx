@@ -5,6 +5,9 @@ import {
   useUpdateRoomMutation,
   useDeleteRoomMutation,
 } from '../../../features/api/roomsApi';
+import {
+  useGetBlocksQuery,
+} from '../../../features/api/blocksApi'; // Import the blocks API
 import Table from '../../../components/Table/Table';
 import Pagination from '../../../components/Pagination/Pagination';
 import SearchInput from '../../../components/SearchInput/SearchInput';
@@ -12,9 +15,11 @@ import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import AdminLayout from '../AdminLayout';
 import styles from '../Courses/Courses.module.css';
 import { Room } from '../../../features/api/types';
+import { Block } from '../../../features/api/types';
 
 const RoomsPage: React.FC = () => {
   const { data: roomsList = [] } = useGetRoomsQuery();
+  const { data: blocksList = [] } = useGetBlocksQuery(); // Fetch blocks data
   const [createRoom] = useCreateRoomMutation();
   const [updateRoom] = useUpdateRoomMutation();
   const [deleteRoom] = useDeleteRoomMutation();
@@ -121,9 +126,15 @@ const RoomsPage: React.FC = () => {
 
   const totalPages = Math.ceil(filteredRooms.length / pageSize);
 
+  // Get the block name by ID
+  const getBlockNameById = (blockId: number) => {
+    const block = blocksList.find(b => b.id === blockId);
+    return block ? block.name : 'Unknown';
+  };
+
   const columns = [
     { header: 'Number', accessor: 'number' },
-    { header: 'Block ID', accessor: 'block_id' },
+    { header: 'Block Name', accessor: (room: Room) => getBlockNameById(room.block_id) },
     { header: 'Capacity', accessor: 'capacity' },
     { header: 'Description', accessor: 'description' },
   ];
@@ -173,13 +184,17 @@ const RoomsPage: React.FC = () => {
                 </label>
                 <label>
                   Block ID:
-                  <input
-                    type="number"
+                  <select
                     name="block_id"
                     value={formValues.block_id}
                     onChange={handleChange}
                     required
-                  />
+                  >
+                    <option value="">Select Block</option>
+                    {blocksList.map(block => (
+                      <option key={block.id} value={block.id}>{block.name}</option>
+                    ))}
+                  </select>
                 </label>
                 <label>
                   Capacity:
