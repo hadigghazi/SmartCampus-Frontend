@@ -1,34 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import {
-  useGetRoomsQuery,
-  useCreateRoomMutation,
-  useUpdateRoomMutation,
-  useDeleteRoomMutation,
-} from '../../../features/api/roomsApi';
-import {
   useGetBlocksQuery,
-} from '../../../features/api/blocksApi'; 
+  useCreateBlockMutation,
+  useUpdateBlockMutation,
+  useDeleteBlockMutation,
+} from '../../../features/api/blocksApi';
+import { useGetCampusesQuery } from '../../../features/api/campusesApi';
 import Table from '../../../components/Table/Table';
 import Pagination from '../../../components/Pagination/Pagination';
 import SearchInput from '../../../components/SearchInput/SearchInput';
 import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import AdminLayout from '../AdminLayout';
 import styles from '../Courses/Courses.module.css';
-import { Room } from '../../../features/api/types';
+import { Block } from '../../../features/api/types';
 
-const RoomsPage: React.FC = () => {
-  const { data: roomsList = [] } = useGetRoomsQuery();
-  const { data: blocksList = [] } = useGetBlocksQuery(); 
-  const [createRoom] = useCreateRoomMutation();
-  const [updateRoom] = useUpdateRoomMutation();
-  const [deleteRoom] = useDeleteRoomMutation();
+const BlocksPage: React.FC = () => {
+  const { data: blocksList = [] } = useGetBlocksQuery();
+  const { data: campusesList = [] } = useGetCampusesQuery();
+  const [createBlock] = useCreateBlockMutation();
+  const [updateBlock] = useUpdateBlockMutation();
+  const [deleteBlock] = useDeleteBlockMutation();
 
   const [showModal, setShowModal] = useState(false);
-  const [editingRoom, setEditingRoom] = useState<Room | null>(null);
+  const [editingBlock, setEditingBlock] = useState<Block | null>(null);
   const [formValues, setFormValues] = useState({
-    number: '',
-    block_id: 0,
-    capacity: '',
+    name: '',
+    campus_id: 0,
     description: '',
   });
 
@@ -37,59 +34,56 @@ const RoomsPage: React.FC = () => {
   const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
-    if (editingRoom) {
+    if (editingBlock) {
       setFormValues({
-        number: editingRoom.number,
-        block_id: editingRoom.block_id,
-        capacity: editingRoom.capacity || '',
-        description: editingRoom.description || '',
+        name: editingBlock.name,
+        campus_id: editingBlock.campus_id,
+        description: editingBlock.description || '',
       });
     } else {
       setFormValues({
-        number: '',
-        block_id: 0,
-        capacity: '',
+        name: '',
+        campus_id: 0,
         description: '',
       });
     }
-  }, [editingRoom]);
+  }, [editingBlock]);
 
-  const handleAddRoom = () => {
-    setEditingRoom(null);
+  const handleAddBlock = () => {
+    setEditingBlock(null);
     setShowModal(true);
   };
 
-  const handleEditRoom = (room: Room) => {
-    setEditingRoom(room);
+  const handleEditBlock = (block: Block) => {
+    setEditingBlock(block);
     setShowModal(true);
   };
 
-  const handleDeleteRoom = async (id: number) => {
+  const handleDeleteBlock = async (id: number) => {
     try {
-      await deleteRoom(id).unwrap();
-      console.log('Room deleted successfully');
+      await deleteBlock(id).unwrap();
+      console.log('Block deleted successfully');
     } catch (error) {
-      console.error('Failed to delete room:', error);
+      console.error('Failed to delete block:', error);
     }
   };
 
-  const handleSaveRoom = async () => {
+  const handleSaveBlock = async () => {
     try {
-      const roomPayload = {
+      const blockPayload = {
         ...formValues,
-        capacity: formValues.capacity ? Number(formValues.capacity) : undefined,
       };
 
-      if (editingRoom) {
-        await updateRoom({ id: editingRoom.id, ...roomPayload }).unwrap();
-        console.log('Room updated successfully');
+      if (editingBlock) {
+        await updateBlock({ id: editingBlock.id, ...blockPayload }).unwrap();
+        console.log('Block updated successfully');
       } else {
-        await createRoom(roomPayload).unwrap();
-        console.log('Room created successfully');
+        await createBlock(blockPayload).unwrap();
+        console.log('Block created successfully');
       }
       setShowModal(false);
     } catch (error) {
-      console.error('Failed to save room:', error);
+      console.error('Failed to save block:', error);
     }
   };
 
@@ -114,49 +108,48 @@ const RoomsPage: React.FC = () => {
     }));
   };
 
-  const filteredRooms = roomsList.filter(r =>
-    r.number.toLowerCase().includes(searchText.toLowerCase())
+  const filteredBlocks = blocksList.filter(b =>
+    b.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const paginatedRooms = filteredRooms.slice(
+  const paginatedBlocks = filteredBlocks.slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize
   );
 
-  const totalPages = Math.ceil(filteredRooms.length / pageSize);
+  const totalPages = Math.ceil(filteredBlocks.length / pageSize);
 
-  const getBlockNameById = (blockId: number) => {
-    const block = blocksList.find(b => b.id === blockId);
-    return block ? block.name : 'Unknown';
+  const getCampusNameById = (campusId: number) => {
+    const campus = campusesList.find(b => b.id === campusId);
+    return campus ? campus.name : 'Unknown';
   };
 
   const columns = [
-    { header: 'Number', accessor: 'number' },
-    { header: 'Block Name', accessor: (room: Room) => getBlockNameById(room.block_id) },
-    { header: 'Capacity', accessor: 'capacity' },
+    { header: 'Name', accessor: 'name' },
+    { header: 'Campus Name', accessor: (block: Block) => getCampusNameById(block.campus_id) },
     { header: 'Description', accessor: 'description' },
   ];
 
-  const actions = (room: Room) => (
+  const actions = (block: Block) => (
     <div className={styles.actions}>
-      <button onClick={() => handleEditRoom(room)}>Edit</button>
-      <button onClick={() => handleDeleteRoom(room.id)}>Delete</button>
+      <button onClick={() => handleEditBlock(block)}>Edit</button>
+      <button onClick={() => handleDeleteBlock(block.id)}>Delete</button>
     </div>
   );
 
   return (
     <AdminLayout>
       <div className={styles.content}>
-        <h1 className={styles.headingPrimary}>Rooms</h1>
+        <h1 className={styles.headingPrimary}>Blocks</h1>
         <div className={styles.filters}>
           <SearchInput value={searchText} onChange={handleSearch} />
-          <button onClick={handleAddRoom} className={styles.addButton}>Add Room</button>
+          <button onClick={handleAddBlock} className={styles.addButton}>Add Block</button>
         </div>
         <EntriesPerPage value={pageSize} onChange={handleEntriesPerPageChange} />
         <div className={styles.wrapper}>
           <Table
             columns={columns}
-            data={paginatedRooms}
+            data={paginatedBlocks}
             actions={actions}
           />
           <Pagination
@@ -168,40 +161,33 @@ const RoomsPage: React.FC = () => {
         {showModal && (
           <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
-              <h2>{editingRoom ? 'Edit Room' : 'Add Room'}</h2>
+              <h2>{editingBlock ? 'Edit Block' : 'Add Block'}</h2>
               <form className={styles.form}>
                 <label>
-                  Number:
+                  Name:
                   <input
                     type="text"
-                    name="number"
-                    value={formValues.number}
+                    name="name"
+                    value={formValues.name}
                     onChange={handleChange}
                     required
                   />
                 </label>
                 <label>
-                  Block ID:
+                  Campus:
                   <select
-                    name="block_id"
-                    value={formValues.block_id}
+                    name="campus_id"
+                    value={formValues.campus_id}
                     onChange={handleChange}
                     required
                   >
-                    <option value="">Select Block</option>
-                    {blocksList.map(block => (
-                      <option key={block.id} value={block.id}>{block.name}</option>
+                    <option value="">Select a campus</option>
+                    {campusesList.map(campus => (
+                      <option key={campus.id} value={campus.id}>
+                        {campus.name}
+                      </option>
                     ))}
                   </select>
-                </label>
-                <label>
-                  Capacity:
-                  <input
-                    type="number"
-                    name="capacity"
-                    value={formValues.capacity}
-                    onChange={handleChange}
-                  />
                 </label>
                 <label>
                   Description:
@@ -213,7 +199,7 @@ const RoomsPage: React.FC = () => {
                   />
                 </label>
                 <div className={styles.modalActions}>
-                  <button type="button" onClick={handleSaveRoom}>Save</button>
+                  <button type="button" onClick={handleSaveBlock}>Save</button>
                   <button type="button" onClick={() => setShowModal(false)}>Cancel</button>
                 </div>
               </form>
@@ -225,4 +211,4 @@ const RoomsPage: React.FC = () => {
   );
 };
 
-export default RoomsPage;
+export default BlocksPage;
