@@ -261,3 +261,16 @@ export type Block = {
   updated_at?: string;
   deleted_at?: string;
 };
+
+export type Exam = {
+  id: number;
+  course_id: number;
+  instructor_id: number;
+  date: string;
+  time: string; 
+  duration: number;
+  room_id: number;
+  created_at: string; 
+  updated_at: string; 
+  deleted_at?: string; 
+};
