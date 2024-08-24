@@ -45,6 +45,7 @@ const CentersAdmin = lazy(() => import('./pages/Admin/Centers/Centers'));
 const CenterDetailsAdmin = lazy(() => import('./pages/Admin/CenterDetails/CenterDetails'));
 const Departments = lazy(() => import('./pages/Admin/Departments/Departments'));
 const NewsAdmin = lazy(() => import('./pages/Admin/News/News'));
+const ImportantDatesAdmin = lazy(() => import('./pages/Admin/ImportantDates/ImportantDates'));
 
 const AIMajorSuggestor = lazy(() => import('./pages/AIMajorSuggestor/AIMajorSuggestor'));
 const InstructorPage = lazy(() => import('./pages/InstructorPage/InstructorPage')); 
@@ -226,6 +227,10 @@ const routes: CustomRouteProps[] = [
   {
     path: '/admin/news',
     component: NewsAdmin,
+  },
+  {
+    path: '/admin/calendar',
+    component: ImportantDatesAdmin,
   },
 ];
 
