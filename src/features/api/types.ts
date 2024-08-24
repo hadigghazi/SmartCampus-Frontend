@@ -177,6 +177,16 @@ export type Instructor = {
   deleted_at: string | null;
 }
 
+export type Admin = {
+  id: number;
+  user_id: number;
+  admin_type: 'Super Admin' | 'Admin';
+  department_id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
 export type CourseOption = {
   id?: number;
   course_id: number;
