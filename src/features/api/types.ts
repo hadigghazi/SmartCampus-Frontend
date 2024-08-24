@@ -251,3 +251,13 @@ export type Department = {
   updated_at: string; 
   deleted_at?: string; 
 }
+
+export type Block = {
+  id: number;
+  name: string;
+  campus_id: number;
+  description?: string;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
+};
