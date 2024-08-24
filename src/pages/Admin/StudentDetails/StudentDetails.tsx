@@ -15,7 +15,7 @@ const StudentDetails: React.FC = () => {
   const { data: user, isLoading: userLoading, error: userError } = useGetUserByIdQuery(userId || -1);
 
   if (studentLoading || userLoading) return <p>Loading...</p>;
-  if (studentError || userError) return <p>Something went wrong!</p>;
+  if (studentError || userError) return <p>User is deleted from the system!</p>;
 
   return (
     <AdminLayout>
