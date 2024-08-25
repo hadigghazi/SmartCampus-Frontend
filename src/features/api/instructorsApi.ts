@@ -36,6 +36,9 @@ export const instructorsApi = createApi({
     getInstructorsWithUserDetails: builder.query({
         query: () => 'instructors-with-users',
       }),
+      getInstructorByUserId: builder.query<Instructor, number>({
+        query: (userId) => `/instructors/user/${userId}`,
+      }),
   }),
 });
 
@@ -45,5 +48,6 @@ export const {
   useAddInstructorMutation,
   useUpdateInstructorMutation,
   useDeleteInstructorMutation,
-  useGetInstructorsWithUserDetailsQuery
+  useGetInstructorsWithUserDetailsQuery,
+  useGetInstructorByUserIdQuery
 } = instructorsApi;

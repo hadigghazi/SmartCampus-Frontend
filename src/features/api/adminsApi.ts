@@ -36,6 +36,9 @@ export const adminsApi = createApi({
     getAdminsWithUserDetails: builder.query({
         query: () => 'admins-with-users',
       }),
+    getAdminByUserId: builder.query<Admin, number>({
+        query: (userId) => `/admins/user/${userId}`,
+      }),
   }),
 });
 
@@ -45,5 +48,6 @@ export const {
   useAddAdminMutation,
   useUpdateAdminMutation,
   useDeleteAdminMutation,
-  useGetAdminsWithUserDetailsQuery
+  useGetAdminsWithUserDetailsQuery,
+  useGetAdminByUserIdQuery
 } = adminsApi;
