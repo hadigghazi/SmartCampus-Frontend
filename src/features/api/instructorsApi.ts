@@ -20,11 +20,11 @@ export const instructorsApi = createApi({
         body: instructor,
       }),
     }),
-    updateInstructor: builder.mutation<Instructor, Partial<Instructor> & { id: number }>({
-      query: ({ id, ...rest }) => ({
-        url: `instructors/${id}`,
+    updateInstructor: builder.mutation({
+      query: (instructor) => ({
+        url: `instructors/${instructor.id}`, 
         method: 'PUT',
-        body: rest,
+        body: instructor,
       }),
     }),
     deleteInstructor: builder.mutation<void, number>({

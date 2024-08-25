@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
-import { useGetInstructorsWithUserDetailsQuery, useDeleteInstructorMutation } from '../../../features/api/instructorsApi';
+import React, { useState, useEffect } from 'react';
+import { 
+  useGetInstructorsWithUserDetailsQuery, 
+  useDeleteInstructorMutation, 
+  useUpdateInstructorMutation
+} from '../../../features/api/instructorsApi';
+import { useGetDepartmentsQuery } from '../../../features/api/departmentsApi';
 import { useNavigate } from 'react-router-dom';
-import styles from './Instructors.module.css'
+import styles from './Instructors.module.css';
 import AdminLayout from '../AdminLayout';
 import Table from '../../../components/Table/Table';
 import SearchInput from '../../../components/SearchInput/SearchInput';
@@ -15,6 +20,7 @@ type Instructor = {
   id: number;
   user_id: number;
   specialization: string;
+  department_id: number;
   user: {
     first_name: string;
     middle_name: string;
@@ -23,12 +29,24 @@ type Instructor = {
 };
 
 const Instructors: React.FC = () => {
-  const { data: instructors, isLoading, error } = useGetInstructorsWithUserDetailsQuery({});
+  const { data: instructorsData, isLoading, error } = useGetInstructorsWithUserDetailsQuery({});
+  const { data: departments } = useGetDepartmentsQuery({});
   const [deleteInstructor] = useDeleteInstructorMutation();
+  const [updateInstructor] = useUpdateInstructorMutation(); 
+  const [instructors, setInstructors] = useState<Instructor[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedInstructor, setSelectedInstructor] = useState<Instructor | null>(null);
+  const [editedInstructor, setEditedInstructor] = useState({ department_id: 0, specialization: '' });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (instructorsData) {
+      setInstructors(instructorsData);
+    }
+  }, [instructorsData]);
 
   if (isLoading) return <p>Loading...</p>;
   if (error) {
@@ -61,6 +79,7 @@ const Instructors: React.FC = () => {
       const isConfirmed = await ConfirmationDialog('Are you sure?', 'You are about to delete this instructor!');
       if (isConfirmed) {
         await deleteInstructor(instructorId).unwrap();
+        setInstructors(instructors.filter(instructor => instructor.id !== instructorId));
         toast.success('Instructor deleted successfully!');
       }
     } catch (err) {
@@ -68,6 +87,42 @@ const Instructors: React.FC = () => {
       toast.error('Failed to delete instructor.');
     }
   };
+
+  const handleEditInstructor = (instructor: Instructor) => {
+    setSelectedInstructor(instructor);
+    setEditedInstructor({ department_id: instructor.department_id, specialization: instructor.specialization });
+    setIsEditModalOpen(true);
+  };
+
+  const handleSaveEdit = async () => {
+    if (selectedInstructor) {
+      try {
+        const updatedData = {
+          id: selectedInstructor.id,
+          department_id: editedInstructor.department_id,
+          specialization: editedInstructor.specialization,
+        };
+  
+        console.log('Updating instructor with URL:', `/instructors/${updatedData.id}`);
+  
+        await updateInstructor(updatedData).unwrap();
+  
+        setInstructors(
+          instructors.map((instructor) =>
+            instructor.id === selectedInstructor.id
+              ? { ...instructor, ...editedInstructor }
+              : instructor
+          )
+        );
+        setIsEditModalOpen(false);
+        toast.success('Instructor updated successfully!');
+      } catch (err) {
+        console.error('Error updating instructor:', err);
+        toast.error('Failed to update instructor.');
+      }
+    }
+  };
+  
 
   return (
     <AdminLayout>
@@ -88,6 +143,7 @@ const Instructors: React.FC = () => {
           actions={(instructor: Instructor) => (
             <>
               <button onClick={() => handleInstructorClick(instructor.id)}>View</button>
+              <button onClick={() => handleEditInstructor(instructor)}>Edit</button>
               <button onClick={() => handleDeleteInstructor(instructor.id)}>Delete</button>
             </>
           )}
@@ -98,6 +154,41 @@ const Instructors: React.FC = () => {
           onPageChange={setCurrentPage}
         />
       </div>
+
+      {isEditModalOpen && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <h2>Edit Instructor</h2>
+            <div className={styles.formGroup}>
+              <label>Department</label>
+              <select
+                value={editedInstructor.department_id}
+                onChange={(e) => setEditedInstructor({ ...editedInstructor, department_id: Number(e.target.value) })}
+              >
+                <option value="" disabled>Select Department</option>
+                {departments?.map((department) => (
+                  <option key={department.id} value={department.id}>
+                    {department.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className={styles.formGroup}>
+              <label>Specialization</label>
+              <input
+                type="text"
+                value={editedInstructor.specialization}
+                onChange={(e) => setEditedInstructor({ ...editedInstructor, specialization: e.target.value })}
+              />
+            </div>
+            <div className={styles.modalActions}>
+              <button onClick={handleSaveEdit}>Save</button>
+              <button onClick={() => setIsEditModalOpen(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <ToastNotifications />
     </AdminLayout>
   );
