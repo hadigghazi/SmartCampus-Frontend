@@ -81,7 +81,7 @@ const Admins: React.FC = () => {
         <Table
           columns={[
             { header: 'ID', accessor: 'id' },
-            { header: 'Full Name', accessor: (admin: Admin) => `${admin?.user?.first_name} ${admin?.user?.middle_name || ''} ${admin?.user?.last_name}` },
+            { header: 'Full Name', accessor: (admin: Admin) => `${admin?.user?.first_name != undefined? `${admin?.user?.first_name} ${admin?.user?.middle_name} ${admin?.user?.last_name}`: 'N/A'}` },
             { header: 'Admin Type', accessor: 'admin_type' }
           ]}
           data={currentEntries || []}

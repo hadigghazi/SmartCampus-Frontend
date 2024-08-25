@@ -11,7 +11,11 @@ import Table from '../../../components/Table/Table';
 import styles from './Applications.module.css';
 import { toast } from 'react-toastify';
 
-const Applications: React.FC = () => {
+interface ApplicationsProps {
+  role: string;
+}
+
+const Applications: React.FC<ApplicationsProps> = ({ role }) => {
   const { data: users, isLoading, error } = useGetUsersQuery();
   const [deleteUser] = useDeleteUserMutation();
   const [searchTerm, setSearchTerm] = useState('');
@@ -35,11 +39,12 @@ const Applications: React.FC = () => {
       fullName.includes(term) || userIdString.includes(term)
     );
 
+    const matchesRole = user.role === role;
     const matchesStatus = statusFilter === 'All' || user.status === statusFilter;
     const matchesDateRange = (!startDate || new Date(user.created_at!) >= new Date(startDate)) &&
       (!endDate || new Date(user.created_at!) <= new Date(endDate));
 
-    return matchesSearchTerm && matchesStatus && matchesDateRange;
+    return matchesSearchTerm && matchesRole && matchesStatus && matchesDateRange;
   });
 
   const indexOfLastEntry = currentPage * entriesPerPage;
@@ -77,7 +82,7 @@ const Applications: React.FC = () => {
   return (
     <AdminLayout>
       <div className={styles.container}>
-        <h2 className={styles.headingPrimary}>Applications</h2>
+        <h2 className={styles.headingPrimary}>{role} Applications</h2>
         <div className={styles.filters}>
           <SearchInput value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
           <select

@@ -31,7 +31,10 @@ const MajorDetails = lazy(() => import('./pages/Academics/MajorDetails/MajorDeta
 const Campuses = lazy(() => import('./pages/Campuses/Campuses'));
 const CampusDetails = lazy(() => import('./pages/CampusDetails/CampusDetails'));
 const CourseInfo = lazy(() => import('./pages/Academics/CourseInfo/CourseInfo'));
-const Applications = lazy(() => import('./pages/Admin/Applications/Applications'));
+
+const StudentApplications = lazy(() => import('./pages/Admin/Applications/StudentApplications'));
+const InstructorApplications = lazy(() => import('./pages/Admin/Applications/InstructorApplicatios'));
+const AdminApplications = lazy(() => import('./pages/Admin/Applications/AdminApplications'));
 const ApplicationDetails = lazy(() => import('./pages/Admin/ApplicationDetails/ApplicationDetails'));
 const Courses = lazy(() => import('./pages/Admin/Courses/Courses'));
 const CourseDetails = lazy(() => import('./pages/Admin/CourseDetails/CourseDetails'));
@@ -162,8 +165,16 @@ const routes: CustomRouteProps[] = [
     component: CourseInfo,
   },
   {
-    path: '/admin/applications',
-    component: Applications,
+    path: '/admin/applications/students',
+    component: StudentApplications,
+  },
+  {
+    path: '/admin/applications/instructos',
+    component: InstructorApplications,
+  },
+  {
+    path: '/admin/applications/admins',
+    component: AdminApplications,
   },
   {
     path: '/admin/applications/:id',
