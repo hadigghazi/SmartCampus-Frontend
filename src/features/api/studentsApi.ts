@@ -24,10 +24,10 @@ export const studentsApi = createApi({
       }),
     }),
     updateStudent: builder.mutation<Student, Partial<Student> & { id: number }>({
-      query: ({ id, ...studentData }) => ({
-        url: `/students/${id}`,
+      query: (student) => ({
+        url: `/students/${student.id}`,
         method: 'PUT',
-        body: studentData,
+        body: student,
       }),
     }),
     deleteStudent: builder.mutation<void, number>({
