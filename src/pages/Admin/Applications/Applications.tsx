@@ -63,7 +63,7 @@ const Applications: React.FC<ApplicationsProps> = ({ role }) => {
   const totalPages = Math.ceil((sortedUsers?.length || 0) / entriesPerPage);
 
   const handleUserClick = (userId: number) => {
-    navigate(`/admin/applications/${userId}`);
+    navigate(`/admin/applications/${role.toLowerCase()}s/${userId}`);
   };
 
   const handleDeleteUser = async (userId: number) => {
