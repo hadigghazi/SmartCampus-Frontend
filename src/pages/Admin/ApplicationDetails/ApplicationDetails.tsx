@@ -273,13 +273,12 @@ const ApplicationDetails: React.FC = () => {
                     />
                   </div>      
                 </form>
+                <div className={styles.buttons}>
+              <button onClick={handleAccept} className={styles.acceptBtn}>Accept Application</button>
+              <button onClick={handleReject} className={styles.rejectBtn}>Reject Application</button>
+            </div>
               </div>
             )}
-
-            <div className={styles.buttons}>
-              <button onClick={handleAccept} className={styles.acceptButton}>Accept</button>
-              <button onClick={handleReject} className={styles.rejectButton}>Reject</button>
-            </div>
           </div>
         ) : (
           <p>No user data available.</p>
