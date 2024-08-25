@@ -169,7 +169,7 @@ const routes: CustomRouteProps[] = [
     component: StudentApplications,
   },
   {
-    path: '/admin/applications/instructos',
+    path: '/admin/applications/instructors',
     component: InstructorApplications,
   },
   {
