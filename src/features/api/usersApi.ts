@@ -27,10 +27,13 @@ export const usersApi = createApi({
       query: ({ id, ...updatedUser }) => ({
         url: `/users/${id}`,
         method: 'PUT',
-        body: updatedUser,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedUser),  // Ensure body is JSON stringified if required by server
       }),
     }),
-
+    
     deleteUser: builder.mutation<void, number>({
       query: (id) => ({
         url: `/users/${id}`,

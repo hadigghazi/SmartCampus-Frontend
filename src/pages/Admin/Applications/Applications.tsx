@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGetUsersQuery, useDeleteUserMutation } from '../../../features/api/usersApi';
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../AdminLayout';
@@ -10,14 +10,16 @@ import Pagination from '../../../components/Pagination/Pagination';
 import Table from '../../../components/Table/Table';
 import styles from './Applications.module.css';
 import { toast } from 'react-toastify';
+import { User } from '../../../types';
 
 interface ApplicationsProps {
   role: string;
 }
 
 const Applications: React.FC<ApplicationsProps> = ({ role }) => {
-  const { data: users, isLoading, error } = useGetUsersQuery();
+  const { data: initialUsers, isLoading, error } = useGetUsersQuery();
   const [deleteUser] = useDeleteUserMutation();
+  const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [startDate, setStartDate] = useState<string | undefined>(undefined);
@@ -27,13 +29,19 @@ const Applications: React.FC<ApplicationsProps> = ({ role }) => {
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest'); // Sorting state
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (initialUsers) {
+      setUsers(initialUsers);
+    }
+  }, [initialUsers]);
+
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Something went wrong!</p>;
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
 
   // Filter users based on search terms, role, status, and date range
-  const filteredUsers = users?.filter((user) => {
+  const filteredUsers = users.filter((user) => {
     const fullName = `${user.first_name} ${user.middle_name} ${user.last_name}`.toLowerCase();
     const userIdString = user.id.toString();
 
@@ -50,7 +58,7 @@ const Applications: React.FC<ApplicationsProps> = ({ role }) => {
   });
 
   // Apply sorting based on the selected sort order
-  const sortedUsers = filteredUsers?.sort((a, b) => {
+  const sortedUsers = filteredUsers.sort((a, b) => {
     const dateA = new Date(a.created_at!);
     const dateB = new Date(b.created_at!);
     return sortOrder === 'newest' ? dateB.getTime() - dateA.getTime() : dateA.getTime() - dateB.getTime();
@@ -58,9 +66,9 @@ const Applications: React.FC<ApplicationsProps> = ({ role }) => {
 
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  const currentEntries = sortedUsers?.slice(indexOfFirstEntry, indexOfLastEntry);
+  const currentEntries = sortedUsers.slice(indexOfFirstEntry, indexOfLastEntry);
 
-  const totalPages = Math.ceil((sortedUsers?.length || 0) / entriesPerPage);
+  const totalPages = Math.ceil(sortedUsers.length / entriesPerPage);
 
   const handleUserClick = (userId: number) => {
     navigate(`/admin/applications/${role.toLowerCase()}s/${userId}`);
@@ -75,6 +83,8 @@ const Applications: React.FC<ApplicationsProps> = ({ role }) => {
     if (isConfirmed) {
       try {
         await deleteUser(userId).unwrap();
+        // Update local state to remove the deleted user
+        setUsers(users.filter(user => user.id !== userId));
         toast.success('User deleted successfully!');
       } catch (err) {
         console.error('Error deleting user:', err);
