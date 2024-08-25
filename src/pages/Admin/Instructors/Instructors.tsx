@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { 
   useGetInstructorsWithUserDetailsQuery, 
   useDeleteInstructorMutation, 
@@ -32,7 +32,7 @@ const Instructors: React.FC = () => {
   const { data: instructorsData, isLoading, error } = useGetInstructorsWithUserDetailsQuery({});
   const { data: departments } = useGetDepartmentsQuery({});
   const [deleteInstructor] = useDeleteInstructorMutation();
-  const [updateInstructor] = useUpdateInstructorMutation(); 
+  const [updateInstructor] = useUpdateInstructorMutation();
   const [instructors, setInstructors] = useState<Instructor[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,6 +48,15 @@ const Instructors: React.FC = () => {
     }
   }, [instructorsData]);
 
+  useEffect(() => {
+    if (selectedInstructor) {
+      setEditedInstructor({
+        department_id: selectedInstructor.department_id,
+        specialization: selectedInstructor.specialization
+      });
+    }
+  }, [selectedInstructor]);
+
   if (isLoading) return <p>Loading...</p>;
   if (error) {
     console.error('Error fetching instructors:', error);
@@ -56,19 +65,17 @@ const Instructors: React.FC = () => {
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
 
-  const filteredInstructors = instructors?.filter((instructor: Instructor) => {
-    const fullName = `${instructor?.user?.first_name} ${instructor?.user?.middle_name || ''} ${instructor?.user?.last_name}`.toLowerCase();
+  const filteredInstructors = instructors.filter((instructor) => {
+    const fullName = `${instructor.user.first_name} ${instructor.user.middle_name || ''} ${instructor.user.last_name}`.toLowerCase();
     const instructorId = instructor.id.toString();
-    return searchTerms.every(term => {
-      return fullName.includes(term) || instructorId.includes(term);
-    });
+    return searchTerms.every(term => fullName.includes(term) || instructorId.includes(term));
   });
 
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  const currentEntries = filteredInstructors?.slice(indexOfFirstEntry, indexOfLastEntry);
+  const currentEntries = filteredInstructors.slice(indexOfFirstEntry, indexOfLastEntry);
 
-  const totalPages = Math.ceil((filteredInstructors?.length || 0) / entriesPerPage);
+  const totalPages = Math.ceil(filteredInstructors.length / entriesPerPage);
 
   const handleInstructorClick = (instructorId: number) => {
     navigate(`/admin/instructors/${instructorId}`);
@@ -90,7 +97,6 @@ const Instructors: React.FC = () => {
 
   const handleEditInstructor = (instructor: Instructor) => {
     setSelectedInstructor(instructor);
-    setEditedInstructor({ department_id: instructor.department_id, specialization: instructor.specialization });
     setIsEditModalOpen(true);
   };
 
@@ -102,8 +108,6 @@ const Instructors: React.FC = () => {
           department_id: editedInstructor.department_id,
           specialization: editedInstructor.specialization,
         };
-  
-        console.log('Updating instructor with URL:', `/instructors/${updatedData.id}`);
   
         await updateInstructor(updatedData).unwrap();
   
@@ -122,25 +126,24 @@ const Instructors: React.FC = () => {
       }
     }
   };
-  
 
   return (
     <AdminLayout>
       <div className={styles.container}>
         <h2 className={styles.headingPrimary}>Instructors</h2>
-        <SearchInput value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-        <EntriesPerPage value={entriesPerPage} onChange={(e) => {
+        <SearchInput value={searchTerm} onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)} />
+        <EntriesPerPage value={entriesPerPage} onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           setEntriesPerPage(Number(e.target.value));
           setCurrentPage(1);
         }} />
         <Table
           columns={[
             { header: 'ID', accessor: 'id' },
-            { header: 'Full Name', accessor: (instructor: Instructor) => `${instructor?.user?.first_name} ${instructor?.user?.middle_name || ''} ${instructor?.user?.last_name}` },
+            { header: 'Full Name', accessor: (instructor) => `${instructor.user.first_name} ${instructor.user.middle_name || ''} ${instructor.user.last_name}` },
             { header: 'Specialization', accessor: 'specialization' }
           ]}
           data={currentEntries || []}
-          actions={(instructor: Instructor) => (
+          actions={(instructor) => (
             <>
               <button onClick={() => handleInstructorClick(instructor.id)}>View</button>
               <button onClick={() => handleEditInstructor(instructor)}>Edit</button>
@@ -157,34 +160,36 @@ const Instructors: React.FC = () => {
 
       {isEditModalOpen && (
         <div className={styles.modalOverlay}>
-          <div className={styles.modal}>
-            <h2>Edit Instructor</h2>
-            <div className={styles.formGroup}>
-              <label>Department</label>
-              <select
-                value={editedInstructor.department_id}
-                onChange={(e) => setEditedInstructor({ ...editedInstructor, department_id: Number(e.target.value) })}
-              >
-                <option value="" disabled>Select Department</option>
-                {departments?.map((department) => (
-                  <option key={department.id} value={department.id}>
-                    {department.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className={styles.formGroup}>
-              <label>Specialization</label>
-              <input
-                type="text"
-                value={editedInstructor.specialization}
-                onChange={(e) => setEditedInstructor({ ...editedInstructor, specialization: e.target.value })}
-              />
-            </div>
-            <div className={styles.modalActions}>
-              <button onClick={handleSaveEdit}>Save</button>
-              <button onClick={() => setIsEditModalOpen(false)}>Cancel</button>
-            </div>
+          <div className={styles.modalContent}>
+            <h2 className={styles.headingPrimary}>Edit Instructor</h2>
+            <form className={styles.form}>
+              <div className={styles.formGroup}>
+                <label>Department</label>
+                <select
+                  value={editedInstructor.department_id}
+                  onChange={(e: ChangeEvent<HTMLSelectElement>) => setEditedInstructor({ ...editedInstructor, department_id: Number(e.target.value) })}
+                >
+                  <option value="" disabled>Select Department</option>
+                  {departments?.map((department) => (
+                    <option key={department.id} value={department.id}>
+                      {department.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Specialization</label>
+                <input
+                  type="text"
+                  value={editedInstructor.specialization}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setEditedInstructor({ ...editedInstructor, specialization: e.target.value })}
+                />
+              </div>
+              <div className={styles.modalActions}>
+                <button type="button" onClick={handleSaveEdit} className={styles.acceptBtn}>Save</button>
+                <button type="button" onClick={() => setIsEditModalOpen(false)} className={styles.rejectBtn}>Cancel</button>
+              </div>
+            </form>
           </div>
         </div>
       )}
