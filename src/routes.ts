@@ -37,6 +37,7 @@ const InstructorApplications = lazy(() => import('./pages/Admin/Applications/Ins
 const AdminApplications = lazy(() => import('./pages/Admin/Applications/AdminApplications'));
 const ApplicationDetails = lazy(() => import('./pages/Admin/ApplicationDetails/ApplicationDetails'));
 const ApplicationDetailsInstructors = lazy(() => import('./pages/Admin/ApplicationDetails/ApplicationDetailsInstructors'));
+const ApplicationDetailsAdmins = lazy(() => import('./pages/Admin/ApplicationDetails/ApplicationDetailsAdmins'));
 const Courses = lazy(() => import('./pages/Admin/Courses/Courses'));
 const CourseDetails = lazy(() => import('./pages/Admin/CourseDetails/CourseDetails'));
 const Announcements = lazy(() => import('./pages/Admin/Announcements/Announcements'));
@@ -184,6 +185,10 @@ const routes: CustomRouteProps[] = [
   {
     path: '/admin/applications/instructors/:id',
     component: ApplicationDetailsInstructors,
+  },
+  {
+    path: '/admin/applications/admins/:id',
+    component: ApplicationDetailsAdmins,
   },
   {
     path: '/admin/students',

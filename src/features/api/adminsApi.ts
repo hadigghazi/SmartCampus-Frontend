@@ -37,7 +37,7 @@ export const adminsApi = createApi({
         query: () => 'admins-with-users',
       }),
     getAdminByUserId: builder.query<Admin, number>({
-        query: (userId) => `/admins/user/${userId}`,
+        query: (userId) => `admins/user/${userId}`,
       }),
   }),
 });
