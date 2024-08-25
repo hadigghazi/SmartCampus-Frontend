@@ -24,6 +24,7 @@ const Applications: React.FC<ApplicationsProps> = ({ role }) => {
   const [endDate, setEndDate] = useState<string | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest'); // Sorting state
   const navigate = useNavigate();
 
   if (isLoading) return <p>Loading...</p>;
@@ -31,6 +32,7 @@ const Applications: React.FC<ApplicationsProps> = ({ role }) => {
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
 
+  // Filter users based on search terms, role, status, and date range
   const filteredUsers = users?.filter((user) => {
     const fullName = `${user.first_name} ${user.middle_name} ${user.last_name}`.toLowerCase();
     const userIdString = user.id.toString();
@@ -47,11 +49,18 @@ const Applications: React.FC<ApplicationsProps> = ({ role }) => {
     return matchesSearchTerm && matchesRole && matchesStatus && matchesDateRange;
   });
 
+  // Apply sorting based on the selected sort order
+  const sortedUsers = filteredUsers?.sort((a, b) => {
+    const dateA = new Date(a.created_at!);
+    const dateB = new Date(b.created_at!);
+    return sortOrder === 'newest' ? dateB.getTime() - dateA.getTime() : dateA.getTime() - dateB.getTime();
+  });
+
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  const currentEntries = filteredUsers?.slice(indexOfFirstEntry, indexOfLastEntry);
+  const currentEntries = sortedUsers?.slice(indexOfFirstEntry, indexOfLastEntry);
 
-  const totalPages = Math.ceil((filteredUsers?.length || 0) / entriesPerPage);
+  const totalPages = Math.ceil((sortedUsers?.length || 0) / entriesPerPage);
 
   const handleUserClick = (userId: number) => {
     navigate(`/admin/applications/${userId}`);
@@ -110,6 +119,14 @@ const Applications: React.FC<ApplicationsProps> = ({ role }) => {
           <button onClick={resetDateRange} className={styles.resetButton}>
             Reset Dates
           </button>
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest')}
+            className={styles.selectField}
+          >
+            <option value="newest">Newest to Oldest</option>
+            <option value="oldest">Oldest to Newest</option>
+          </select>
         </div>
         <EntriesPerPage value={entriesPerPage} onChange={(e) => {
           setEntriesPerPage(Number(e.target.value));
