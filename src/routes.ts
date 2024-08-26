@@ -57,6 +57,7 @@ const ExamsAdmin = lazy(() => import('./pages/Admin/Exams/Exams'));
 const SemestersAdmin = lazy(() => import('./pages/Admin/Semesters/Semesters'));
 const FacultiesAdmin = lazy(() => import('./pages/Admin/Faculties/Faculties'));
 const CampusesAdmin = lazy(() => import('./pages/Admin/Campuses/Campuses'));
+const FacultyDetailsAdmin = lazy(() => import('./pages/Admin/FacultyDetails/FacultyDetails'));
 
 const AIMajorSuggestor = lazy(() => import('./pages/AIMajorSuggestor/AIMajorSuggestor'));
 const InstructorPage = lazy(() => import('./pages/InstructorPage/InstructorPage')); 
@@ -288,6 +289,10 @@ const routes: CustomRouteProps[] = [
   {
     path: '/admin/faculties',
     component: FacultiesAdmin,
+  },
+  {
+    path: '/admin/faculties/:id',
+    component: FacultyDetailsAdmin,
   },
   {
     path: '/admin/campuses',
