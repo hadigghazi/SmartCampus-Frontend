@@ -305,3 +305,12 @@ export type Registration = {
   updated_at: string;
   deleted_at?: string | null;
 }
+
+export type FacultiesCampuses = {
+  id: number;
+  faculty_id: number;
+  campus_id: number;
+  created_at: string; 
+  updated_at: string;
+  deleted_at: string | null; 
+};
