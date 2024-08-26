@@ -285,3 +285,12 @@ export type Exam = {
   updated_at: string;
   deleted_at: string | null;
 };
+
+export type CoursePrerequisite = {
+  id: number;
+  course_id: number;
+  prerequisite_course_id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string | null;
+};
