@@ -19,12 +19,11 @@ const InstructorDetails: React.FC = () => {
   if (instructorLoading || userLoading || coursesLoading) return <p>Loading...</p>;
   if (instructorError || userError || coursesError) return <p>User is deleted from the system!</p>;
 
-  // Define the columns for the Table component
   const columns = [
     { header: 'Course Code', accessor: 'course_code' },
     { header: 'Course Name', accessor: 'course_name' },
-    { header: 'Campus Name', accessor: 'campus_name' },
-    { header: 'Semester Name', accessor: 'semester_name' },
+    { header: 'Campus', accessor: 'campus_name' },
+    { header: 'Semester', accessor: 'semester_name' },
     { header: 'Room', accessor: 'room' },
     { header: 'Schedule', accessor: 'schedule' },
   ];
@@ -68,7 +67,7 @@ const InstructorDetails: React.FC = () => {
           <p>No instructor data found.</p>
         )}
 
-        <div className={styles.coursesSection}>
+        <div className={styles.coursesSection} style={{marginTop: "4rem"}}>
           <h2 className={styles.headingSecondary}>Assigned Courses</h2>
           {courses && courses.length > 0 ? (
             <Table columns={columns} data={courses} />

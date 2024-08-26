@@ -294,3 +294,14 @@ export type CoursePrerequisite = {
   updated_at: string;
   deleted_at?: string | null;
 };
+
+export type Registration = {
+  id: number;
+  student_id: number;
+  course_instructor_id: number;
+  semester_id: number;
+  status: 'Registered' | 'Completed' | 'Failed';
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string | null;
+}
