@@ -10,7 +10,7 @@ import {
   useUpdateCourseOptionMutation,
 } from '../../../features/api/coursesApi';
 import { useGetCampusesQuery } from '../../../features/api/campusesApi';
-import { useGetSemestersQuery } from '../../../features/api/semesterApi';
+import { useGetSemestersQuery } from '../../../features/api/semestersApi';
 import { useGetRoomsQuery } from '../../../features/api/roomsApi';
 import { useGetInstructorsWithUserDetailsQuery } from '../../../features/api/instructorsApi';
 import AdminLayout from '../AdminLayout';

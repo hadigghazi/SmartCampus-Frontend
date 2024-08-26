@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Semester } from '../api/types'; 
+import { Semester } from './types'; 
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 

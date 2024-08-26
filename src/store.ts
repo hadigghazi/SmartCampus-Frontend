@@ -12,7 +12,7 @@ import { deansApi } from './features/api/deansApi';
 import { usersApi } from './features/api/usersApi';
 import { studentsApi } from './features/api/studentsApi';
 import { instructorsApi } from './features/api/instructorsApi';
-import { semestersApi } from './features/api/semesterApi';
+import { semestersApi } from './features/api/semestersApi';
 import { roomsApi } from './features/api/roomsApi';
 import { announcementsApi } from './features/api/announcementsApi';
 import { libraryBooksApi } from './features/api/libraryBooksApi';
