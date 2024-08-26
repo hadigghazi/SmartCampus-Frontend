@@ -13,6 +13,9 @@ export const registrationsApi = createApi({
     getRegistrationById: builder.query<Registration, number>({
       query: (id) => `registrations/${id}`,
     }),
+    getRegistrationsByStudent: builder.query<Registration, number>({
+        query: (id) => `student/${id}/registration`,
+      }),
     createRegistration: builder.mutation<Registration, Partial<Registration>>({
       query: (newRegistration) => ({
         url: 'registrations',
@@ -42,4 +45,5 @@ export const {
   useCreateRegistrationMutation,
   useUpdateRegistrationMutation,
   useDeleteRegistrationMutation,
+  useGetRegistrationsByStudentQuery
 } = registrationsApi;

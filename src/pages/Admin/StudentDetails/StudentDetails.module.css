@@ -68,4 +68,25 @@
   .studentInfo {
     padding: 1rem;
   }
+ .filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    align-items: center;
+    margin-top: 2rem;
+  }
+  
+  .filtersText {
+    font-size: 1rem;
+  }
+  
+  .selectField {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    height: 41px;
+  }
  

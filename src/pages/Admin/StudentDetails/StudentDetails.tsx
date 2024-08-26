@@ -1,8 +1,12 @@
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetStudentByIdQuery } from '../../../features/api/studentsApi';
 import { useGetUserByIdQuery } from '../../../features/api/usersApi';
+import { useGetRegistrationsByStudentQuery } from '../../../features/api/registrationsApi';
+import { useGetSemestersQuery } from '../../../features/api/semestersApi';
 import AdminLayout from '../AdminLayout';
-import styles from './StudentDetails.module.css'; 
+import Table from '../../../components/Table/Table';
+import styles from './StudentDetails.module.css';
 import defaultProfile from '../../../assets/images/profileImage.jpg';
 
 const StudentDetails: React.FC = () => {
@@ -10,12 +14,31 @@ const StudentDetails: React.FC = () => {
   const studentId = parseInt(id!, 10);
 
   const { data: student, isLoading: studentLoading, error: studentError } = useGetStudentByIdQuery(studentId);
-
   const userId = student?.user_id;
   const { data: user, isLoading: userLoading, error: userError } = useGetUserByIdQuery(userId || -1);
+  const { data: registrations, isLoading: registrationsLoading, error: registrationsError } = useGetRegistrationsByStudentQuery(studentId);
+  const { data: semesters, isLoading: semestersLoading, error: semestersError } = useGetSemestersQuery();
 
-  if (studentLoading || userLoading) return <p>Loading...</p>;
-  if (studentError || userError) return <p>User is deleted from the system!</p>;
+  const [selectedSemester, setSelectedSemester] = useState<string>('All');
+
+  if (studentLoading || userLoading || registrationsLoading || semestersLoading) return <p>Loading...</p>;
+  if (studentError || userError || registrationsError || semestersError) return <p>Error loading data.</p>;
+
+  const handleSemesterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSemester(event.target.value);
+  };
+
+  const filteredRegistrations = registrations?.filter(reg => 
+    selectedSemester === 'All' || reg.semester_name === selectedSemester
+  );
+
+  const columns = [
+    { header: 'Course Code', accessor: 'course_code' },
+    { header: 'Course Name', accessor: 'course_name' },
+    { header: 'Instructor Name', accessor: 'instructor_name' },
+    { header: 'Status', accessor: 'status' },
+    { header: 'Semester', accessor: 'semester_name' },
+  ];
 
   return (
     <AdminLayout>
@@ -43,6 +66,7 @@ const StudentDetails: React.FC = () => {
                 <p><strong>Marital Status:</strong> {user.marital_status}</p>
               </div>
             </div>
+
             <div className={styles.studentCard}>
               <h2 className={styles.headingSecondary}>More Details</h2>
               <div className={styles.studentInfo}>
@@ -57,10 +81,32 @@ const StudentDetails: React.FC = () => {
                 <p><strong>Needs Transportation:</strong> {student.transportation ? 'Yes' : 'No'}</p>
                 <p><strong>Dorm Residency:</strong> {student.dorm_residency ? 'Yes' : 'No'}</p>
                 <p><strong>Emergency Contact ID:</strong> {student.emergency_contact_id || 'N/A'}</p>
-                <p><strong>Created At:</strong> {student.created_at ? new Date(student.created_at).toLocaleDateString() : 'N/A'}</p>
-                <p><strong>Updated At:</strong> {student.updated_at ? new Date(student.updated_at).toLocaleDateString() : 'N/A'}</p>
-                <p><strong>Deleted At:</strong> {student.deleted_at ? new Date(student.deleted_at).toLocaleDateString() : 'N/A'}</p>
               </div>
+            </div>
+
+            <div className={styles.registrationsContainer} style={{ marginTop: '4rem' }}>
+              <h2 className={styles.headingSecondary}>Course Registrations</h2>
+              <div className={styles.filters}>
+                <label htmlFor="semesterFilter"  className={styles.filtersText}>Semester:</label>
+                <select
+                  id="semesterFilter"
+                  className={styles.selectField}
+                  value={selectedSemester}
+                  onChange={handleSemesterChange}
+                >
+                  <option value="All">All</option>
+                  {semesters?.map((semester) => (
+                    <option key={semester.id} value={semester.name}>
+                      {semester.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {filteredRegistrations && filteredRegistrations.length > 0 ? (
+                <Table columns={columns} data={filteredRegistrations} />
+              ) : (
+                <p>No course registrations found for this student.</p>
+              )}
             </div>
           </div>
         ) : (
