@@ -1,7 +1,9 @@
 import { useParams } from 'react-router-dom';
 import { useGetInstructorByIdQuery } from '../../../features/api/instructorsApi';
 import { useGetUserByIdQuery } from '../../../features/api/usersApi';
+import { useGetCoursesAssignedToInstructorQuery } from '../../../features/api/coursesApi'; // Import the query
 import AdminLayout from '../AdminLayout';
+import Table from '../../../components/Table/Table'; 
 import styles from './InstructorDetails.module.css'; 
 import defaultProfile from '../../../assets/images/profileImage.jpg';
 
@@ -10,12 +12,22 @@ const InstructorDetails: React.FC = () => {
   const instructorId = parseInt(id!, 10);
 
   const { data: instructor, isLoading: instructorLoading, error: instructorError } = useGetInstructorByIdQuery(instructorId);
-
   const userId = instructor?.user_id;
   const { data: user, isLoading: userLoading, error: userError } = useGetUserByIdQuery(userId || -1);
+  const { data: courses, isLoading: coursesLoading, error: coursesError } = useGetCoursesAssignedToInstructorQuery(instructorId);
 
-  if (instructorLoading || userLoading) return <p>Loading...</p>;
-  if (instructorError || userError) return <p>User is deleted from the system!</p>;
+  if (instructorLoading || userLoading || coursesLoading) return <p>Loading...</p>;
+  if (instructorError || userError || coursesError) return <p>User is deleted from the system!</p>;
+
+  // Define the columns for the Table component
+  const columns = [
+    { header: 'Course Code', accessor: 'course_code' },
+    { header: 'Course Name', accessor: 'course_name' },
+    { header: 'Campus Name', accessor: 'campus_name' },
+    { header: 'Semester Name', accessor: 'semester_name' },
+    { header: 'Room', accessor: 'room' },
+    { header: 'Schedule', accessor: 'schedule' },
+  ];
 
   return (
     <AdminLayout>
@@ -55,6 +67,15 @@ const InstructorDetails: React.FC = () => {
         ) : (
           <p>No instructor data found.</p>
         )}
+
+        <div className={styles.coursesSection}>
+          <h2 className={styles.headingSecondary}>Assigned Courses</h2>
+          {courses && courses.length > 0 ? (
+            <Table columns={columns} data={courses} />
+          ) : (
+            <p>No courses assigned to this instructor.</p>
+          )}
+        </div>
       </div>
     </AdminLayout>
   );
