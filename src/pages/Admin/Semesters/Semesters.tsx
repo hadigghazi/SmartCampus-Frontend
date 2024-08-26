@@ -17,6 +17,7 @@ const Semesters: React.FC = () => {
   const [updateSemester] = useUpdateSemesterMutation();
   const [deleteSemester] = useDeleteSemesterMutation();
   
+  const [localSemesters, setLocalSemesters] = useState(semesters || []);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
@@ -32,25 +33,32 @@ const Semesters: React.FC = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (semesters) {
+      setLocalSemesters(semesters);
+    }
+  }, [semesters]);
+
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Something went wrong!</p>;
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
-  const filteredSemesters = semesters?.filter((semester) => {
+  const filteredSemesters = localSemesters.filter((semester) => {
     const semesterName = semester.name.toLowerCase();
     return searchTerms.every(term => semesterName.includes(term));
   });
 
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  const currentEntries = filteredSemesters?.slice(indexOfFirstEntry, indexOfLastEntry);
-  const totalPages = Math.ceil((filteredSemesters?.length || 0) / entriesPerPage);
+  const currentEntries = filteredSemesters.slice(indexOfFirstEntry, indexOfLastEntry);
+  const totalPages = Math.ceil(filteredSemesters.length / entriesPerPage);
 
   const handleDeleteSemester = async (semesterId: number) => {
     const isConfirmed = await ConfirmationDialog('Are you sure?', 'You won’t be able to revert this!');
     if (isConfirmed) {
       try {
         await deleteSemester(semesterId).unwrap();
+        setLocalSemesters(prevSemesters => prevSemesters.filter(semester => semester.id !== semesterId));
         toast.success('Semester deleted successfully!');
       } catch (err) {
         console.error('Error deleting semester:', err);
@@ -103,9 +111,13 @@ const Semesters: React.FC = () => {
     try {
       if (isEditing) {
         await updateSemester(semesterData).unwrap();
+        setLocalSemesters(prevSemesters => prevSemesters.map(semester =>
+          semester.id === semesterData.id ? semesterData : semester
+        ));
         toast.success('Semester updated successfully!');
       } else {
-        await createSemester(semesterData).unwrap();
+        const newSemester = await createSemester(semesterData).unwrap();
+        setLocalSemesters(prevSemesters => [...prevSemesters, newSemester]);
         toast.success('Semester added successfully!');
       }
       handleCloseModal();
@@ -194,6 +206,7 @@ const Semesters: React.FC = () => {
           </div>
         </div>
       )}
+      <ToastNotifications /> 
     </AdminLayout>
   );
 };
