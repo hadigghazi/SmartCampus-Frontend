@@ -38,6 +38,22 @@ export const campusesApi = createApi({
     getMajorsByFacultyAndCampus: builder.query({
       query: ({ facultyId, campusId }) => `majors/${facultyId}/campuses/${campusId}`,
     }),
+    getCampusesByFaculty: builder.query<Campus[], number>({
+      query: (facultyId) => `/faculties/${facultyId}/campuses`,
+    }),
+    attachFacultyToCampus: builder.mutation<void, { campusId: number; facultyId: number }>({
+      query: ({ campusId, facultyId }) => ({
+        url: `/campuses/${campusId}/faculties/attach`,
+        method: 'POST',
+        body: { facultyId },
+      }),
+    }),
+    detachFacultyFromCampus: builder.mutation<void, { campusId: number; facultyId: number }>({
+      query: ({ campusId, facultyId }) => ({
+        url: `/campuses/${campusId}/faculties/${facultyId}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -48,5 +64,8 @@ export const {
   useUpdateCampusMutation,
   useDeleteCampusMutation,
   useGetFacultiesByCampusQuery,
-  useGetMajorsByFacultyAndCampusQuery
+  useGetMajorsByFacultyAndCampusQuery,
+  useGetCampusesByFacultyQuery,
+  useAttachFacultyToCampusMutation,
+  useDetachFacultyFromCampusMutation
 } = campusesApi;

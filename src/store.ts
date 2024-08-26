@@ -50,7 +50,6 @@ export const store = configureStore({
     [adminsApi.reducerPath]: adminsApi.reducer,
     [coursePrerequisitesApi.reducerPath]: coursePrerequisitesApi.reducer,
     [registrationsApi.reducerPath]: registrationsApi.reducer,
-    [facultiesCampusesApi.reducerPath]: facultiesCampusesApi.reducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -78,7 +77,6 @@ export const store = configureStore({
   .concat(adminsApi.middleware)
   .concat(coursePrerequisitesApi.middleware)
   .concat(registrationsApi.middleware)
-  .concat(facultiesCampusesApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;
