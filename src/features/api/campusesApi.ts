@@ -41,11 +41,11 @@ export const campusesApi = createApi({
     getCampusesByFaculty: builder.query<Campus[], number>({
       query: (facultyId) => `/faculties/${facultyId}/campuses`,
     }),
-    attachFacultyToCampus: builder.mutation<void, { campusId: number; facultyId: number }>({
-      query: ({ campusId, facultyId }) => ({
+    attachFacultyToCampus: builder.mutation<void, { campusId: number; faculty_id: number }>({
+      query: ({ campusId, faculty_id }) => ({
         url: `/campuses/${campusId}/faculties/attach`,
         method: 'POST',
-        body: { facultyId },
+        body: { faculty_id },
       }),
     }),
     detachFacultyFromCampus: builder.mutation<void, { campusId: number; facultyId: number }>({
