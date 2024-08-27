@@ -1,5 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { useGetStudentsWithUserDetailsQuery, useDeleteStudentMutation, useUpdateStudentMutation } from '../../../features/api/studentsApi';
+import { useGetMajorsQuery } from '../../../features/api/majorsApi'; // Import the majors query
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../AdminLayout';
 import styles from './Students.module.css';
@@ -25,6 +26,7 @@ type Student = {
   transportation: number;
   dorm_residency: number;
   emergency_contact_id: number;
+  major_id?: number; // Add major_id to student type
   created_at: string;
   updated_at: string;
   deleted_at: string | null;
@@ -38,6 +40,7 @@ type Student = {
 
 const Students: React.FC = () => {
   const { data: studentsData, isLoading, error } = useGetStudentsWithUserDetailsQuery({});
+  const { data: majorsData } = useGetMajorsQuery(); // Fetch majors
   const [deleteStudent] = useDeleteStudentMutation();
   const [updateStudent] = useUpdateStudentMutation();
   const [students, setStudents] = useState<Student[]>([]);
@@ -55,6 +58,7 @@ const Students: React.FC = () => {
     transportation: 0,
     dorm_residency: 0,
     emergency_contact_id: 0,
+    major_id: undefined, // Add major_id to editedStudent
   });
   const navigate = useNavigate();
 
@@ -75,6 +79,7 @@ const Students: React.FC = () => {
         transportation: selectedStudent.transportation,
         dorm_residency: selectedStudent.dorm_residency,
         emergency_contact_id: selectedStudent.emergency_contact_id,
+        major_id: selectedStudent.major_id, // Include major_id
       });
     }
   }, [selectedStudent]);
@@ -147,6 +152,7 @@ const Students: React.FC = () => {
       }
     }
   };
+
   return (
     <AdminLayout>
       <div className={styles.container}>
@@ -178,102 +184,113 @@ const Students: React.FC = () => {
       </div>
 
       {isEditModalOpen && (
-  <div className={styles.modalOverlay}>
-    <div className={styles.modalContent}>
-      <h2 className={styles.headingPrimary}>Edit Student</h2>
-      <form className={styles.form}>
-        <div className={styles.formGroup}>
-          <label>Civil Status Number</label>
-          <input
-            type="text"
-            value={editedStudent.civil_status_number}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setEditedStudent({ ...editedStudent, civil_status_number: e.target.value })
-            }
-          />
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContent}>
+            <h2 className={styles.headingPrimary}>Edit Student</h2>
+            <form className={styles.form}>
+              <div className={styles.formGroup}>
+                <label>Civil Status Number</label>
+                <input
+                  type="text"
+                  value={editedStudent.civil_status_number}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setEditedStudent({ ...editedStudent, civil_status_number: e.target.value })
+                  }
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Visa Status</label>
+                <input
+                  type="text"
+                  value={editedStudent.visa_status}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setEditedStudent({ ...editedStudent, visa_status: e.target.value })
+                  }
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Native Language</label>
+                <input
+                  type="text"
+                  value={editedStudent.native_language}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setEditedStudent({ ...editedStudent, native_language: e.target.value })
+                  }
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Secondary Language</label>
+                <input
+                  type="text"
+                  value={editedStudent.secondary_language}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setEditedStudent({ ...editedStudent, secondary_language: e.target.value })
+                  }
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Additional Information</label>
+                <textarea
+                  value={editedStudent.additional_info}
+                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                    setEditedStudent({ ...editedStudent, additional_info: e.target.value })
+                  }
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Transportation</label>
+                <input
+                  type="number"
+                  value={editedStudent.transportation}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setEditedStudent({ ...editedStudent, transportation: Number(e.target.value) })
+                  }
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Dorm Residency</label>
+                <input
+                  type="number"
+                  value={editedStudent.dorm_residency}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setEditedStudent({ ...editedStudent, dorm_residency: Number(e.target.value) })
+                  }
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Emergency Contact ID</label>
+                <input
+                  type="number"
+                  value={editedStudent.emergency_contact_id}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setEditedStudent({ ...editedStudent, emergency_contact_id: Number(e.target.value) })
+                  }
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Major</label>
+                <select
+                  value={editedStudent.major_id || ''}
+                  onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                    setEditedStudent({ ...editedStudent, major_id: Number(e.target.value) })
+                  }
+                >
+                  <option value="">Select Major</option>
+                  {majorsData && majorsData.map((major) => (
+                    <option key={major.id} value={major.id}>
+                      {major.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.modalActions}>
+                <button type="button" onClick={() => setIsEditModalOpen(false)}>Cancel</button>
+                <button type="button" onClick={handleSaveEdit}>Save</button>
+              </div>
+            </form>
+          </div>
         </div>
-        <div className={styles.formGroup}>
-          <label>Visa Status</label>
-          <input
-            type="text"
-            value={editedStudent.visa_status}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setEditedStudent({ ...editedStudent, visa_status: e.target.value })
-            }
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label>Native Language</label>
-          <input
-            type="text"
-            value={editedStudent.native_language}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setEditedStudent({ ...editedStudent, native_language: e.target.value })
-            }
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label>Secondary Language</label>
-          <input
-            type="text"
-            value={editedStudent.secondary_language}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setEditedStudent({ ...editedStudent, secondary_language: e.target.value })
-            }
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label>Additional Info</label>
-          <textarea
-            value={editedStudent.additional_info}
-            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-              setEditedStudent({ ...editedStudent, additional_info: e.target.value })
-            }
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label>Transportation</label>
-          <input
-            type="number"
-            value={editedStudent.transportation}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setEditedStudent({ ...editedStudent, transportation: Number(e.target.value) })
-            }
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label>Dorm Residency</label>
-          <input
-            type="number"
-            value={editedStudent.dorm_residency}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setEditedStudent({ ...editedStudent, dorm_residency: Number(e.target.value) })
-            }
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label>Emergency Contact ID</label>
-          <input
-            type="number"
-            value={editedStudent.emergency_contact_id}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setEditedStudent({ ...editedStudent, emergency_contact_id: Number(e.target.value) })
-            }
-          />
-        </div>
-        <div className={styles.modalActions}>
-          <button type="button" onClick={handleSaveEdit} className={styles.acceptBtn}>
-            Save
-          </button>
-          <button type="button" onClick={() => setIsEditModalOpen(false)} className={styles.rejectBtn}>
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-)}
-
+      )}
 
       <ToastNotifications />
     </AdminLayout>
