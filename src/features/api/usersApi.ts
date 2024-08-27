@@ -30,7 +30,7 @@ export const usersApi = createApi({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updatedUser),  // Ensure body is JSON stringified if required by server
+        body: JSON.stringify(updatedUser),
       }),
     }),
     
