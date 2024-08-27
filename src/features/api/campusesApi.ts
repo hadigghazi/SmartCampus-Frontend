@@ -56,7 +56,7 @@ export const campusesApi = createApi({
     }),
     attachMajorToFacultyCampus: builder.mutation<void, { major_id: number, faculty_campus_id: number }>({
       query: (body) => ({
-        url: '/majors/attach',
+        url: '/attach-major',
         method: 'POST',
         body,
       }),
@@ -64,10 +64,13 @@ export const campusesApi = createApi({
     
     detachMajorFromFacultyCampus: builder.mutation<void, { major_id: number, faculty_campus_id: number }>({
       query: (body) => ({
-        url: '/majors/detach',
+        url: '/detach-major',
         method: 'POST',
         body,
       }),
+    }),
+    getFacultyCampusId: builder.query<any, { facultyId: number; campusId: number }>({
+      query: ({ facultyId, campusId }) => `faculty-campus-id/${facultyId}/${campusId}`,
     }),
   }),
 });
@@ -84,5 +87,6 @@ export const {
   useAttachFacultyToCampusMutation,
   useDetachFacultyFromCampusMutation,
   useAttachMajorToFacultyCampusMutation,
-  useDetachMajorFromFacultyCampusMutation
+  useDetachMajorFromFacultyCampusMutation,
+  useGetFacultyCampusIdQuery
 } = campusesApi;
