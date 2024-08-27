@@ -112,7 +112,7 @@ const CampusDetails: React.FC = () => {
   ];
 
   const availableFaculties = allFaculties?.filter(
-    faculty => !faculties.some(f => f.id === faculty.id)
+    faculty => !faculties.some(f => f?.id === faculty?.id)
   );
 
   if (campusLoading || facultiesLoading) return <p>Loading...</p>;
@@ -124,10 +124,12 @@ const CampusDetails: React.FC = () => {
         <div className={styles.content}>
           <h1 className={styles.headingPrimary}>{campus?.name}</h1>
           <p className={styles.text}>{campus?.description}</p>
-
-          <h2 className={styles.headingSecondary} style={{ marginTop: '7rem' }}>Available Faculties</h2>
-          <button onClick={handleOpenModal}>Add Faculty</button>
-
+          <div className={styles.header_container}>
+          <h3 className={styles.headingTertiary}>Available Faculties</h3>
+          <button onClick={handleOpenModal} className={styles.addButton}>
+            Add Faculty
+          </button>
+        </div>
           <div style={{ display: "flex", gap: "1.5rem", marginTop: '1rem' }}>
             <SearchInput value={searchTerm} onChange={handleSearch} />
             <EntriesPerPage value={entriesPerPage} onChange={handleEntriesPerPageChange} />
@@ -152,8 +154,8 @@ const CampusDetails: React.FC = () => {
 
       {isModalOpen && (
         <div className={styles.modalOverlay}>
-          <div className={styles.modal}>
-            <h2>Add Faculty</h2>
+          <div className={styles.modalContent}>
+            <h2  className={styles.headingSecondary}>Add Faculty</h2>
             <select
               value={selectedFacultyId || ''}
               onChange={(e) => setSelectedFacultyId(Number(e.target.value))}
@@ -163,8 +165,10 @@ const CampusDetails: React.FC = () => {
                 <option key={faculty.id} value={faculty.id}>{faculty.name}</option>
               ))}
             </select>
-            <button onClick={handleAttachFaculty}>Add</button>
-            <button onClick={handleCloseModal}>Close</button>
+            <div className={styles.btnContainer}>
+            <button onClick={handleAttachFaculty} className={styles.acceptBtn}>Add</button>
+            <button onClick={handleCloseModal} className={styles.rejectBtn}>Close</button>
+            </div>
           </div>
         </div>
       )}
