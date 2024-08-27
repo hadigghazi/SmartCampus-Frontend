@@ -5,16 +5,22 @@ import Pagination from '../../../components/Pagination/Pagination';
 import { useGetUserByIdQuery } from '../../../features/api/usersApi';
 import { useGetStudentByUserIdQuery } from '../../../features/api/studentsApi';
 import { useGetAnnouncementsQuery } from '../../../features/api/announcementsApi';
+import styles from './StudentDashboard.module.css';
 
 const Dashboard: React.FC = () => {
-  const { data: user } = useGetUserByIdQuery(1); 
-  const { data: student } = useGetStudentByUserIdQuery(1); 
+  const storedUser = localStorage.getItem('user');
+  const user_storage = storedUser ? JSON.parse(storedUser) : null;
+  const userId = user_storage.id;
+  const { data: user } = useGetUserByIdQuery(userId);
+  const { data: student } = useGetStudentByUserIdQuery(userId);
   const { data: announcements } = useGetAnnouncementsQuery();
 
   return (
-    <div className="dashboardContainer">
-      {user && student && <ProfileCard user={user} student={student} />}
-      <div className="announcementsSection">
+    <div className={styles.dashboardContainer}>
+      <div className={styles.profileSection}>
+        {user && student && <ProfileCard user={user} student={student} />}
+      </div>
+      <div className={styles.announcementsSection}>
         {announcements && <AnnouncementsList announcements={announcements} />}
         <Pagination
           currentPage={1}

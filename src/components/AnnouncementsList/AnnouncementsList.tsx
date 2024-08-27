@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../styles/AnnouncementsList.module.css';
+import styles from './AnnouncementsList.module.css';
 import { Announcement } from '../../features/api/types';
 
 interface AnnouncementsListProps {

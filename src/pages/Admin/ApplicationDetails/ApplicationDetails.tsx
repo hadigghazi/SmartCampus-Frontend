@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetUserByIdQuery, useUpdateUserMutation } from '../../../features/api/usersApi';
 import { useCreateStudentMutation, useGetStudentByUserIdQuery } from '../../../features/api/studentsApi';
+import { useGetMajorsQuery } from '../../../features/api/majorsApi'; // Import the useGetMajorsQuery hook
 import AdminLayout from '../AdminLayout';
 import styles from './ApplicationDetails.module.css'; 
 import defaultProfile from '../../../assets/images/profileImage.jpg';
@@ -15,6 +16,7 @@ const ApplicationDetails: React.FC = () => {
 
   const { data: user, isLoading, error } = useGetUserByIdQuery(userId);
   const { data: student } = useGetStudentByUserIdQuery(userId);
+  const { data: majors } = useGetMajorsQuery(); // Fetch majors
   const [updateUserStatus] = useUpdateUserMutation();
   const [createStudent] = useCreateStudentMutation();
 
@@ -31,6 +33,7 @@ const ApplicationDetails: React.FC = () => {
     additional_info: '', 
     transportation: false,
     dorm_residency: false,
+    major_id: null,  // Add major_id to the state
     created_at: '', 
     updated_at: '', 
     deleted_at: '', 
@@ -45,6 +48,7 @@ const ApplicationDetails: React.FC = () => {
         visa_status: student.visa_status || '', 
         current_semester_id: student.current_semester_id || null, 
         additional_info: student.additional_info || '', 
+        major_id: student.major_id || null, // Set major_id from student data
         created_at: student.created_at || '', 
         updated_at: student.updated_at || '', 
         deleted_at: student.deleted_at || '', 
@@ -52,7 +56,7 @@ const ApplicationDetails: React.FC = () => {
     }
   }, [user, student, userId]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type, checked } = e.target;
 
     setFormData((prev) => ({
@@ -60,8 +64,8 @@ const ApplicationDetails: React.FC = () => {
       [name]: type === 'checkbox' 
         ? checked 
         : value === '' 
-          ? null  // Use null instead of an empty string for optional fields
-          : name === 'current_semester_id' 
+          ? null 
+          : name === 'current_semester_id' || name === 'major_id'
             ? parseInt(value, 10) 
             : value,
     }));
@@ -75,7 +79,9 @@ const ApplicationDetails: React.FC = () => {
         visa_status: formData.visa_status || null,
         current_semester_id: formData.current_semester_id || null,
         additional_info: formData.additional_info || null,
+        major_id: formData.major_id || null, 
       };
+      console.log('Form Data:', cleanFormData);
 
       const result = await Swal.fire({
         title: 'Are you sure?',
@@ -230,62 +236,75 @@ const ApplicationDetails: React.FC = () => {
                   </div>
 
                   <div className={styles.formGroup}>
-                    <label htmlFor="current_semester_id">Current Semester ID (optional):</label>
-                    <input
-                      type="number"
-                      id="current_semester_id"
-                      name="current_semester_id"
-                      value={formData.current_semester_id || ''}
-                      onChange={handleInputChange}
-                    />
+                    <label htmlFor="major_id">Major:</label>
+                    <select
+  id="major_id"
+  name="major_id"
+  value={formData.major_id || ''}
+  onChange={handleInputChange}
+  required
+>
+  <option value="">Select Major</option>
+  {majors?.map((major) => (
+    <option key={major.id} value={major.id}>
+      {major.name}
+    </option>
+  ))}
+</select>
                   </div>
 
                   <div className={styles.formGroup}>
                     <label htmlFor="additional_info">Additional Info (optional):</label>
-                    <input
-                      type="text"
+                    <textarea
                       id="additional_info"
                       name="additional_info"
                       value={formData.additional_info || ''}
                       onChange={handleInputChange}
+                      rows={4}
                     />
                   </div>
 
                   <div className={styles.formGroup}>
-                    <label htmlFor="transportation">Needs Transportation:</label>
-                    <input
-                      type="checkbox"
-                      id="transportation"
-                      name="transportation"
-                      checked={formData.transportation}
-                      onChange={handleInputChange}
-                    />
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="transportation"
+                        checked={formData.transportation}
+                        onChange={handleInputChange}
+                      />
+                      Need Transportation?
+                    </label>
                   </div>
 
                   <div className={styles.formGroup}>
-                    <label htmlFor="dorm_residency">Dorm Residency:</label>
-                    <input
-                      type="checkbox"
-                      id="dorm_residency"
-                      name="dorm_residency"
-                      checked={formData.dorm_residency}
-                      onChange={handleInputChange}
-                    />
-                  </div>      
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="dorm_residency"
+                        checked={formData.dorm_residency}
+                        onChange={handleInputChange}
+                      />
+                      Require Dorm Residency?
+                    </label>
+                  </div>
+
+                  <div className={styles.formActions}>
+                    <button type="button" className={styles.acceptButton} onClick={handleAccept}>
+                      Accept
+                    </button>
+                    <button type="button" className={styles.rejectButton} onClick={handleReject}>
+                      Reject
+                    </button>
+                  </div>
                 </form>
-                <div className={styles.buttons}>
-              <button onClick={handleAccept} className={styles.acceptBtn}>Accept Application</button>
-              <button onClick={handleReject} className={styles.rejectBtn}>Reject Application</button>
-            </div>
               </div>
             )}
           </div>
         ) : (
-          <p>No user data available.</p>
+          <p>User not found</p>
         )}
-
-        <ToastContainer />
       </div>
+      <ToastContainer />
     </AdminLayout>
   );
 };

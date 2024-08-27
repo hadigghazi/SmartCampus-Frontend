@@ -151,6 +151,7 @@ export type User = {
 export type Student = {
   id: number;
   user_id: number;
+  major_id: number;
   government_id: string;
   civil_status_number: string;
   passport_number?: string;

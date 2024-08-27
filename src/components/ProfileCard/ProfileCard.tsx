@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../ProfileCard.module.css';
+import styles from './ProfileCard.module.css';
 import { User, Student } from '../../features/api/types';
 import profileImage from '../../assets/images/profileImage.jpg';
 
@@ -21,9 +21,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, student }) => {
         <p>{student.id}</p>
         <p>{user.email}</p>
         <p>{user.phone_number}</p>
-        <p>{student.dorm_residency ? 'Dorm Residency' : 'Non-Dorm Residency'}</p>
-        <p>{student.native_language}</p>
-        <p>{student.secondary_language}</p>
       </div>
     </div>
   );

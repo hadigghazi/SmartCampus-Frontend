@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetStudentByIdQuery } from '../../../features/api/studentsApi';
 import { useGetUserByIdQuery } from '../../../features/api/usersApi';
 import { useGetRegistrationsByStudentQuery } from '../../../features/api/registrationsApi';
 import { useGetSemestersQuery } from '../../../features/api/semestersApi';
+import { useGetMajorsQuery } from '../../../features/api/majorsApi';
 import AdminLayout from '../AdminLayout';
 import Table from '../../../components/Table/Table';
 import styles from './StudentDetails.module.css';
@@ -18,6 +19,7 @@ const StudentDetails: React.FC = () => {
   const { data: user, isLoading: userLoading, error: userError } = useGetUserByIdQuery(userId || -1);
   const { data: registrations, isLoading: registrationsLoading, error: registrationsError } = useGetRegistrationsByStudentQuery(studentId);
   const { data: semesters, isLoading: semestersLoading, error: semestersError } = useGetSemestersQuery();
+  const { data: majors } = useGetMajorsQuery(); 
 
   const [selectedSemester, setSelectedSemester] = useState<string>('All');
 
@@ -31,6 +33,11 @@ const StudentDetails: React.FC = () => {
   const filteredRegistrations = registrations?.filter(reg => 
     selectedSemester === 'All' || reg.semester_name === selectedSemester
   );
+
+  const getMajorName = (majorId: number | null) => {
+    const major = majors?.find(major => major.id === majorId);
+    return major ? major.name : 'N/A';
+  };
 
   const columns = [
     { header: 'Course Code', accessor: 'course_code' },
@@ -77,6 +84,7 @@ const StudentDetails: React.FC = () => {
                 <p><strong>Native Language:</strong> {student.native_language}</p>
                 <p><strong>Secondary Language:</strong> {student.secondary_language}</p>
                 <p><strong>Current Semester ID:</strong> {student.current_semester_id || 'N/A'}</p>
+                <p><strong>Major:</strong> {getMajorName(student.major_id) || 'N/A'}</p> 
                 <p><strong>Additional Info:</strong> {student.additional_info || 'N/A'}</p>
                 <p><strong>Needs Transportation:</strong> {student.transportation ? 'Yes' : 'No'}</p>
                 <p><strong>Dorm Residency:</strong> {student.dorm_residency ? 'Yes' : 'No'}</p>
@@ -87,7 +95,7 @@ const StudentDetails: React.FC = () => {
             <div className={styles.registrationsContainer} style={{ marginTop: '4rem' }}>
               <h2 className={styles.headingSecondary}>Course Registrations</h2>
               <div className={styles.filters}>
-                <label htmlFor="semesterFilter"  className={styles.filtersText}>Semester:</label>
+                <label htmlFor="semesterFilter" className={styles.filtersText}>Semester:</label>
                 <select
                   id="semesterFilter"
                   className={styles.selectField}
