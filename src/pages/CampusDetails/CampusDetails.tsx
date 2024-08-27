@@ -57,9 +57,9 @@ const CampusDetails: React.FC = () => {
         {faculties && faculties.length > 0 ? (
           faculties.map((faculty) => (
             <FacultyAccordion
-              key={faculty.id}
-              facultyId={faculty.id}
-              facultyName={faculty.name}
+              key={faculty?.id}
+              facultyId={faculty?.id}
+              facultyName={faculty?.name}
               campusId={Number(id)}
             />
           ))

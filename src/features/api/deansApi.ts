@@ -35,6 +35,10 @@ export const deansApi = createApi({
     getDeansByCampus: builder.query<Dean[], number>({
         query: (campusId) => `deans/campus/${campusId}`,
       }),
+    getDeanByFacultyAndCampus: builder.query({
+        query: ({ facultyId, campusId }) => 
+          `deans/${facultyId}/${campusId}`,
+      }),
   }),
 });
 
@@ -45,4 +49,5 @@ export const {
   useUpdateDeanMutation,
   useDeleteDeanMutation,
   useGetDeansByCampusQuery,
+  useGetDeanByFacultyAndCampusQuery
 } = deansApi;

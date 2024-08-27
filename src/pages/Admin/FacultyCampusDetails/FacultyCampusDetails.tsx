@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useGetFacultyByIdQuery } from '../../../features/api/facultiesApi';
-import { useGetMajorsByFacultyAndCampusQuery, useAttachMajorToFacultyCampusMutation, useDetachMajorFromFacultyCampusMutation } from '../../../features/api/campusesApi';
+import {
+  useGetMajorsByFacultyAndCampusQuery,
+  useAttachMajorToFacultyCampusMutation,
+  useDetachMajorFromFacultyCampusMutation,
+  useGetFacultyCampusIdQuery,
+} from '../../../features/api/campusesApi';
 import { useGetMajorsByFacultyQuery } from '../../../features/api/majorsApi';
+import { useGetDeanByFacultyAndCampusQuery, useUpdateDeanMutation, useCreateDeanMutation } from '../../../features/api/deansApi';
 import AdminLayout from '../AdminLayout';
 import Table from '../../../components/Table/Table';
 import SearchInput from '../../../components/SearchInput/SearchInput';
 import Pagination from '../../../components/Pagination/Pagination';
 import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
+import DeanCard from '../../../components/DeanCard/DeanCard'; 
 import styles from '../CourseDetails/CourseDetails.module.css';
-import { Major } from '../../../features/api/types';
-import { useGetFacultyCampusIdQuery } from '../../../features/api/campusesApi';
+import profilePicture from "../../../assets/images/profileImage.jpg";
 
 const FacultyCampusDetails: React.FC = () => {
   const { campusId, id: facultyId } = useParams<{ campusId: string, id: string }>();
@@ -32,6 +38,13 @@ const FacultyCampusDetails: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedMajor, setSelectedMajor] = useState<number | ''>('');
 
+  const { data: dean, isLoading: deanLoading } = useGetDeanByFacultyAndCampusQuery({ facultyId: Number(facultyId), campusId: Number(campusId) });
+  const [updateDean] = useUpdateDeanMutation();
+  const [createDean] = useCreateDeanMutation();
+  const [isModalOpenDean, setModalOpenDean] = useState(false);
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+
   useEffect(() => {
     if (initialMajors) {
       const mappedMajors = initialMajors.map((major: any) => ({
@@ -47,6 +60,34 @@ const FacultyCampusDetails: React.FC = () => {
       setFacultyCampusId(facultyCampusData.faculty_campus_id);
     }
   }, [facultyCampusData]);
+
+  useEffect(() => {
+    if (dean) {
+      setName(dean.name);
+      setDescription(dean.role_description);
+    }
+  }, [dean]);
+
+  const handleEditDean = async () => {
+    if (dean) {
+      try {
+        await updateDean({ id: dean.id, name, role_description: description }).unwrap();
+        setModalOpenDean(false);
+      } catch (error) {
+        console.error("Failed to update dean:", error);
+      }
+    }
+  };
+
+  const handleAddDean = async () => {
+    try {
+      await createDean({ name, role_description: description, faculty_id: Number(facultyId), campus_id: Number(campusId) }).unwrap();
+      setModalOpenDean(false);
+    } catch (error) {
+      console.error("Failed to create dean:", error);
+    }
+  };
+
 
   const getAvailableMajors = () => {
     if (!availableMajors || !initialMajors) return [];
@@ -128,7 +169,7 @@ const FacultyCampusDetails: React.FC = () => {
     },
   ];
 
-  if (facultyLoading || majorsLoading) return <p>Loading...</p>;
+  if (facultyLoading || majorsLoading || deanLoading) return <p>Loading...</p>;
   if (facultyError || majorsError) return <p>Something went wrong!</p>;
 
   return (
@@ -160,7 +201,26 @@ const FacultyCampusDetails: React.FC = () => {
           ) : (
             <p>No majors available for this faculty on this campus</p>
           )}
+           <div className={styles.deanSection}>
+            {dean ? (
+              <>
+                <button onClick={() => setModalOpenDean(true)} className={styles.addButton} style={{marginTop: "4rem"}}>
+                  Edit Dean
+                </button>
+                <DeanCard
+                  image={profilePicture}
+                  name={dean.name}
+                  description={dean.role_description}
+                />
+              </>
+            ) : (
+              <button onClick={() => setModalOpenDean(true)} className={styles.addButton} style={{marginTop: "4rem"}}>
+                Add Dean
+              </button>
+            )}
+          </div>
         </div>
+        
       )}
 
       {isModalOpen && (
@@ -185,6 +245,39 @@ const FacultyCampusDetails: React.FC = () => {
           </div>
         </div>
       )}
+       {isModalOpenDean && (
+            <div className={styles.modalOverlay}>
+              <div className={styles.modalContent}>
+                <h2 className={styles.headingSecondary}>{dean ? 'Edit Dean' : 'Add Dean'}</h2>
+                <div className={styles.form}>
+                  <input
+                    type="text"
+                    placeholder="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className={styles.input}
+                  />
+                  <textarea
+                    placeholder="Role Description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className={styles.textarea}
+                  />
+                  <div className={styles.btnContainer}>
+                    <button
+                      onClick={dean ? handleEditDean : handleAddDean}
+                      className={styles.acceptBtn}
+                    >
+                      {dean ? 'Update' : 'Add'}
+                    </button>
+                    <button onClick={() => setModalOpen(false)} className={styles.rejectBtn}>
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
     </AdminLayout>
   );
 };
