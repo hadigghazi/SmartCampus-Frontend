@@ -38,6 +38,22 @@
     text-align: left;
   }
   
+  .summaryRow {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Metrophobic', sans-serif;
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    padding: 1rem;
+    border-top: 1px solid #ddd;
+    background-color: #f9f9f9;
+  }
+  
+  .summaryItem {
+    flex: 1;
+    text-align: center;
+  }
+  
 
   @media (max-width: 768px) {
     .container {

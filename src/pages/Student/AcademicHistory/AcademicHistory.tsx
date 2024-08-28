@@ -27,6 +27,23 @@ const AcademicHistory: React.FC = () => {
     return registrations?.filter(reg => reg.semester_id === semesterId) || [];
   };
 
+  const calculateSummary = (registrations: any[]) => {
+    const totalCourses = registrations.length;
+    const validCredits = registrations
+      .filter(reg => reg.credits !== 'N/A')
+      .map(reg => parseFloat(reg.credits));
+    const requiredCredits = validCredits.reduce((sum, credits) => sum + credits, 0);
+    const earnedCredits = registrations
+      .filter(reg => reg.status === 'Completed' && reg.credits !== 'N/A')
+      .reduce((sum, reg) => sum + parseFloat(reg.credits), 0);
+    const validGrades = registrations
+      .filter(reg => reg.grade !== 'N/A')
+      .map(reg => parseFloat(reg.grade));
+    const averageGrade = validGrades.reduce((sum, grade) => sum + grade, 0) / validGrades.length || 0;
+
+    return { totalCourses, requiredCredits, earnedCredits, averageGrade };
+  };
+
   return (
     <div className={styles.container}>
       <h2 className={styles.headingPrimary}>Academic History</h2>
@@ -38,6 +55,7 @@ const AcademicHistory: React.FC = () => {
 
       {semesters && semesters.map((semester) => {
         const filteredRegistrations = getFilteredRegistrations(semester.id);
+        const summary = calculateSummary(filteredRegistrations);
 
         return (
           <div key={semester.id} className={styles.semesterSection}>
@@ -48,6 +66,12 @@ const AcademicHistory: React.FC = () => {
               filteredRegistrations.length > 0 ? (
                 <div className={styles.tableWrapper}>
                   <Table columns={registrationColumns} data={filteredRegistrations} />
+                  <div className={styles.summaryRow}>
+                    <div className={styles.summaryItem}><strong>Total Courses:</strong> {summary.totalCourses}</div>
+                    <div className={styles.summaryItem}><strong>Required Credits:</strong> {summary.requiredCredits}</div>
+                    <div className={styles.summaryItem}><strong>Earned Credits:</strong> {summary.earnedCredits}</div>
+                    <div className={styles.summaryItem}><strong>Average Grade:</strong> {summary.averageGrade.toFixed(2)}</div>
+                  </div>
                 </div>
               ) : (
                 <p>No courses found for this semester.</p>
