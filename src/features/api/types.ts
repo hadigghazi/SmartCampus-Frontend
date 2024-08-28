@@ -315,3 +315,14 @@ export type FacultiesCampuses = {
   updated_at: string;
   deleted_at: string | null; 
 };
+
+export type Grade = {
+  id: number;
+  registration_id: number;
+  grade: number; 
+  letter_grade: string; 
+  gpa: number; 
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string | null; 
+};

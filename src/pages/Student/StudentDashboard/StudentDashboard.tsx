@@ -74,7 +74,7 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
       
-      <div className={styles.registrationsSection}>
+      <div className={styles.content}>
         <h2 className={styles.headingPrimary}>Course Registrations</h2>
         {filteredRegistrations && (
           <Table columns={columns} data={filteredRegistrations} />
