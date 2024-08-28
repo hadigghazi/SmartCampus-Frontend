@@ -6,9 +6,9 @@
     text-align: center;
   }
   .profilePicture {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
     margin-bottom: 15px;
   }
   .profileDetails h2 {
