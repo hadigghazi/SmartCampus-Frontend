@@ -58,7 +58,7 @@ const Students: React.FC = () => {
     transportation: 0,
     dorm_residency: 0,
     emergency_contact_id: 0,
-    major_id: undefined, // Add major_id to editedStudent
+    major_id: undefined,
   });
   const navigate = useNavigate();
 
@@ -79,7 +79,7 @@ const Students: React.FC = () => {
         transportation: selectedStudent.transportation,
         dorm_residency: selectedStudent.dorm_residency,
         emergency_contact_id: selectedStudent.emergency_contact_id,
-        major_id: selectedStudent.major_id, // Include major_id
+        major_id: selectedStudent.major_id, 
       });
     }
   }, [selectedStudent]);
