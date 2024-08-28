@@ -8,6 +8,7 @@ import { useGetAnnouncementsQuery } from '../../../features/api/announcementsApi
 import { useGetUserQuery } from '../../../features/api/authApi';
 import { useGetRegistrationsByStudentQuery } from '../../../features/api/registrationsApi';
 import { useGetCurrentSemesterQuery } from '../../../features/api/semestersApi';
+import { useGetExamDetailsQuery } from '../../../features/api/examsApi';
 import styles from './StudentDashboard.module.css';
 
 const Dashboard: React.FC = () => {
@@ -16,6 +17,7 @@ const Dashboard: React.FC = () => {
   const { data: announcements } = useGetAnnouncementsQuery();
   const { data: currentSemester } = useGetCurrentSemesterQuery();
   const { data: registrations } = useGetRegistrationsByStudentQuery(student?.id);
+  const { data: exams } = useGetExamDetailsQuery(student?.id);
 
   const [currentPage, setCurrentPage] = useState(1);
   const announcementsPerPage = 6;
@@ -41,15 +43,27 @@ const Dashboard: React.FC = () => {
     (registration) => registration.semester_id === currentSemester?.id
   );
 
-  const columns = [
-    { header: 'Semester', accessor: 'semester_name' },
-    { header: 'Course Code', accessor: 'course_code' },
+  const registrationColumns = [
+       { header: 'Semester', accessor: 'semester_name' },
+    { header: 'Code', accessor: 'course_code' },
     { header: 'Course Name', accessor: 'course_name' },
     { header: 'Instructor', accessor: 'instructor_name' },
     { header: 'Credits', accessor: 'credits' },
     { header: 'Status', accessor: 'status' },
-    { header: 'From Date', accessor: 'start_date' },
-    { header: 'To Date', accessor: 'end_date' }
+    { header: 'From', accessor: 'start_date' },
+    { header: 'To', accessor: 'end_date' },
+    { header: 'Grade', accessor: 'grade' }
+  ];
+
+  const examColumns = [
+    { header: 'Semester', accessor: 'semester_name' },
+    { header: 'Code', accessor: 'course_code' },
+    { header: 'Course Name', accessor: 'course_name' },
+    { header: 'Date', accessor: 'date' },
+    { header: 'Time', accessor: 'time' },
+    { header: 'Duration', accessor: 'duration' },
+    { header: 'Instructor', accessor: 'instructor_name' },
+    { header: 'Room', accessor: (exam) => `${exam.campus_name}, ${exam.block_name}, ${exam.room_number}` }
   ];
 
   return (
@@ -57,27 +71,42 @@ const Dashboard: React.FC = () => {
       <div className={styles.dashboardContainer}>
         <div className={styles.profileSection}>
           <h2 className={styles.headingSecondary}>Profile</h2>
-          {user && student && <ProfileCard user={user} student={student} />}
+          {user && student ? <ProfileCard user={user} student={student} /> : <p>Loading profile...</p>}
         </div>
         <div className={styles.announcementsSection}>
           <h2 className={styles.headingSecondary}>Announcements</h2>
           <div className={styles.announcementsList}>
-            {currentAnnouncements && <AnnouncementsList announcements={currentAnnouncements} />}
-            {totalPages > 1 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-              />
+            {announcements ? (
+              <>
+                <AnnouncementsList announcements={currentAnnouncements} />
+                {totalPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                  />
+                )}
+              </>
+            ) : (
+              <p>Loading announcements...</p>
             )}
           </div>
         </div>
       </div>
-      
+
       <div className={styles.content}>
         <h2 className={styles.headingPrimary}>Course Registrations</h2>
-        {filteredRegistrations && (
-          <Table columns={columns} data={filteredRegistrations} />
+        {filteredRegistrations ? (
+          <Table columns={registrationColumns} data={filteredRegistrations} />
+        ) : (
+          <p>Loading registrations...</p>
+        )}
+
+        <h2 className={styles.headingPrimary}>Exams</h2>
+        {exams ? (
+          <Table columns={examColumns} data={exams} />
+        ) : (
+          <p>Loading exam details...</p>
         )}
       </div>
     </div>

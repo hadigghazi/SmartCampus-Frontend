@@ -16,7 +16,7 @@ export const examsApi = createApi({
       query: (id) => `/exams/${id}`,
     }),
     getExamDetails: builder.query<Exam, number>({
-        query: (id) => `/exams/detsils/${id}`,
+        query: (id) => `/exams/details/${id}`,
       }),
     createExam: builder.mutation<Exam, Partial<Exam>>({
       query: (exam) => ({
@@ -38,18 +38,6 @@ export const examsApi = createApi({
         method: 'DELETE',
       }),
     }),
-    restoreExam: builder.mutation<Exam, number>({
-      query: (id) => ({
-        url: `/exams/${id}/restore`,
-        method: 'POST',
-      }),
-    }),
-    forceDeleteExam: builder.mutation<void, number>({
-      query: (id) => ({
-        url: `/exams/${id}/force-delete`,
-        method: 'DELETE',
-      }),
-    }),
   }),
 });
 
@@ -59,8 +47,7 @@ export const {
   useCreateExamMutation,
   useUpdateExamMutation,
   useDeleteExamMutation,
-  useRestoreExamMutation,
-  useForceDeleteExamMutation,
   useGetExamDetailsQuery,
-  useGetExamsDetailsQuery
+  useGetExamsDetailsQuery,
+  useLazyGetExamDetailsQuery
 } = examsApi;
