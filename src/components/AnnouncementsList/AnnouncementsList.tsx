@@ -9,7 +9,6 @@ interface AnnouncementsListProps {
 const AnnouncementsList: React.FC<AnnouncementsListProps> = ({ announcements }) => {
   return (
     <div className={styles.announcementsContainer}>
-      <h2>Announcements</h2>
       {announcements.map((announcement) => (
         <div key={announcement.id} className={styles.announcementItem}>
           {announcement.title}

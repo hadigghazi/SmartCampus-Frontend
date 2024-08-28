@@ -2,14 +2,21 @@
     border-radius: 10px;
     padding: 20px;
     background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
+  
   .announcementItem {
     background-color: #0A497E;
     color: white;
     padding: 10px;
     border-radius: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     text-align: center;
+    min-height: 4rem;
+    margin: 1rem auto;
+    width: 90%;
+    
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
   }
   

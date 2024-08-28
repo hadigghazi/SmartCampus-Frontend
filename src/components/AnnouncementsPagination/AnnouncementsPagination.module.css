@@ -1,7 +1,7 @@
 .pagination {
     display: flex;
-    justify-content: center;
-    margin-top: 20px;
+    justify-content: flex-start;
+    margin-left: 4rem;
   }
   .pagination button {
     background-color: #0A497E;
@@ -16,4 +16,11 @@
   }
   .pagination button:disabled {
     background-color: #ccc;
+  }
+
+  @media (max-width: 480px) {
+    .pagination {
+        margin-left: 0px;
+       align-self: center;
+      }
   }

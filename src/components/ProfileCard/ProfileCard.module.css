@@ -2,7 +2,6 @@
     border-radius: 10px;
     padding: 20px;
     background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
   }
   .profilePicture {
@@ -12,7 +11,26 @@
     margin-bottom: 15px;
   }
   .profileDetails h2 {
-    font-size: 24px;
+    font-size: 20px;
+    color: var(--primary-color);
     margin-bottom: 10px;
+    margin-top: 10px;
+  }
+
+  .profileDetails p{
+    color: var(--primary-color);
+    margin-top: 30px;
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    .profileDetails h2 {
+        font-size: 16px;
+      }  
+      
+      .profileDetails p{
+        font-size: 12px;
+        margin-top: 10px;
+      }
   }
   
