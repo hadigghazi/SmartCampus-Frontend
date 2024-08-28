@@ -37,6 +37,9 @@ export const semestersApi = createApi({
     getCurrentSemester: builder.query<Semester, void>({
       query: () => `/semester/current`,
     }),
+    getSemestersByStudent: builder.query({
+      query: (studentId: number) => `semesters_by_student/${studentId}`,
+    }),
   }),
 });
 
@@ -46,5 +49,6 @@ export const {
   useCreateSemesterMutation,
   useUpdateSemesterMutation,
   useDeleteSemesterMutation,
-  useGetCurrentSemesterQuery
+  useGetCurrentSemesterQuery,
+  useGetSemestersByStudentQuery
 } = semestersApi;
