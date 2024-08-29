@@ -22,10 +22,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, student }) => {
       />
       <div className={styles.profileDetails}>
         <h2>{`${user.first_name} ${user.middle_name} ${user.last_name}`}</h2>
-        <p>Student ID: {student.id}</p>
+        <p>ID: {student.id}</p>
         <p>{user.email}</p>
         <p>{user.phone_number}</p>
-        {major && <p>{major.name} - {student.secondary_language}</p>}
+        {major && <p>{major.name} - {student?.secondary_language}</p>}
         {currentSemester && <p>{currentSemester.name}</p>}
       </div>
     </div>

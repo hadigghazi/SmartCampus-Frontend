@@ -15,7 +15,10 @@ export const examsApi = createApi({
     getExamById: builder.query<Exam, number>({
       query: (id) => `/exams/${id}`,
     }),
-    getExamDetails: builder.query<Exam, number>({
+    getExamInstructorDetails: builder.query<Exam, number>({
+        query: (id) => `/exams/instructor-details/${id}`,
+      }),
+      getExamDetails: builder.query<Exam, number>({
         query: (id) => `/exams/details/${id}`,
       }),
     createExam: builder.mutation<Exam, Partial<Exam>>({
@@ -49,5 +52,6 @@ export const {
   useDeleteExamMutation,
   useGetExamDetailsQuery,
   useGetExamsDetailsQuery,
-  useLazyGetExamDetailsQuery
+  useLazyGetExamDetailsQuery,
+  useGetExamInstructorDetailsQuery
 } = examsApi;
