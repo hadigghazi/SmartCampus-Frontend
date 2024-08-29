@@ -29,18 +29,27 @@
     background: rgba(189, 169, 169, 0.2);
   }
   
-  .majorName {
-    font-size: 1.6rem; 
-    font-weight: 500;
-    letter-spacing: .1rem;
+  .textContainer {
     position: absolute;
-    bottom: 50px;
-    text-align: center;
+    width: 100%;
+    bottom: 30px;
+  }
+  .courseCode {
+    margin-left: 1.5rem;
+    font-size: 1.6rem; 
+  }
+  .courseName {
+    margin-left: 1.5rem;
+    font-size: 1.3rem; 
+  }
+  .courseSemester {
+    margin-left: 1.5rem;
+    font-size: .8rem; 
   }
   
-  @media (max-width: 340px) {
+  @media (max-width: 360px) {
     .card {
-      width: 300px;
+      width: 260px;
     }
   }
   
