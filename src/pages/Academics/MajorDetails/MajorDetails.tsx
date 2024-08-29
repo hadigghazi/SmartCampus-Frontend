@@ -28,9 +28,7 @@ const MajorDetails: React.FC = () => {
             courses.map(course => (
               <div key={course.id} className={styles.courseCard}>
                 <Link to={`/courses/info/${course.id}`} className={styles.courseLink}>
-                  <h3 className={styles.courseTitle}>{course.name}</h3>
-                  <p className={styles.courseCode}>Code: {course.code}</p>
-                  <p className={styles.courseCredits}>Credits: {course.credits}</p>
+                  <h3 className={styles.courseTitle}>{course.code} - {course.name}</h3>
                 </Link>
               </div>
             ))

@@ -68,6 +68,7 @@ const CourseDetailsStudent = lazy(() => import('./pages/Student/CourseDetails/Co
 
 const InstructorDashboard = lazy(() => import('./pages/Instructor/InstructorDashboard/InstructorDashboard'));
 const InstructorHistory = lazy(() => import('./pages/Instructor/InstructorHistory/InstructorHistory'));
+const CoursesInstructor = lazy(() => import('./pages/Instructor/Courses/Courses'));
 
 const AIMajorSuggestor = lazy(() => import('./pages/AIMajorSuggestor/AIMajorSuggestor'));
 const InstructorPage = lazy(() => import('./pages/InstructorPage/InstructorPage')); 
@@ -339,6 +340,10 @@ const routes: CustomRouteProps[] = [
   {
     path: '/instructor-history',
     component: InstructorHistory,
+  },
+  {
+    path: '/instructor-courses',
+    component: CoursesInstructor,
   },
 ];
 
