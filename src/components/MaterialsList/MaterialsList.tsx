@@ -29,7 +29,7 @@ const MaterialsList: React.FC<MaterialsListProps> = ({
 }) => {
   return (
     <div>
-      <h1 className={styles.headingSecondary}>- Course Materials</h1>
+      <h1 className={styles.headingSecondary}>- Course Material</h1>
 
       {(onFileChange || onUpload) && (
         <form onSubmit={onUpload} className={styles.uploadForm}>

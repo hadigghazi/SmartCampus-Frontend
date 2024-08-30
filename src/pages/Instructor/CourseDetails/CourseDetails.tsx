@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useFetchCourseMaterialsByInstructorQuery, useAddCourseMaterialMutation, useDeleteCourseMaterialMutation } from '../../../features/api/courseMaterialsApi';
 import { useFetchAssignmentsByInstructorQuery, useAddAssignmentMutation, useDeleteAssignmentMutation } from '../../../features/api/assignmentsApi';
 import MaterialsList from '../../../components/MaterialsList/MaterialsList';
+import AssignmentsList from '../../../components/AssignmentsList/AssignmentsList';
 import styles from './CourseDetails.module.css';
 
 const CourseDetailsPage: React.FC = () => {
@@ -124,28 +125,12 @@ const CourseDetailsPage: React.FC = () => {
         <button type="submit">Add Assignment</button>
       </form>
 
-      <div className={styles.assignmentsList}>
-        {assignments.length > 0 ? (
-          assignments.map((assignment) => (
-            <div className={styles.assignmentCard} key={assignment.id}>
-              <div className={styles.iconContainer}>
-                <i className={`fas fa-clipboard ${styles.clipboardIcon}`}></i>
-              </div>
-              <div className={styles.contentContainer}>
-                <p className={styles.title}>{assignment.title}</p>
-                <p className={styles.dueDate}>
-                  Assigned: {new Date(assignment.created_at).toLocaleDateString()}, Due: {new Date(assignment.due_date).toLocaleDateString()}
-                </p>
-              </div>
-              <button onClick={() => handleDeleteAssignment(assignment.id)} className={styles.deleteButton}>
-                <i className="fas fa-trash-alt"></i>
-              </button>
-            </div>
-          ))
-        ) : (
-          <p>No assignments available.</p>
-        )}
-      </div>
+      <AssignmentsList 
+        assignments={assignments}
+        courseInstructorId={courseInstructorId}
+        onDelete={handleDeleteAssignment}
+        isInstructor={true}
+      />
     </div>
   );
 };
