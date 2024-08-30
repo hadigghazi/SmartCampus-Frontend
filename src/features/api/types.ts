@@ -339,3 +339,14 @@ export type CourseMaterial = {
   updated_at: string; 
   deleted_at?: string; 
 };
+
+export type Assignment = {
+  id: number;
+  course_instructor_id: number;
+  title: string;
+  description: string;
+  due_date: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}

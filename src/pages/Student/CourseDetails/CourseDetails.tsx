@@ -1,9 +1,16 @@
-import React from 'react'
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useFetchCourseMaterialsByInstructorQuery } from '../../../features/api/courseMaterialsApi';
+import MaterialsList from '../../../components/MaterialsList/MaterialsList';
 
-const CourseDetails = () => {
+const StudentCourseDetailsPage: React.FC = () => {
+  const { courseInstructorId } = useParams<{ courseInstructorId: string }>();
+  const { data: materials } = useFetchCourseMaterialsByInstructorQuery(Number(courseInstructorId));
   return (
-    <div>CourseDetails</div>
-  )
-}
+    <MaterialsList
+      materials={materials}
+    />
+  );
+};
 
-export default CourseDetails
+export default StudentCourseDetailsPage;

@@ -331,7 +331,7 @@ const routes: CustomRouteProps[] = [
     component: CoursesStudent,
   },
   {
-    path: '/courses/:courseInsctructorId',
+    path: '/courses/:courseInstructorId',
     component: CourseDetailsStudent,
   },
   {

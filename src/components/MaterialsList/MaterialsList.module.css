@@ -1,0 +1,159 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .headingPrimary {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-family: 'Merriweather', serif;
+  }
+
+  .headingSecondary {
+    color: var(--primary-color); 
+    font-size: 1.5rem; 
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    margin-top: 70px;
+    margin-bottom: 20px;
+}
+  
+  .uploadForm {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 10px 20px;
+    color: var(--primary-color);
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    align-items: center;
+  }
+  
+  .uploadForm input[type="text"],
+  .uploadForm textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    height: 50px;
+    flex: 1;
+  }
+  
+  .uploadForm input[type="file"] {
+    padding: 10px;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .uploadForm button {
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .materialsList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .materialCard {
+    width: 200px;
+    min-height: 200px;
+    padding: 20px;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    text-align: left;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: white;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-top: 40px;
+  }
+  
+  .title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    margin-left: 10px; 
+    flex: 1;
+  }
+  
+  .fileIcon {
+    font-size: 2rem;
+    color: white;
+  }
+  
+  .description {
+    font-size: 0.9rem;
+    color: white;
+    margin-top: 15px; 
+    font-family: 'Metrophobic', sans-serif;
+  }
+  
+  .materialCard a {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .materialCard a:hover {
+    transform: scale(1.2);
+  }
+
+  .deleteButton {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .deleteButton:hover {
+    color: #ff4d4d; 
+  }
+  
+  
+  @media (max-width: 768px) {
+    .materialsList {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .materialCard {
+      width: 100%;
+      height: auto;
+    }
+  
+    .uploadForm {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+  

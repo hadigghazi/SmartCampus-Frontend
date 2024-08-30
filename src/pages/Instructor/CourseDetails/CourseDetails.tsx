@@ -1,37 +1,38 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useFetchCourseMaterialsByInstructorQuery, useAddCourseMaterialMutation, useDeleteCourseMaterialMutation } from '../../../features/api/courseMaterialsApi';
+import { useFetchAssignmentsByInstructorQuery, useAddAssignmentMutation, useDeleteAssignmentMutation } from '../../../features/api/assignmentsApi';
+import MaterialsList from '../../../components/MaterialsList/MaterialsList';
 import styles from './CourseDetails.module.css';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-const apiUrl = import.meta.env.VITE_BASE_URL;
 
 const CourseDetailsPage: React.FC = () => {
   const { courseInstructorId } = useParams<{ courseInstructorId: string }>();
-  const { data: materials = [], refetch } = useFetchCourseMaterialsByInstructorQuery(Number(courseInstructorId));
+  const { data: materials = [], refetch: refetchMaterials } = useFetchCourseMaterialsByInstructorQuery(Number(courseInstructorId));
+  const { data: assignments = [], refetch: refetchAssignments } = useFetchAssignmentsByInstructorQuery(Number(courseInstructorId));
+  
   const [addMaterial] = useAddCourseMaterialMutation();
+  const [deleteMaterial] = useDeleteCourseMaterialMutation();
+  const [addAssignment] = useAddAssignmentMutation();
+  const [deleteAssignment] = useDeleteAssignmentMutation();
+
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [deleteMaterial] = useDeleteCourseMaterialMutation();
+  const [assignmentTitle, setAssignmentTitle] = useState('');
+  const [assignmentDescription, setAssignmentDescription] = useState('');
+  const [dueDate, setDueDate] = useState('');
 
-  const handleDelete = async (materialId: number) => {
+  const handleDeleteMaterial = async (materialId: number) => {
     try {
       await deleteMaterial(materialId).unwrap();
-      refetch(); 
+      refetchMaterials();
     } catch (error) {
       console.error('Failed to delete material:', error);
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      setFile(e.target.files[0]);
-    }
-  };
-
-  const handleUpload = async (e: React.FormEvent) => {
+  const handleUploadMaterial = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (file && title && courseInstructorId) {
       const formData = new FormData();
       formData.append('file', file);
@@ -41,7 +42,7 @@ const CourseDetailsPage: React.FC = () => {
 
       try {
         await addMaterial({ courseInstructorId: Number(courseInstructorId), data: formData }).unwrap();
-        refetch(); 
+        refetchMaterials();
         setFile(null);
         setTitle('');
         setDescription('');
@@ -53,51 +54,96 @@ const CourseDetailsPage: React.FC = () => {
     }
   };
 
+  const handleDeleteAssignment = async (assignmentId: number) => {
+    try {
+      await deleteAssignment(assignmentId).unwrap();
+      refetchAssignments();
+    } catch (error) {
+      console.error('Failed to delete assignment:', error);
+    }
+  };
+
+  const handleAddAssignment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (assignmentTitle && dueDate && courseInstructorId) {
+      const formData = new FormData();
+      formData.append('title', assignmentTitle);
+      formData.append('description', assignmentDescription);
+      formData.append('due_date', dueDate);
+      formData.append('course_instructor_id', courseInstructorId);
+
+      try {
+        await addAssignment({ courseInstructorId: Number(courseInstructorId), data: formData }).unwrap();
+        refetchAssignments();
+        setAssignmentTitle('');
+        setAssignmentDescription('');
+        setDueDate('');
+      } catch (error) {
+        console.error('Failed to add assignment:', error);
+      }
+    } else {
+      console.error('Missing required fields');
+    }
+  };
+
   return (
     <div className={styles.container}>
-      <h1 className={styles.headingPrimary}>Course Materials</h1>
+      <MaterialsList
+        materials={materials}
+        onDelete={handleDeleteMaterial}
+        onFileChange={(e) => setFile(e.target.files?.[0] || null)}
+        onUpload={handleUploadMaterial}
+        file={file}
+        title={title}
+        description={description}
+        setTitle={setTitle}
+        setDescription={setDescription}
+      />
 
-      <form onSubmit={handleUpload} className={styles.uploadForm}>
+      <h2 className={styles.headingSecondary}>- Assignments</h2>
+      <form onSubmit={handleAddAssignment} className={styles.uploadForm}>
         <input
           type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Assignment Title"
+          value={assignmentTitle}
+          onChange={(e) => setAssignmentTitle(e.target.value)}
           required
         />
         <textarea
           placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={assignmentDescription}
+          onChange={(e) => setAssignmentDescription(e.target.value)}
         />
         <input
-          type="file"
-          onChange={handleFileChange}
+          type="date"
+          placeholder="Due Date"
+          value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)}
           required
         />
-        <button type="submit">Upload</button>
+        <button type="submit">Add Assignment</button>
       </form>
 
-      <div className={styles.materialsList}>
-        {materials.length > 0 ? (
-          materials.map((material) => (
-            <div className={styles.materialCard} key={material.id}>
-                  <a href={`${apiUrl}/course-materials/${material.id}/download`} download>
-              <i className="fas fa-download"></i>
-            </a>
-                            <button onClick={() => handleDelete(material.id)} className={styles.deleteButton}>
-              <i className="fas fa-trash-alt"></i>
-            </button>
-            <div className={styles.cardHeader}>
-              <i className={`fas fa-file-alt ${styles.fileIcon}`}></i>
-              <p className={styles.title}>{material.title}</p>
+      <div className={styles.assignmentsList}>
+        {assignments.length > 0 ? (
+          assignments.map((assignment) => (
+            <div className={styles.assignmentCard} key={assignment.id}>
+              <div className={styles.iconContainer}>
+                <i className={`fas fa-clipboard ${styles.clipboardIcon}`}></i>
+              </div>
+              <div className={styles.contentContainer}>
+                <p className={styles.title}>{assignment.title}</p>
+                <p className={styles.dueDate}>
+                  Assigned: {new Date(assignment.created_at).toLocaleDateString()}, Due: {new Date(assignment.due_date).toLocaleDateString()}
+                </p>
+              </div>
+              <button onClick={() => handleDeleteAssignment(assignment.id)} className={styles.deleteButton}>
+                <i className="fas fa-trash-alt"></i>
+              </button>
             </div>
-            <p className={styles.description}>{material.description}</p>
-          </div>
-          
           ))
         ) : (
-          <p>No materials available.</p>
+          <p>No assignments available.</p>
         )}
       </div>
     </div>
