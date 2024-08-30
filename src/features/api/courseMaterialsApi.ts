@@ -25,6 +25,12 @@ export const courseMaterialsApi = createApi({
         headers: { 'Accept': 'application/json' },
       }),
     }),
+    deleteCourseMaterial: builder.mutation<void, number>({
+        query: (id) => ({
+          url: `/course-materials/${id}`,
+          method: 'DELETE',
+        }),
+      }),
   }),
 });
 
@@ -33,4 +39,5 @@ export const {
   useFetchCourseMaterialByIdQuery,
   useDownloadCourseMaterialQuery,
   useAddCourseMaterialMutation,
+  useDeleteCourseMaterialMutation
 } = courseMaterialsApi;

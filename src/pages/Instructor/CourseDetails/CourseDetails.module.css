@@ -76,6 +76,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+    margin-top: 40px;
   }
   
   .title {
@@ -100,17 +101,34 @@
   
   .materialCard a {
     position: absolute;
-    bottom: 15px;
-    right: 20px;
+    top: 15px;
+    left: 20px;
     color: white;
     text-decoration: none;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     transition: transform 0.3s ease;
   }
   
   .materialCard a:hover {
     transform: scale(1.2);
   }
+
+  .deleteButton {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .deleteButton:hover {
+    color: #ff4d4d; 
+  }
+  
   
   @media (max-width: 768px) {
     .materialsList {

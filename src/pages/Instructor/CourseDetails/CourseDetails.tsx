@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useFetchCourseMaterialsByInstructorQuery, useAddCourseMaterialMutation } from '../../../features/api/courseMaterialsApi';
+import { useFetchCourseMaterialsByInstructorQuery, useAddCourseMaterialMutation, useDeleteCourseMaterialMutation } from '../../../features/api/courseMaterialsApi';
 import styles from './CourseDetails.module.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 const apiUrl = import.meta.env.VITE_BASE_URL;
@@ -12,6 +12,16 @@ const CourseDetailsPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [deleteMaterial] = useDeleteCourseMaterialMutation();
+
+  const handleDelete = async (materialId: number) => {
+    try {
+      await deleteMaterial(materialId).unwrap();
+      refetch(); 
+    } catch (error) {
+      console.error('Failed to delete material:', error);
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -72,16 +82,19 @@ const CourseDetailsPage: React.FC = () => {
         {materials.length > 0 ? (
           materials.map((material) => (
             <div className={styles.materialCard} key={material.id}>
-  <div className={styles.cardHeader}>
-    <i className={`fas fa-file-alt ${styles.fileIcon}`}></i>
-    <p className={styles.title}>{material.title}</p>
-  </div>
-  <p className={styles.description}>{material.description}</p>
-  <a href={`${apiUrl}/course-materials/${material.id}/download`} download>
-    <i className="fas fa-download"></i>
-  </a>
-</div>
-
+                  <a href={`${apiUrl}/course-materials/${material.id}/download`} download>
+              <i className="fas fa-download"></i>
+            </a>
+                            <button onClick={() => handleDelete(material.id)} className={styles.deleteButton}>
+              <i className="fas fa-trash-alt"></i>
+            </button>
+            <div className={styles.cardHeader}>
+              <i className={`fas fa-file-alt ${styles.fileIcon}`}></i>
+              <p className={styles.title}>{material.title}</p>
+            </div>
+            <p className={styles.description}>{material.description}</p>
+          </div>
+          
           ))
         ) : (
           <p>No materials available.</p>
