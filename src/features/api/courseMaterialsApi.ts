@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { CourseMaterial } from './types'; 
+import { CourseMaterial } from './types';
+
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const courseMaterialsApi = createApi({
@@ -16,11 +17,12 @@ export const courseMaterialsApi = createApi({
       query: (id) => `course-materials/${id}/download`,
       transformResponse: (response: Response) => response.blob(),
     }),
-    addCourseMaterial: builder.mutation<void, FormData>({
-      query: (formData) => ({
-        url: 'course-materials',
+    addCourseMaterial: builder.mutation<CourseMaterial, { courseInstructorId: number; data: FormData }>({
+      query: ({ courseInstructorId, data }) => ({
+        url: `/instructor-courses/${courseInstructorId}/materials`,
         method: 'POST',
-        body: formData,
+        body: data,
+        headers: { 'Accept': 'application/json' },
       }),
     }),
   }),
