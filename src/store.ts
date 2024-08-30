@@ -23,7 +23,7 @@ import { examsApi } from './features/api/examsApi';
 import { adminsApi } from './features/api/adminsApi';
 import { coursePrerequisitesApi } from './features/api/coursePrerequisitesApi';
 import { registrationsApi } from './features/api/registrationsApi';
-import { facultiesCampusesApi } from './features/api/facultiesCampusesApi';
+import { courseMaterialsApi } from './features/api/courseMaterialsApi';
 
 export const store = configureStore({
   reducer: {
@@ -50,6 +50,7 @@ export const store = configureStore({
     [adminsApi.reducerPath]: adminsApi.reducer,
     [coursePrerequisitesApi.reducerPath]: coursePrerequisitesApi.reducer,
     [registrationsApi.reducerPath]: registrationsApi.reducer,
+    [courseMaterialsApi.reducerPath]: courseMaterialsApi.reducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -77,6 +78,7 @@ export const store = configureStore({
   .concat(adminsApi.middleware)
   .concat(coursePrerequisitesApi.middleware)
   .concat(registrationsApi.middleware)
+  .concat(courseMaterialsApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

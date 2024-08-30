@@ -326,3 +326,16 @@ export type Grade = {
   updated_at: string;
   deleted_at?: string | null; 
 };
+
+export type CourseMaterial = {
+  id: number;
+  title: string;
+  description: string;
+  file_path: string;
+  file_name: string;
+  uploaded_by: number;
+  course_instructor_id: number;
+  created_at: string; 
+  updated_at: string; 
+  deleted_at?: string; 
+};
