@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useFetchCourseMaterialsByInstructorQuery, useAddCourseMaterialMutation } from '../../../features/api/courseMaterialsApi';
 import styles from './CourseDetails.module.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 const CourseDetailsPage: React.FC = () => {
@@ -70,14 +71,17 @@ const CourseDetailsPage: React.FC = () => {
       <div className={styles.materialsList}>
         {materials.length > 0 ? (
           materials.map((material) => (
-            <div key={material.id} className={styles.materialCard}>
-              <p><strong>Title:</strong> {material.title}</p>
-              <p><strong>Description:</strong> {material.description}</p>
-              <p><strong>Uploaded By:</strong> {material.uploaded_by}</p>
-              <a href={`${apiUrl}/course-materials/${material.id}/download`} download>
-                Download {material.file_name}
-              </a>
-            </div>
+            <div className={styles.materialCard} key={material.id}>
+  <div className={styles.cardHeader}>
+    <i className={`fas fa-file-alt ${styles.fileIcon}`}></i>
+    <p className={styles.title}>{material.title}</p>
+  </div>
+  <p className={styles.description}>{material.description}</p>
+  <a href={`${apiUrl}/course-materials/${material.id}/download`} download>
+    <i className="fas fa-download"></i>
+  </a>
+</div>
+
           ))
         ) : (
           <p>No materials available.</p>
