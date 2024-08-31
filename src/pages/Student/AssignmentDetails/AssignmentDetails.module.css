@@ -1,14 +1,15 @@
 .container {
     display: flex;
-    flex-direction: column;
     padding: 20px;
     max-width: 1000px;
     margin: 0 auto;
+    gap: 3rem;
     color: var(--primary-color);
   }
   
   .detailsContainer {
     margin-bottom: 20px;
+    flex: 3;
   }
   
   .header {
@@ -71,6 +72,13 @@
   
   .formContainer {
     margin-top: 20px;
+    flex: 1;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    height: fit-content;
+    background-color: #f9f9f9;
+    padding: 15px;
   }
   
   .formTitle {
@@ -90,6 +98,13 @@
   
   .fileInput {
     margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px; 
+    font-size: 14px; 
+    width: 100%; 
+    background-color: #f9f9f9; 
+    cursor: pointer; 
   }
   
   .submitButton {
@@ -114,20 +129,59 @@
   .fileList ul {
     list-style-type: none;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
   
   .fileList li {
-    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .fileItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .fileIcon {
+    font-size: 20px;
+    color: var(--primary-color);
   }
   
   .fileLink {
     text-decoration: none;
     color: var(--primary-color);
     font-size: 16px;
+    margin-left: 5px;
   }
   
   .fileLink:hover {
     text-decoration: underline;
+  }
+  
+  .downloadIcon {
+    font-size: 20px;
+    color: green; 
+    cursor: pointer;
+    margin-left: 1rem;
+  }
+  
+  .deleteIcon {
+    font-size: 20px;
+    color: red; 
+    cursor: pointer;
+    margin-left: 1rem;
+  }
+  
+  .warningMessage {
+    color: red;
+    font-size: 16px;
+    margin-top: 10px;
   }
   
   @media (max-width: 600px) {
@@ -135,6 +189,14 @@
       text-align: left;
       margin-top: 30px;
       font-size: 1.2rem;
+    }
+  
+    .container {
+      flex-direction: column;
+    }
+  
+    .formContainer {
+      max-width: 100%;
     }
   }
   

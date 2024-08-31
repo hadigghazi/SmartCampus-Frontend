@@ -1,14 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetAssignmentDetailsQuery } from '../../../features/api/assignmentsApi';
-import { useAddSubmissionMutation } from '../../../features/api/submissionsApi';
+import { useAddSubmissionMutation, useFetchSubmissionsByAssignmentQuery, useDeleteSubmissionMutation } from '../../../features/api/submissionsApi';
 import styles from './AssignmentDetails.module.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import { toast, ToastContainer } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 const AssignmentSubmission: React.FC = () => {
   const { assignmentId } = useParams<{ assignmentId: string }>();
-  const { data: assignment, isLoading } = useGetAssignmentDetailsQuery(Number(assignmentId));
-  const [files, setFiles] = useState<File[]>([]);
+  const { data: assignment, isLoading: assignmentLoading } = useGetAssignmentDetailsQuery(Number(assignmentId));
+  const { data: submissions, isLoading: submissionsLoading, refetch } = useFetchSubmissionsByAssignmentQuery(Number(assignmentId));
   const [addSubmission, { isLoading: isSubmitting }] = useAddSubmissionMutation();
+  const [deleteSubmission] = useDeleteSubmissionMutation();
+  const [files, setFiles] = useState<File[]>([]);
+  const [existingSubmissions, setExistingSubmissions] = useState<Submission[]>([]);
+  const [status, setStatus] = useState<string>('Assigned');
+  const [isPastDueDate, setIsPastDueDate] = useState<boolean>(false);
+  const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (assignment) {
+      const dueDate = new Date(assignment.due_date);
+      const now = new Date();
+      setIsPastDueDate(now > dueDate);
+    }
+  }, [assignment]);
+
+  useEffect(() => {
+    if (submissions) {
+      setExistingSubmissions(submissions);
+      setStatus(submissions.length > 0 ? 'Turned In' : 'Assigned');
+      setHasSubmitted(submissions.length > 0);
+    }
+  }, [submissions]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -21,25 +47,43 @@ const AssignmentSubmission: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (files.length > 0) {
+    if (files.length > 0 && !isPastDueDate) {
       const formData = new FormData();
       files.forEach((file) => {
         formData.append('files[]', file);
       });
       try {
         await addSubmission({ assignmentId: Number(assignmentId), data: formData }).unwrap();
-        alert('Submission successful');
+        toast.success('Submission successful');
         setFiles([]);
+        refetch();
       } catch (error) {
-        alert('Submission failed');
+        toast.error('Submission failed');
         console.error('Error:', error);
       }
+    } else if (isPastDueDate) {
+      toast.error('Cannot submit files past the due date');
     } else {
-      alert('Please select files to upload');
+      toast.warning('Please select files to upload');
     }
   };
 
-  if (isLoading) {
+  const handleDeleteSubmission = async (submissionId: number) => {
+    if (!isPastDueDate) {
+      try {
+        await deleteSubmission(submissionId).unwrap();
+        refetch();
+        toast.success('Submission deleted');
+      } catch (error) {
+        toast.error('Failed to delete submission');
+        console.error('Error:', error);
+      }
+    } else {
+      toast.error('Cannot delete submissions past the due date');
+    }
+  };
+
+  if (assignmentLoading || submissionsLoading) {
     return <p>Loading...</p>;
   }
 
@@ -67,34 +111,61 @@ const AssignmentSubmission: React.FC = () => {
         </div>
       </div>
       <div className={styles.formContainer}>
-        <h2 className={styles.formTitle}>Your Work</h2>
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <label className={styles.label}>
-            Files:
-            <input
-              type="file"
-              onChange={handleFileChange}
-              className={styles.fileInput}
-              multiple
-            />
-          </label>
-          <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
-            {isSubmitting ? 'Submitting...' : 'Submit'}
-          </button>
-        </form>
-        <div className={styles.fileList}>
-          {files.length > 0 && (
-            <ul>
-              {files.map((file, index) => (
-                <li key={index}>
-                  <a href={URL.createObjectURL(file)} download={file.name} className={styles.fileLink}>
-                    {file.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        <h2 className={styles.formTitle}>{status}</h2>
+        {status === 'Assigned' ? (
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <label className={styles.label}>
+              <input
+                type="file"
+                onChange={handleFileChange}
+                className={styles.fileInput}
+                multiple
+                disabled={isPastDueDate}
+              />
+            </label>
+            <button
+              type="submit"
+              className={styles.submitButton}
+              disabled={isSubmitting || isPastDueDate}
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit'}
+            </button>
+            {isPastDueDate && !hasSubmitted && (
+              <p className={styles.warningMessage}>You cannot submit files as the due date has passed and you haven't submitted anything yet.</p>
+            )}
+          </form>
+        ) : (
+          <div>
+            <div className={styles.fileList}>
+              {existingSubmissions.length > 0 ? (
+                <ul>
+                  {existingSubmissions.map((submission) => (
+                    <li key={submission.id} className={styles.fileItem}>
+                      <i className={`fas fa-file ${styles.fileIcon}`}></i>
+                      {`File ${existingSubmissions.findIndex(s => s.id === submission.id) + 1}`}
+                      <a
+                        href={`${apiUrl}/submissions/${submission.id}/download`}
+                        rel="noopener noreferrer"
+                        className={styles.fileLink}
+                        download
+                      >
+                        <i className={`fas fa-download ${styles.fileIcon}`}></i>
+                      </a>
+                      <i
+                        className={`fas fa-trash ${styles.deleteIcon}`}
+                        onClick={() => handleDeleteSubmission(submission.id)}
+                      ></i>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No submissions found.</p>
+              )}
+            </div>
+          </div>
+        )}
+              <ToastContainer />
+
       </div>
     </div>
   );
