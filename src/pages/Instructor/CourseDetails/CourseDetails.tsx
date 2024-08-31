@@ -155,7 +155,7 @@ const CourseDetailsPage: React.FC = () => {
       />
 
       <h2 className={styles.headingSecondary}>- Enrolled Students</h2>
-      <StudentsList students={students} />
+      <StudentsList students={students} courseInstructorId={courseInstructorId} />
     </div>
   );
 };

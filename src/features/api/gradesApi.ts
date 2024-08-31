@@ -33,6 +33,16 @@ export const gradesApi = createApi({
         method: 'DELETE',
       }),
     }),
+    addGrade: builder.mutation<Grade, Partial<Grade>>({
+      query: (grade) => ({
+        url: '/grades/add',
+        method: 'POST',
+        body: grade,
+      }),
+    }),
+    getGradesByInstructor: builder.query<any, number>({
+      query: (courseInstructorId) => `grades/get/${courseInstructorId}`,
+    }),
   }),
 });
 
@@ -42,4 +52,6 @@ export const {
   useCreateGradeMutation,
   useUpdateGradeMutation,
   useDeleteGradeMutation,
+  useAddGradeMutation,
+  useGetGradesByInstructorQuery
 } = gradesApi;
