@@ -1,0 +1,82 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    color: var(--primary-color);
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Allow wrapping of elements */
+  }
+  
+  .iconContainer {
+    font-size: 45px;
+    color: white;
+    height: 80px;
+    width: 80px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .titleContainer {
+    flex: 1;
+    margin-left: 20px;
+  }
+  
+  .title {
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  .createdDate {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .dueDateContainer {
+    text-align: right;
+    flex-basis: 100%; /* Ensures due date spans the full width */
+  }
+  
+  .dueDate {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .descriptionContainer {
+    max-width: 900px;
+    margin: 20px auto 0 auto;
+  }
+  
+  .descriptionContainer h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .descriptionContainer p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--primary-color);
+    font-family: 'Metrophobic', sans-serif;
+    white-space: pre-wrap;
+  }
+  
+  /* Media query for small screens */
+  @media (max-width: 600px) {
+  
+    .dueDateContainer {
+      text-align: left;
+      margin-top:30px;
+      font-size: 1.2rem;
+    }
+  }
+  

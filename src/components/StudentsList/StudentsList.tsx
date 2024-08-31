@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAddGradeMutation, useUpdateGradeMutation, useGetGradesByInstructorQuery } from '../../features/api/gradesApi'; 
 import styles from './StudentsList.module.css';
-import { toast, ToastContainer } from 'react-toastify'; // Import react-toastify for toasts
-import 'react-toastify/dist/ReactToastify.css'; // Import styles for toasts
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type Student = {
   student_id: number;

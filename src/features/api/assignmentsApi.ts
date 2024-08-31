@@ -22,7 +22,10 @@ export const assignmentsApi = createApi({
         method: 'DELETE',
       }),
     }),
+    getAssignmentDetails: builder.query<Assignment, number>({
+      query: (id) => `assignments/${id}`,
+    }),
   }),
 });
 
-export const { useFetchAssignmentsByInstructorQuery, useAddAssignmentMutation, useDeleteAssignmentMutation } = assignmentsApi;
+export const { useFetchAssignmentsByInstructorQuery, useAddAssignmentMutation, useDeleteAssignmentMutation, useGetAssignmentDetailsQuery } = assignmentsApi;
