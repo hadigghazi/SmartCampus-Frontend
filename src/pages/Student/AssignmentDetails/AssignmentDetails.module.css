@@ -7,6 +7,10 @@
     color: var(--primary-color);
   }
   
+  .detailsContainer {
+    margin-bottom: 20px;
+  }
+  
   .header {
     display: flex;
     justify-content: space-between;
@@ -44,7 +48,7 @@
   
   .dueDateContainer {
     text-align: right;
-    flex-basis: 100%; 
+    flex-basis: 100%;
   }
   
   .dueDate {
@@ -57,11 +61,6 @@
     margin: 20px auto 0 auto;
   }
   
-  .descriptionContainer h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
   .descriptionContainer p {
     font-size: 1.2rem;
     line-height: 1.5;
@@ -70,11 +69,71 @@
     white-space: pre-wrap;
   }
   
-  @media (max-width: 600px) {
+  .formContainer {
+    margin-top: 20px;
+  }
   
+  .formTitle {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .label {
+    font-size: 16px;
+  }
+  
+  .fileInput {
+    margin-top: 5px;
+  }
+  
+  .submitButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .submitButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .fileList {
+    margin-top: 20px;
+  }
+  
+  .fileList ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .fileList li {
+    margin-bottom: 10px;
+  }
+  
+  .fileLink {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-size: 16px;
+  }
+  
+  .fileLink:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 600px) {
     .dueDateContainer {
       text-align: left;
-      margin-top:30px;
+      margin-top: 30px;
       font-size: 1.2rem;
     }
   }

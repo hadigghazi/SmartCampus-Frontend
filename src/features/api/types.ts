@@ -350,3 +350,14 @@ export type Assignment = {
   updated_at: string;
   deleted_at: string | null;
 }
+
+export type Submission = {
+  id: number;
+  assignment_id: number;
+  student_id: number;
+  file_path: string;
+  submission_date: string; 
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string | null;
+};

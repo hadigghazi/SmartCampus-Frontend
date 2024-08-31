@@ -65,6 +65,7 @@ const StudentDashboard = lazy(() => import('./pages/Student/StudentDashboard/Stu
 const AcademicHistory = lazy(() => import('./pages/Student/AcademicHistory/AcademicHistory'));
 const CoursesStudent = lazy(() => import('./pages/Student/Courses/Courses'));
 const CourseDetailsStudent = lazy(() => import('./pages/Student/CourseDetails/CourseDetails'));
+const AssignmentDetailsStudent = lazy(() => import('./pages/Student/AssignmentDetails/AssignmentDetails'));
 
 const InstructorDashboard = lazy(() => import('./pages/Instructor/InstructorDashboard/InstructorDashboard'));
 const InstructorHistory = lazy(() => import('./pages/Instructor/InstructorHistory/InstructorHistory'));
@@ -354,6 +355,10 @@ const routes: CustomRouteProps[] = [
   {
     path: '/instructor-courses/:courseInstructorId/assignments/:assignmentId',
     component: AssignmentDetailsInstructor,
+  },
+  {
+    path: '/courses/:courseInstructorId/assignments/:assignmentId',
+    component: AssignmentDetailsStudent,
   },
 ];
 
