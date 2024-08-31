@@ -70,6 +70,87 @@
     white-space: pre-wrap;
   }
   
+  
+.submissionsContainer {
+    margin-top: 30px;
+  }
+  
+  .submissionsTitle {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    margin-top: 40px;
+    font-weight: 600;
+  }
+  
+  .submissionsList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .submissionCard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #faecf5;
+    border: 1.5px solid var(--primary-color);
+    border-radius: 5px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    color: var(--primary-color);
+  }
+  
+  .submissionInfo {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  
+  .studentName {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+  }
+  
+  .studentId {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+  }
+  
+  .filesContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .fileItem {
+    display: flex;
+    align-items: center;
+  }
+  
+  .fileIcon {
+    font-size: 1.5rem;
+    margin-right: 10px;
+    color: var(--primary-color);
+  }
+  
+  .fileLink {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    margin-left: 5px;
+  }
+  
+  .downloadIcon {
+    margin-left: 5px;
+  }
+  
+  @media (min-width: 801px) {
+    .submissionCard {
+      width: 800px;
+    }
+  }
   @media (max-width: 600px) {
   
     .dueDateContainer {

@@ -44,6 +44,9 @@ export const submissionsApi = createApi({
         method: 'DELETE',
       }),
     }),
+    getAllSubmissions: builder.query<Submission[], number>({
+        query: (assignmentId) => `assignments/${assignmentId}/all-submissions`,
+      }),
   }),
 });
 
@@ -53,4 +56,5 @@ export const {
   useDownloadSubmissionQuery,
   useAddSubmissionMutation,
   useDeleteSubmissionMutation,
+  useGetAllSubmissionsQuery
 } = submissionsApi;
