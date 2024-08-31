@@ -74,6 +74,14 @@
   .deleteButton:hover {
     color: #ff4d4d; 
   }
+
+  .headingPrimary {
+    color: var(--primary-color); 
+    font-size: 2.5rem;
+    font-weight: 700; 
+    margin-bottom: 1rem;
+    font-family: 'Merriweather', serif; 
+}
   
   @media (max-width: 768px) {
     .uploadForm {
