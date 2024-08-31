@@ -36,6 +36,9 @@ export const registrationsApi = createApi({
         method: 'DELETE',
       }),
     }),
+    getRegisteredStudents: builder.query({
+      query: (id) => `course-instructor-students/${id}`, 
+    }),
   }),
 });
 
@@ -45,5 +48,6 @@ export const {
   useCreateRegistrationMutation,
   useUpdateRegistrationMutation,
   useDeleteRegistrationMutation,
-  useGetRegistrationsByStudentQuery
+  useGetRegistrationsByStudentQuery,
+  useGetRegisteredStudentsQuery
 } = registrationsApi;

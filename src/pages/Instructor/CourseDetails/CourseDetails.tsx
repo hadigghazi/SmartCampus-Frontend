@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useFetchCourseMaterialsByInstructorQuery, useAddCourseMaterialMutation, useDeleteCourseMaterialMutation } from '../../../features/api/courseMaterialsApi';
-import { useFetchAssignmentsByInstructorQuery, useAddAssignmentMutation, useDeleteAssignmentMutation } from '../../../features/api/assignmentsApi';
+import {
+  useFetchCourseMaterialsByInstructorQuery,
+  useAddCourseMaterialMutation,
+  useDeleteCourseMaterialMutation,
+} from '../../../features/api/courseMaterialsApi';
+import {
+  useFetchAssignmentsByInstructorQuery,
+  useAddAssignmentMutation,
+  useDeleteAssignmentMutation,
+} from '../../../features/api/assignmentsApi';
+import { useGetRegisteredStudentsQuery } from '../../../features/api/registrationsApi'; 
 import MaterialsList from '../../../components/MaterialsList/MaterialsList';
 import AssignmentsList from '../../../components/AssignmentsList/AssignmentsList';
+import StudentsList from '../../../components/StudentsList/StudentsList'; 
 import styles from './CourseDetails.module.css';
 
 const CourseDetailsPage: React.FC = () => {
   const { courseInstructorId } = useParams<{ courseInstructorId: string }>();
   const { data: materials = [], refetch: refetchMaterials } = useFetchCourseMaterialsByInstructorQuery(Number(courseInstructorId));
   const { data: assignments = [], refetch: refetchAssignments } = useFetchAssignmentsByInstructorQuery(Number(courseInstructorId));
+  const { data: students = [] } = useGetRegisteredStudentsQuery(Number(courseInstructorId));
   
   const [addMaterial] = useAddCourseMaterialMutation();
   const [deleteMaterial] = useDeleteCourseMaterialMutation();
@@ -89,6 +100,7 @@ const CourseDetailsPage: React.FC = () => {
 
   return (
     <div className={styles.container}>
+      <h1 className={styles.headingPrimary}></h1>
       <MaterialsList
         materials={materials}
         onDelete={handleDeleteMaterial}
@@ -131,6 +143,9 @@ const CourseDetailsPage: React.FC = () => {
         onDelete={handleDeleteAssignment}
         isInstructor={true}
       />
+
+      <h2 className={styles.headingSecondary}>- Enrolled Students</h2>
+      <StudentsList students={students} />
     </div>
   );
 };
