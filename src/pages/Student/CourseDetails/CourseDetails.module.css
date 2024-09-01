@@ -82,6 +82,60 @@
     margin-bottom: 1rem;
     font-family: 'Merriweather', serif; 
 }
+
+  .dropFormContainer {
+    margin-top: 30px;
+  }
+  
+  .dropForm {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .textarea {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  .submitButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submitButton:disabled {
+    background-color: #007bff99;
+    cursor: not-allowed;
+  }
+  
+  .submitButton:hover:enabled {
+    background-color: #0056b3;
+  }
+  
+  .cancelButton {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+  }
+  
+  .cancelButton:hover {
+    background-color: #c82333;
+  }  
   
   @media (max-width: 768px) {
     .uploadForm {

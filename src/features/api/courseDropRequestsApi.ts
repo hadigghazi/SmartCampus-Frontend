@@ -1,10 +1,22 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { CourseDropRequest } from './types';
+
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const courseDropRequestsApi = createApi({
   reducerPath: 'courseDropRequestsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: apiUrl,
+    prepareHeaders: (headers, { getState }) => {
+      const token = localStorage.getItem('token');
+
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     getCourseDropRequests: builder.query<CourseDropRequest[], void>({
       query: () => '/course_drop_requests',
@@ -35,6 +47,9 @@ export const courseDropRequestsApi = createApi({
         method: 'DELETE',
       }),
     }),
+    checkDropRequestForStudent: builder.query({
+        query: (courseInstructorId) => `course_drop_requests/check_student_request/${courseInstructorId}`,
+      }),
   }),
 });
 
@@ -45,4 +60,5 @@ export const {
   useUpdateStatusMutation,
   useGetDropRequestsByInstructorQuery,
   useDeleteDropRequestMutation,
+  useCheckDropRequestForStudentQuery
 } = courseDropRequestsApi;

@@ -361,3 +361,14 @@ export type Submission = {
   updated_at: string;
   deleted_at?: string | null;
 };
+
+export type CourseDropRequest = {
+  id: number;
+  student_id: number;
+  course_instructor_id: number;
+  reason: string;
+  status: 'Pending' | 'Approved' | 'Rejected';
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
+};
