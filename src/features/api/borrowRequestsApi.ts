@@ -41,6 +41,9 @@ export const borrowRequestsApi = createApi({
         body: borrowDetails,
       }),
     }),
+    getBorrowRequestsForBookByUser: builder.query({
+      query: (bookId) => `book_borrows/by_book_and_user/${bookId}`,
+    }),
   }),
 });
 
@@ -50,4 +53,5 @@ export const {
   useUpdateBorrowRequestStatusMutation,
   useDeleteBorrowRequestMutation,
   useBorrowBookMutation,
+  useGetBorrowRequestsForBookByUserQuery
 } = borrowRequestsApi;

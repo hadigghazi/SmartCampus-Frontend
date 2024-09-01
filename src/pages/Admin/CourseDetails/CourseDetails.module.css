@@ -146,6 +146,59 @@
     font-size: 1rem;
 }
 
+.formContainer {
+  margin-top: 20px;
+  flex: 1;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  height: fit-content;
+  background-color: #f9f9f9;
+  padding: 15px;
+}
+
+.formTitle {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.label {
+  font-size: 16px;
+}
+
+.fileInput {
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px; 
+  font-size: 14px; 
+  width: 100%; 
+  margin-left: 0px;
+  background-color: #f9f9f9; 
+  cursor: pointer; 
+}
+
+.submitButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submitButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
 @media (max-width: 1024px) {
     .headingPrimary {
         font-size: 2rem;
@@ -195,6 +248,11 @@
     .headingPrimary {
         font-size: 1.5rem;
     }
+    .text {
+      line-height: 1.4;
+      font-size: 1.3rem;
+      margin: 1rem 0;
+  }
     .headingSecondary {
         font-size: 1rem;
         margin-bottom: 1rem;
