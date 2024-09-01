@@ -22,9 +22,11 @@ const StudentCourseDetailsPage: React.FC = () => {
   
   const [reason, setReason] = useState<string>('');
   const [isDropRequested, setIsDropRequested] = useState<boolean>(!!dropRequestData?.exists);
+  const [dropRequestStatus, setDropRequestStatus] = useState<'Pending' | 'Approved' | null>(dropRequestData?.dropRequest?.status || null);
 
   useEffect(() => {
     setIsDropRequested(!!dropRequestData?.exists);
+    setDropRequestStatus(dropRequestData?.dropRequest?.status || null);
   }, [dropRequestData]);
 
   const handleDropRequest = async (event: React.FormEvent) => {
@@ -80,8 +82,10 @@ const StudentCourseDetailsPage: React.FC = () => {
       />
 
       <div className={styles.dropFormContainer}>
-        <h2 className={styles.headingSecondary}>Request to Drop Course</h2>
-        {isDropRequested ? (
+        <h2 className={styles.headingSecondary}>- Request to Drop Course</h2>
+        {dropRequestStatus === 'Approved' ? (
+          <p>Your drop request has been approved. If you wish to cancel it, please contact your instructor.</p>
+        ) : isDropRequested ? (
           <>
             <p>You have already requested to drop this course. Do you want to cancel the request?</p>
             <button

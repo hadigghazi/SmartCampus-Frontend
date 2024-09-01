@@ -10,12 +10,16 @@ import {
   useAddAssignmentMutation,
   useDeleteAssignmentMutation,
 } from '../../../features/api/assignmentsApi';
-import { useGetRegisteredStudentsQuery } from '../../../features/api/registrationsApi'; 
+import {
+  useGetDropRequestsByInstructorQuery,
+  useUpdateStatusMutation
+} from '../../../features/api/courseDropRequestsApi';
 import { useGetCourseDetailsByInstructorIdQuery } from '../../../features/api/coursesApi'; 
 import MaterialsList from '../../../components/MaterialsList/MaterialsList';
 import AssignmentsList from '../../../components/AssignmentsList/AssignmentsList';
 import StudentsList from '../../../components/StudentsList/StudentsList'; 
 import styles from './CourseDetails.module.css';
+import { useGetRegisteredStudentsQuery } from '../../../features/api/registrationsApi';
 
 const CourseDetailsPage: React.FC = () => {
   const { courseInstructorId } = useParams<{ courseInstructorId: string }>();
@@ -24,11 +28,13 @@ const CourseDetailsPage: React.FC = () => {
   const { data: materials = [], refetch: refetchMaterials } = useFetchCourseMaterialsByInstructorQuery(Number(courseInstructorId));
   const { data: assignments = [], refetch: refetchAssignments } = useFetchAssignmentsByInstructorQuery(Number(courseInstructorId));
   const { data: students = [] } = useGetRegisteredStudentsQuery(Number(courseInstructorId));
-
+  const { data: dropRequests = [], refetch: refetchDropRequests } = useGetDropRequestsByInstructorQuery(Number(courseInstructorId));
+  
   const [addMaterial] = useAddCourseMaterialMutation();
   const [deleteMaterial] = useDeleteCourseMaterialMutation();
   const [addAssignment] = useAddAssignmentMutation();
   const [deleteAssignment] = useDeleteAssignmentMutation();
+  const [updateStatus] = useUpdateStatusMutation();
 
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState('');
@@ -36,6 +42,8 @@ const CourseDetailsPage: React.FC = () => {
   const [assignmentTitle, setAssignmentTitle] = useState('');
   const [assignmentDescription, setAssignmentDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
+
+  const [editingRequestId, setEditingRequestId] = useState<number | null>(null);
 
   const handleDeleteMaterial = async (materialId: number) => {
     try {
@@ -101,6 +109,20 @@ const CourseDetailsPage: React.FC = () => {
     }
   };
 
+  const handleUpdateStatus = async (id, newStatus) => {
+    try {
+      await updateStatus({ id, status: newStatus }).unwrap();
+      refetchDropRequests(); 
+      setEditingRequestId(null);
+    } catch (error) {
+      console.error('Failed to update status:', error);
+    }
+  };
+
+  const handleEditRequest = (id) => {
+    setEditingRequestId(id);
+  };
+
   return (
     <div className={styles.container}>
       {isCourseLoading ? (
@@ -156,6 +178,59 @@ const CourseDetailsPage: React.FC = () => {
 
       <h2 className={styles.headingSecondary}>- Enrolled Students</h2>
       <StudentsList students={students} courseInstructorId={courseInstructorId} />
+
+      <h2 className={styles.headingSecondary}>- Drop Requests</h2>
+      <div className={styles.dropRequestsContainer}>
+        {dropRequests.map((request) => (
+          <div key={request.id} className={styles.dropRequestCard}>
+            <p><strong>{request.student_name}</strong></p>
+            <p><strong>ID:</strong> {request.student_id}</p>
+            <p><strong>Reason:</strong> {request.reason}</p>
+            <p><strong>Status:</strong> {request.status}</p>
+            
+            {request.status === 'Pending' ? (
+              <>
+                <button 
+                  onClick={() => handleUpdateStatus(request.id, 'Approved')}
+                  className={styles.approveButton}
+                >
+                  Approve
+                </button>
+                <button 
+                  onClick={() => handleUpdateStatus(request.id, 'Rejected')}
+                  className={styles.rejectButton}
+                >
+                  Reject
+                </button>
+              </>
+            ) : (
+              <button 
+                onClick={() => handleEditRequest(request.id)}
+                className={styles.editButton}
+              >
+                Edit
+              </button>
+            )}
+            
+            {editingRequestId === request.id && (
+              <div className={styles.editContainer}>
+                <button 
+                  onClick={() => handleUpdateStatus(request.id, 'Approved')}
+                  className={styles.approveButton}
+                >
+                  Approve
+                </button>
+                <button 
+                  onClick={() => handleUpdateStatus(request.id, 'Rejected')}
+                  className={styles.rejectButton}
+                >
+                  Reject
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
