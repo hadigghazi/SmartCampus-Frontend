@@ -26,7 +26,8 @@ const Majors = lazy(() => import('./pages/Academics/Majors/Majors'));
 const GradingSystem = lazy(() => import('./pages/Academics/GradingSystem/GradingSystem'));
 const AcademicCalendar = lazy(() => import('./pages/Academics/AcademicCalendar/AcademicCalendar'));
 const FacultyDetails = lazy(() => import('./pages/Academics/FacultyDetails/FacultyDetails'));
-const LifeOnCampus = lazy(() => import('./pages/LifeOnCampus/LifeOnCampus')); 
+const LifeOnCampus = lazy(() => import('./pages/LifeOnCampus/LifeOnCampus'));
+
 const MajorDetails = lazy(() => import('./pages/Academics/MajorDetails/MajorDetails'));
 const Campuses = lazy(() => import('./pages/Campuses/Campuses'));
 const CampusDetails = lazy(() => import('./pages/CampusDetails/CampusDetails'));
