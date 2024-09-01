@@ -7,6 +7,7 @@ import MaterialsList from '../../../components/MaterialsList/MaterialsList';
 import AssignmentsList from '../../../components/AssignmentsList/AssignmentsList';
 import styles from './CourseDetails.module.css';
 import { useRequestDropMutation, useDeleteDropRequestMutation, useCheckDropRequestForStudentQuery } from '../../../features/api/courseDropRequestsApi';
+import { useGeneratePracticeQuestionsMutation } from '../../../features/api/courseMaterialsApi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -23,6 +24,9 @@ const StudentCourseDetailsPage: React.FC = () => {
   const [reason, setReason] = useState<string>('');
   const [isDropRequested, setIsDropRequested] = useState<boolean>(!!dropRequestData?.exists);
   const [dropRequestStatus, setDropRequestStatus] = useState<'Pending' | 'Approved' | null>(dropRequestData?.dropRequest?.status || null);
+  
+  const [practiceQuestions, setPracticeQuestions] = useState<string | null>(null);
+  const [generatePracticeQuestions, { isLoading: isGenerating }] = useGeneratePracticeQuestionsMutation();
 
   useEffect(() => {
     setIsDropRequested(!!dropRequestData?.exists);
@@ -62,6 +66,24 @@ const StudentCourseDetailsPage: React.FC = () => {
     }
   };
 
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+  
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      console.log('File:', file);
+      const response = await generatePracticeQuestions(formData).unwrap();
+      console.log('API Response:', response); 
+      setPracticeQuestions(response.questions); 
+      toast.success('Practice questions generated successfully!');
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Failed to generate practice questions.');
+    }
+  };
+  
   return (
     <div className={styles.container}>
       {isCourseLoading ? (
@@ -73,6 +95,29 @@ const StudentCourseDetailsPage: React.FC = () => {
       )}
       
       <MaterialsList materials={materials} />
+
+      
+      <div className={styles.practiceQuestionsContainer}>
+        <h2 className={styles.headingSecondary}>- Generate Practice Questions</h2>
+        
+        <input
+          type="file"
+          onChange={handleFileUpload}
+          accept=".pdf,.docx,.txt"
+          disabled={isGenerating}
+          className={styles.fileInput}
+        />
+        
+        {isGenerating && <p>Generating questions...</p>}
+
+        {practiceQuestions && (
+          <div className={styles.questions}>
+            <h3>Practice Questions:</h3>
+            <pre>{practiceQuestions}</pre>
+          </div>
+        )}
+      </div>
+      
 
       <h2 className={styles.headingSecondary}>- Assignments</h2>
       <AssignmentsList 

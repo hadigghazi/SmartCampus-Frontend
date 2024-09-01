@@ -31,6 +31,13 @@ export const courseMaterialsApi = createApi({
           method: 'DELETE',
         }),
       }),
+      generatePracticeQuestions: builder.mutation({
+        query: (fileData) => ({
+          url: '/generate-practice-questions',
+          method: 'POST',
+          body: fileData,
+        }),
+      }),
   }),
 });
 
@@ -39,5 +46,6 @@ export const {
   useFetchCourseMaterialByIdQuery,
   useDownloadCourseMaterialQuery,
   useAddCourseMaterialMutation,
-  useDeleteCourseMaterialMutation
+  useDeleteCourseMaterialMutation,
+  useGeneratePracticeQuestionsMutation
 } = courseMaterialsApi;

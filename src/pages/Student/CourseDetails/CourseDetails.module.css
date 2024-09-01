@@ -143,6 +143,69 @@
   .cancelButton:hover {
     background-color: #c82333;
   }  
+
+  .fileInput {
+    display: block;
+    width: 100%;
+    margin: 1rem 0;
+    padding: 0.75rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    font-family: 'Metrophobic', sans-serif;
+    transition: border-color 0.3s ease;
+  }
+  
+  .fileInput:focus {
+    border-color: var(--primary-color);
+    outline: none;
+  }
+  
+  .questions {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: #e0f7fa;
+    border-left: 4px solid var(--primary-color);
+    border-radius: 8px;
+  }
+  
+  .questions h3 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    font-family: 'Merriweather', serif;
+  }
+  
+  .questions pre {
+    color: #333;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    font-family: 'Metrophobic', sans-serif;
+    white-space: pre-wrap;
+  }
+  
+  @media (max-width: 768px) {
+    .practiceQuestionsContainer {
+      padding: 1rem;
+    }
+  
+    .headingSecondary {
+      font-size: 1rem;
+    }
+  
+    .fileInput {
+      font-size: 0.9rem;
+    }
+  
+    .questions h3 {
+      font-size: 1.5rem;
+    }
+  
+    .questions pre {
+      font-size: 1rem;
+    }
+  }
+  
   
   @media (max-width: 768px) {
     .uploadForm {
