@@ -58,7 +58,7 @@ const LibraryBooksStudent: React.FC = () => {
   };
 
   const handleViewBook = (bookId: number) => {
-    navigate(`/student/books/${bookId}`); // Adjust the route as needed
+    navigate(`/books/${bookId}`);
   };
 
   return (
@@ -98,7 +98,7 @@ const LibraryBooksStudent: React.FC = () => {
             { header: 'ISBN', accessor: 'isbn' as keyof LibraryBook },
             { header: 'Title', accessor: 'title' as keyof LibraryBook },
             { header: 'Author', accessor: 'author' as keyof LibraryBook },
-            { header: 'Campus', accessor: 'campus_name' as keyof LibraryBook }, // Display campus name
+            { header: 'Campus', accessor: 'campus_name' as keyof LibraryBook },
             { header: 'Number of Copies', accessor: 'copies' as keyof LibraryBook },
           ]}
           data={currentEntries || []}
