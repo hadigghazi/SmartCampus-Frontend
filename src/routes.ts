@@ -360,6 +360,14 @@ const routes: CustomRouteProps[] = [
     path: '/courses/:courseInstructorId/assignments/:assignmentId',
     component: AssignmentDetailsStudent,
   },
+  {
+    path: '/instructor-profile/:id',
+    component: InstructorDetails,
+  },
+  {
+    path: '/profile/:id',
+    component: StudentDetails,
+  },
 ];
 
 export default routes;

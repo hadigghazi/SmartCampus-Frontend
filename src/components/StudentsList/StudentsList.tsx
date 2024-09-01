@@ -3,6 +3,7 @@ import { useAddGradeMutation, useUpdateGradeMutation, useGetGradesByInstructorQu
 import styles from './StudentsList.module.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
 
 type Student = {
   student_id: number;
@@ -84,13 +85,17 @@ const StudentsList: React.FC<StudentsListProps> = ({ students, courseInstructorI
     <div className={styles.studentsContainer}>
       {students.map((student) => (
         <div key={student.student_id} className={styles.studentCard}>
+        <Link to={`/profile/${student.student_id}`}>
           <div className={styles.studentAvatar}>
             <img src={student.profile_picture} alt={`${student.first_name} ${student.last_name}`} />
           </div>
+          </Link>
           <div className={styles.studentInfo}>
+          <Link to={`/profile/${student.student_id}`}>
             <h3 className={styles.studentName}>
               {student.first_name} {student.middle_name} {student.last_name}
             </h3>
+            </Link>
             <p className={styles.studentId}>ID: {student.student_id} | Email: {student.email}</p>
 
             {grades[student.student_id] ? (

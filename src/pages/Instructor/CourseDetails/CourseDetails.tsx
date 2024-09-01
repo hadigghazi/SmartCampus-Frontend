@@ -20,6 +20,7 @@ import AssignmentsList from '../../../components/AssignmentsList/AssignmentsList
 import StudentsList from '../../../components/StudentsList/StudentsList'; 
 import styles from './CourseDetails.module.css';
 import { useGetRegisteredStudentsQuery } from '../../../features/api/registrationsApi';
+import { Link } from 'react-router-dom';
 
 const CourseDetailsPage: React.FC = () => {
   const { courseInstructorId } = useParams<{ courseInstructorId: string }>();
@@ -187,7 +188,6 @@ const CourseDetailsPage: React.FC = () => {
             <p><strong>ID:</strong> {request.student_id}</p>
             <p><strong>Reason:</strong> {request.reason}</p>
             <p><strong>Status:</strong> {request.status}</p>
-            
             {request.status === 'Pending' ? (
               <>
                 <button 
