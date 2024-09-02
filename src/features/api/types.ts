@@ -396,3 +396,14 @@ export type Payment = {
   updated_at?: string;
   deleted_at?: string;
 }
+
+export type PaymentSetting = {
+  id: number;
+  exchange_rate: number;
+  lbp_percentage: number;
+  registration_fee_usd: number;
+  effective_date: string;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
+}

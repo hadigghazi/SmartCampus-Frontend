@@ -61,6 +61,7 @@ const CampusesAdmin = lazy(() => import('./pages/Admin/Campuses/Campuses'));
 const FacultyDetailsAdmin = lazy(() => import('./pages/Admin/FacultyDetails/FacultyDetails'));
 const CampusDetailsAdmin = lazy(() => import('./pages/Admin/CampusDetails/CampusDetails'));
 const FacultyCampusDetailsAdmin = lazy(() => import('./pages/Admin/FacultyCampusDetails/FacultyCampusDetails'));
+const PaymentSettings = lazy(() => import('./pages/Admin/PaymentSettings/PaymentSettings'));
 
 const StudentDashboard = lazy(() => import('./pages/Student/StudentDashboard/StudentDashboard'));
 const AcademicHistory = lazy(() => import('./pages/Student/AcademicHistory/AcademicHistory'));
@@ -379,6 +380,10 @@ const routes: CustomRouteProps[] = [
   {
     path: '/books/:id',
     component: BookDetailsStudent,
+  },
+  {
+    path: '/admin/payment-settings',
+    component: PaymentSettings,
   },
 ];
 

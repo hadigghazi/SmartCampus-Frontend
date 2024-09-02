@@ -29,6 +29,7 @@ import { gradesApi } from './features/api/gradesApi';
 import { submissionsApi } from './features/api/submissionsApi';
 import { courseDropRequestsApi } from './features/api/courseDropRequestsApi';
 import { feesPaymentsApi } from './features/api/feesPaymentsApi';
+import { paymentSettingsApi } from './features/api/paymentSettingsApi';
 
 export const store = configureStore({
   reducer: {
@@ -61,6 +62,7 @@ export const store = configureStore({
     [submissionsApi.reducerPath]: submissionsApi.reducer,
     [courseDropRequestsApi.reducerPath]: courseDropRequestsApi.reducer,
     [feesPaymentsApi.reducerPath]: feesPaymentsApi.reducer,
+    [paymentSettingsApi.reducerPath]: paymentSettingsApi.reducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -94,6 +96,7 @@ export const store = configureStore({
   .concat(submissionsApi.middleware)
   .concat(courseDropRequestsApi.middleware)
   .concat(feesPaymentsApi.middleware)
+  .concat(paymentSettingsApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;
