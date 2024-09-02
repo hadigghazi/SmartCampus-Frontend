@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { useGetPaymentSettingsQuery, useCreatePaymentSettingMutation, useDeletePaymentSettingMutation } from '../../../features/api/paymentSettingsApi';
 import Table from '../../../components/Table/Table'; 
 import styles from '../Courses/Courses.module.css'; 
-import formstyles from '../StudentDetails/StudentDetails.module.css'
+import formstyles from '../StudentDetails/StudentDetails.module.css';
+import { ToastContainer, toast } from 'react-toastify';
+import Swal from 'sweetalert2';
+import 'react-toastify/dist/ReactToastify.css';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 const PaymentSettings: React.FC = () => {
-  const { data: paymentSettings, isLoading, isError } = useGetPaymentSettingsQuery();
+  const { data: paymentSettings, isLoading, isError, refetch } = useGetPaymentSettingsQuery();
   const [createPaymentSetting] = useCreatePaymentSettingMutation();
   const [deletePaymentSetting] = useDeletePaymentSettingMutation();
 
@@ -23,18 +27,40 @@ const PaymentSettings: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await createPaymentSetting(formValues);
-    setFormValues({
-      exchange_rate: '',
-      lbp_percentage: '',
-      registration_fee_usd: '',
-      effective_date: ''
-    });
+    try {
+      await createPaymentSetting(formValues).unwrap();
+      toast.success('Payment setting added successfully!');
+      setFormValues({
+        exchange_rate: '',
+        lbp_percentage: '',
+        registration_fee_usd: '',
+        effective_date: ''
+      });
+      refetch(); 
+    } catch (error) {
+      toast.error('Failed to add payment setting.');
+    }
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm('Are you sure you want to delete this setting?')) {
-      await deletePaymentSetting(id);
+    try {
+      await Swal.fire({
+        title: 'Are you sure?',
+        text: 'This action cannot be undone!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#123962',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await deletePaymentSetting(id).unwrap();
+          toast.success('Payment setting deleted successfully!');
+          refetch();
+        }
+      });
+    } catch (error) {
+      toast.error('Failed to delete payment setting.');
     }
   };
 
@@ -49,7 +75,12 @@ const PaymentSettings: React.FC = () => {
   const data = paymentSettings?.map(setting => ({
     ...setting,
     actions: (
-      <button onClick={() => handleDelete(setting.id)}>Delete</button>
+      <button
+        onClick={() => handleDelete(setting.id)}
+        className={styles.deleteButton}
+      >
+        Delete
+      </button>
     )
   })) || [];
 
@@ -116,6 +147,7 @@ const PaymentSettings: React.FC = () => {
           <button type="submit" style={{width: "100%"}} className={styles.submitButton}>Add Setting</button>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };
