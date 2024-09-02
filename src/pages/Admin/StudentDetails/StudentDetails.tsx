@@ -23,7 +23,7 @@ const StudentDetails: React.FC = () => {
   const { data: majors } = useGetMajorsQuery(); 
   const { data: currentSemester } = useGetCurrentSemesterQuery();
   const { data: fees } = useGetFeesByStudentQuery(studentId);
-  const { data: payments } = useGetPaymentsByStudentQuery(studentId);
+  const { data: payments, refetch: refetchPayments } = useGetPaymentsByStudentQuery(studentId);
   const [createPayment] = useCreatePaymentMutation();
 
   const [selectedSemester, setSelectedSemester] = useState<string>('All');
@@ -82,6 +82,7 @@ const StudentDetails: React.FC = () => {
       currency: 'USD',
       description: ''
     });
+    refetchPayments()
   };
 
 
@@ -211,49 +212,45 @@ const StudentDetails: React.FC = () => {
 
             <div className={styles.paymentContainer} style={{ marginTop: '4rem' }}>
               <h2 className={styles.headingSecondary}>Add Payment</h2>
-              <form onSubmit={handlePaymentSubmit}>
-                <label className={styles.formLabel}>
+              <form className={styles.uploadForm} onSubmit={handlePaymentSubmit}>
+                <label>
                   Amount Paid:
                   <input
                     type="number"
                     name="amount_paid"
                     value={paymentForm.amount_paid}
                     onChange={handleInputChange}
-                    className={styles.formInput}
                     required
                   />
                 </label>
-                <label className={styles.formLabel}>
+                <label>
                   Payment Date:
                   <input
                     type="date"
                     name="payment_date"
                     value={paymentForm.payment_date}
                     onChange={handleInputChange}
-                    className={styles.formInput}
                     required
                   />
                 </label>
-                <label className={styles.formLabel}>
+                <label>
                   Currency:
                   <select
                     name="currency"
                     value={paymentForm.currency}
                     onChange={handleInputChange}
-                    className={styles.formSelect}
                     required
                   >
                     <option value="USD">USD</option>
                     <option value="LBP">LBP</option>
                   </select>
                 </label>
-                <label className={styles.formLabel}>
+                <label>
                   Description:
                   <textarea
                     name="description"
                     value={paymentForm.description}
                     onChange={handleInputChange}
-                    className={styles.formTextArea}
                   />
                 </label>
                 <button type="submit" className={styles.submitButton}>Add Payment</button>
