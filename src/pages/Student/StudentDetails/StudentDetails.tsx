@@ -3,10 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useGetStudentByIdQuery } from '../../../features/api/studentsApi';
 import { useGetUserByIdQuery } from '../../../features/api/usersApi';
 import { useGetRegistrationsByStudentQuery } from '../../../features/api/registrationsApi';
-import { useGetSemestersQuery, useGetCurrentSemesterQuery } from '../../../features/api/semestersApi';
+import { useGetSemestersQuery } from '../../../features/api/semestersApi';
 import { useGetMajorsQuery } from '../../../features/api/majorsApi';
-import { useGetFeesByStudentQuery, useGetPaymentsByStudentQuery, useCreatePaymentMutation } from '../../../features/api/feesPaymentsApi';
-import AdminLayout from '../AdminLayout';
 import Table from '../../../components/Table/Table';
 import styles from './StudentDetails.module.css';
 import defaultProfile from '../../../assets/images/profileImage.jpg';
@@ -21,20 +19,10 @@ const StudentDetails: React.FC = () => {
   const { data: registrations, isLoading: registrationsLoading, error: registrationsError } = useGetRegistrationsByStudentQuery(studentId);
   const { data: semesters, isLoading: semestersLoading, error: semestersError } = useGetSemestersQuery();
   const { data: majors } = useGetMajorsQuery(); 
-  const { data: currentSemester } = useGetCurrentSemesterQuery();
-  const { data: fees } = useGetFeesByStudentQuery(studentId);
-  const { data: payments } = useGetPaymentsByStudentQuery(studentId);
-  const [createPayment] = useCreatePaymentMutation();
 
   const [selectedSemester, setSelectedSemester] = useState<string>('All');
-  const [paymentForm, setPaymentForm] = useState({
-    amount_paid: '',
-    payment_date: '',
-    currency: 'USD',
-    description: ''
-  });
 
-  if (studentLoading || userLoading || registrationsLoading || semestersLoading || !currentSemester) return <p>Loading...</p>;
+  if (studentLoading || userLoading || registrationsLoading || semestersLoading) return <p>Loading...</p>;
   if (studentError || userError || registrationsError || semestersError) return <p>Error loading data.</p>;
 
   const handleSemesterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -44,46 +32,6 @@ const StudentDetails: React.FC = () => {
   const filteredRegistrations = registrations?.filter(reg => 
     selectedSemester === 'All' || reg.semester_name === selectedSemester
   );
-
-   const filteredFees = fees || [];
-  const filteredPayments = payments || [];
-  
-  const feesUsd = filteredFees.filter(fee => fee.amount_usd > 0);
-  const feesLbp = filteredFees.filter(fee => fee.amount_lbp > 0);
-  const paymentsUsd = filteredPayments.filter(payment => payment.currency === 'USD');
-  const paymentsLbp = filteredPayments.filter(payment => payment.currency === 'LBP');
-
-  const totalUsd = feesUsd.reduce((acc, fee) => acc + parseFloat(fee.amount_usd), 0);
-  const totalLbp = feesLbp.reduce((acc, fee) => acc + parseFloat(fee.amount_lbp), 0);
-  const totalPaidUsd = paymentsUsd.reduce((acc, payment) => acc + parseFloat(payment.amount_paid), 0);
-  const totalPaidLbp = paymentsLbp.reduce((acc, payment) => acc + parseFloat(payment.amount_paid), 0);
-
-  const remainingUsd = totalUsd - totalPaidUsd;
-  const remainingLbp = totalLbp - totalPaidLbp;
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = event.target;
-    setPaymentForm({ ...paymentForm, [name]: value });
-  };
-
-  const handlePaymentSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const { amount_paid, payment_date, currency, description } = paymentForm;
-    await createPayment({
-      student_id: studentId,
-      amount_paid,
-      payment_date,
-      currency,
-      description
-    });
-    setPaymentForm({
-      amount_paid: '',
-      payment_date: '',
-      currency: 'USD',
-      description: ''
-    });
-  };
-
 
   const getMajorName = (majorId: number | null) => {
     const major = majors?.find(major => major.id === majorId);
@@ -98,41 +46,7 @@ const StudentDetails: React.FC = () => {
     { header: 'Semester', accessor: 'semester_name' },
   ];
 
-  const columnsPayments = [
-    { header: 'Date', accessor: 'date' },
-    { header: 'Description', accessor: 'description' },
-    { header: 'Dues', accessor: 'dues' },
-    { header: 'Payment Deductions', accessor: 'payment_deductions' },
-  ];
-
-  const renderFeesTable = (fees: any[], currency: string) => (
-    <Table
-      columns={columnsPayments}
-      data={[
-        ...fees.map(fee => ({
-          date: currentSemester?.start_date,
-          description: fee.description,
-          dues: currency === 'USD' ? fee.amount_usd : fee.amount_lbp,
-          payment_deductions: '',
-        })),
-        ...payments.filter(payment => payment.currency === currency).map(payment => ({
-          date: payment.payment_date,
-          description: payment.description,
-          dues: '',
-          payment_deductions: payment.amount_paid,
-        })),
-        {
-          date: 'Remaining',
-          description: '',
-          dues: currency === 'USD' ? remainingUsd.toFixed(2) : remainingLbp.toLocaleString(),
-          payment_deductions: '',
-        }
-      ]}
-    />
-  );
-
   return (
-    <AdminLayout>
       <div className={styles.studentDetailsContainer}>
         <h1 className={styles.headingPrimary}>Student Details</h1>
         {user && student ? (
@@ -200,71 +114,11 @@ const StudentDetails: React.FC = () => {
                 <p>No course registrations found for this student.</p>
               )}
             </div>
-
-            <div className={styles.feesPaymentsContainer} style={{ marginTop: '4rem' }}>
-              <h2 className={styles.headingSecondary}>Fees and Payments</h2>
-              <h3 className={styles.headingTertiary}>Fees in USD</h3>
-              {renderFeesTable(feesUsd, 'USD')}
-              <h3 className={styles.headingTertiary}>Fees in LBP</h3>
-              {renderFeesTable(feesLbp, 'LBP')}
-            </div>
-
-            <div className={styles.paymentContainer} style={{ marginTop: '4rem' }}>
-              <h2 className={styles.headingSecondary}>Add Payment</h2>
-              <form onSubmit={handlePaymentSubmit}>
-                <label className={styles.formLabel}>
-                  Amount Paid:
-                  <input
-                    type="number"
-                    name="amount_paid"
-                    value={paymentForm.amount_paid}
-                    onChange={handleInputChange}
-                    className={styles.formInput}
-                    required
-                  />
-                </label>
-                <label className={styles.formLabel}>
-                  Payment Date:
-                  <input
-                    type="date"
-                    name="payment_date"
-                    value={paymentForm.payment_date}
-                    onChange={handleInputChange}
-                    className={styles.formInput}
-                    required
-                  />
-                </label>
-                <label className={styles.formLabel}>
-                  Currency:
-                  <select
-                    name="currency"
-                    value={paymentForm.currency}
-                    onChange={handleInputChange}
-                    className={styles.formSelect}
-                    required
-                  >
-                    <option value="USD">USD</option>
-                    <option value="LBP">LBP</option>
-                  </select>
-                </label>
-                <label className={styles.formLabel}>
-                  Description:
-                  <textarea
-                    name="description"
-                    value={paymentForm.description}
-                    onChange={handleInputChange}
-                    className={styles.formTextArea}
-                  />
-                </label>
-                <button type="submit" className={styles.submitButton}>Add Payment</button>
-              </form>
-            </div>
           </div>
         ) : (
           <p>No student data found.</p>
         )}
       </div>
-    </AdminLayout>
   );
 };
 

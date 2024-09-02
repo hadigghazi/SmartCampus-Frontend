@@ -372,3 +372,27 @@ export type CourseDropRequest = {
   updated_at?: string;
   deleted_at?: string;
 };
+
+export type Fee = {
+  id: number;
+  student_id: number;
+  description: string;
+  amount_usd: number;
+  amount_lbp: number;
+  semester_id: number;  
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
+}
+export type Payment = {
+  id: number;
+  student_id: number;
+  amount_paid: number;
+  payment_date: string;
+  currency: 'USD' | 'LBP';
+  description: string;
+  semester_id: number;  
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
+}

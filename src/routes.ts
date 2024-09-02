@@ -75,6 +75,7 @@ const InstructorHistory = lazy(() => import('./pages/Instructor/InstructorHistor
 const CoursesInstructor = lazy(() => import('./pages/Instructor/Courses/Courses'));
 const CourseDetailsInstructor = lazy(() => import('./pages/Instructor/CourseDetails/CourseDetails'));
 const AssignmentDetailsInstructor = lazy(() => import('./pages/Instructor/AssignmentDetails/AssignmentDetails'));
+const StudentProfile = lazy(() => import('./pages/Student/StudentDetails/StudentDetails'));
 
 const AIMajorSuggestor = lazy(() => import('./pages/AIMajorSuggestor/AIMajorSuggestor'));
 const InstructorPage = lazy(() => import('./pages/InstructorPage/InstructorPage')); 
@@ -369,7 +370,7 @@ const routes: CustomRouteProps[] = [
   },
   {
     path: '/profile/:id',
-    component: StudentDetails,
+    component: StudentProfile
   },
   {
     path: '/library',
