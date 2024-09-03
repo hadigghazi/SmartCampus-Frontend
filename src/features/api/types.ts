@@ -407,3 +407,16 @@ export type PaymentSetting = {
   updated_at?: string;
   deleted_at?: string;
 }
+
+export interface FinancialAidScholarship {
+  id: number;
+  student_id: number;
+  semester_id: number;
+  type: string;          
+  percentage: number;  
+  description: string;
+  created_at: string;  
+  updated_at: string;  
+  deleted_at?: string | null;
+}
+
