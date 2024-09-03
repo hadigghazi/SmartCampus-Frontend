@@ -36,6 +36,9 @@ export const feesPaymentsApi = createApi({
         method: 'DELETE',
       }),
     }),
+    getTotalFeesByStudent: builder.query({
+      query: (id) => `total_fees_for_student/${id}`,
+    }),
 
     getPayments: builder.query<Payment[], void>({
       query: () => 'payments',
@@ -82,4 +85,5 @@ export const {
   useCreatePaymentMutation,
   useUpdatePaymentMutation,
   useDeletePaymentMutation,
+  useGetTotalFeesByStudentQuery
 } = feesPaymentsApi;

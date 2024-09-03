@@ -5,11 +5,12 @@ import { useGetUserByIdQuery } from '../../../features/api/usersApi';
 import { useGetRegistrationsByStudentQuery } from '../../../features/api/registrationsApi';
 import { useGetSemestersQuery, useGetCurrentSemesterQuery } from '../../../features/api/semestersApi';
 import { useGetMajorsQuery } from '../../../features/api/majorsApi';
-import { useGetFeesByStudentQuery, useGetPaymentsByStudentQuery, useCreatePaymentMutation } from '../../../features/api/feesPaymentsApi';
+import { useGetFeesByStudentQuery, useGetPaymentsByStudentQuery, useCreatePaymentMutation, useGetTotalFeesByStudentQuery } from '../../../features/api/feesPaymentsApi';
 import AdminLayout from '../AdminLayout';
 import Table from '../../../components/Table/Table';
 import styles from './StudentDetails.module.css';
 import defaultProfile from '../../../assets/images/profileImage.jpg';
+import { useGetFinancialAidsScholarshipsByStudentQuery } from '../../../features/api/financialAidApi';
 
 const StudentDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,6 +25,8 @@ const StudentDetails: React.FC = () => {
   const { data: currentSemester } = useGetCurrentSemesterQuery();
   const { data: fees } = useGetFeesByStudentQuery(studentId);
   const { data: payments, refetch: refetchPayments } = useGetPaymentsByStudentQuery(studentId);
+  const { data: financialAidsScholarships } = useGetFinancialAidsScholarshipsByStudentQuery(studentId);
+  const { data: totalFees } = useGetTotalFeesByStudentQuery(studentId);
   const [createPayment] = useCreatePaymentMutation();
 
   const [selectedSemester, setSelectedSemester] = useState<string>('All');
@@ -46,20 +49,30 @@ const StudentDetails: React.FC = () => {
   );
 
    const filteredFees = fees || [];
-  const filteredPayments = payments || [];
-  
-  const feesUsd = filteredFees.filter(fee => fee.amount_usd > 0);
-  const feesLbp = filteredFees.filter(fee => fee.amount_lbp > 0);
-  const paymentsUsd = filteredPayments.filter(payment => payment.currency === 'USD');
-  const paymentsLbp = filteredPayments.filter(payment => payment.currency === 'LBP');
+   const filteredPayments = payments || [];
+   const financialAids = financialAidsScholarships?.financial_aids_scholarships || [];
+ 
+   const feesUsd = filteredFees.filter(fee => fee.amount_usd > 0);
+   const feesLbp = filteredFees.filter(fee => fee.amount_lbp > 0);
+   const paymentsUsd = filteredPayments.filter(payment => payment.currency === 'USD');
+   const paymentsLbp = filteredPayments.filter(payment => payment.currency === 'LBP');
+ 
+   const totalUsd = feesUsd.reduce((acc, fee) => acc + parseFloat(fee.amount_usd), 0);
+   const totalLbp = feesLbp.reduce((acc, fee) => acc + parseFloat(fee.amount_lbp), 0);
+   const totalPaidUsd = paymentsUsd.reduce((acc, payment) => acc + parseFloat(payment.amount_paid), 0);
+   const totalPaidLbp = paymentsLbp.reduce((acc, payment) => acc + parseFloat(payment.amount_paid), 0);
+ 
+   const financialAidDeductionsUsd = financialAids.reduce((acc, aid) => {
+    const percentage = parseFloat(aid.percentage);
+    return acc + (percentage / 100) * totalUsd;
+  }, 0);
+  const financialAidDeductionsLbp = financialAids.reduce((acc, aid) => {
+    const percentage = parseFloat(aid.percentage);
+    return acc + (percentage / 100) * totalLbp;
+  }, 0);
 
-  const totalUsd = feesUsd.reduce((acc, fee) => acc + parseFloat(fee.amount_usd), 0);
-  const totalLbp = feesLbp.reduce((acc, fee) => acc + parseFloat(fee.amount_lbp), 0);
-  const totalPaidUsd = paymentsUsd.reduce((acc, payment) => acc + parseFloat(payment.amount_paid), 0);
-  const totalPaidLbp = paymentsLbp.reduce((acc, payment) => acc + parseFloat(payment.amount_paid), 0);
-
-  const remainingUsd = totalUsd - totalPaidUsd;
-  const remainingLbp = totalLbp - totalPaidLbp;
+  const remainingUsd = totalUsd - totalPaidUsd - financialAidDeductionsUsd;
+  const remainingLbp = totalLbp - totalPaidLbp - financialAidDeductionsLbp;
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
@@ -106,31 +119,51 @@ const StudentDetails: React.FC = () => {
     { header: 'Payment Deductions', accessor: 'payment_deductions' },
   ];
 
-  const renderFeesTable = (fees: any[], currency: string) => (
-    <Table
-      columns={columnsPayments}
-      data={[
-        ...fees.map(fee => ({
-          date: currentSemester?.start_date,
-          description: fee.description,
-          dues: currency === 'USD' ? fee.amount_usd : fee.amount_lbp,
-          payment_deductions: '',
-        })),
-        ...payments.filter(payment => payment.currency === currency).map(payment => ({
-          date: payment.payment_date,
-          description: payment.description,
-          dues: '',
-          payment_deductions: payment.amount_paid,
-        })),
-        {
-          date: 'Remaining',
-          description: '',
-          dues: currency === 'USD' ? remainingUsd.toFixed(2) : remainingLbp.toLocaleString(),
-          payment_deductions: '',
-        }
-      ]}
-    />
-  );
+  const renderFeesTable = (fees: any[], payments: any[], currency: string) => {
+    const financialAidRows = financialAids.map(aid => {
+      const percentage = parseFloat(aid.percentage);
+      const totalAmount = currency === 'USD' ? totalUsd : totalLbp;
+      const deduction = (percentage / 100) * totalAmount;
+
+      return {
+        date: aid.created_at,
+        description: `${aid.type} (${aid.percentage}%)`,
+        dues: '',
+        payment_deductions: deduction.toFixed(2),
+      };
+    });
+
+    const feeRows = fees.map(fee => ({
+      date: currentSemester?.start_date,
+      description: fee.description,
+      dues: currency === 'USD' ? fee.amount_usd : fee.amount_lbp,
+      payment_deductions: '',
+    }));
+
+    const paymentRows = payments.filter(payment => payment.currency === currency).map(payment => ({
+      date: payment.payment_date,
+      description: payment.description,
+      dues: '',
+      payment_deductions: payment.amount_paid,
+    }));
+    
+    return (
+      <Table
+        columns={columnsPayments} // Use columnsPayments here
+        data={[
+          ...feeRows,
+          ...paymentRows,
+          ...financialAidRows,
+          {
+            date: 'Remaining',
+            description: '',
+            dues: currency === 'USD' ? remainingUsd.toFixed(2) : remainingLbp.toLocaleString(),
+            payment_deductions: '',
+          }
+        ]}
+      />
+    );
+  };
 
   return (
     <AdminLayout>
@@ -205,9 +238,9 @@ const StudentDetails: React.FC = () => {
             <div className={styles.feesPaymentsContainer} style={{ marginTop: '4rem' }}>
               <h2 className={styles.headingSecondary}>Fees and Payments</h2>
               <h3 className={styles.headingTertiary}>Fees in USD</h3>
-              {renderFeesTable(feesUsd, 'USD')}
+              {renderFeesTable(filteredFees, filteredPayments, 'USD')}
               <h3 className={styles.headingTertiary}>Fees in LBP</h3>
-              {renderFeesTable(feesLbp, 'LBP')}
+              {renderFeesTable(filteredFees, filteredPayments, 'LBP')}
             </div>
 
             <div className={styles.paymentContainer} style={{ marginTop: '4rem' }}>
