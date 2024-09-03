@@ -19,7 +19,39 @@
     background-color: white;
     padding: 2rem;
   }
-  
+
+.deadlineSection {
+  margin: 20px 0;
+  padding: 20px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-family: 'Metrophobic', sans-serif;
+  color: var(--primary-color);
+  border-bottom: 1px solid #ddd;
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+li span {
+  font-weight: 500;
+}
+
+li .deadlineDate {
+  font-weight: 600;
+}
+
   .headingSecondary {
     color: var(--primary-color);
     font-size: 1.5rem;
