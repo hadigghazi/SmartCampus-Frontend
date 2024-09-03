@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetStudentByIdQuery } from '../../../features/api/studentsApi';
 import { useGetUserByIdQuery } from '../../../features/api/usersApi';
 import { useGetRegistrationsByStudentQuery } from '../../../features/api/registrationsApi';
 import { useGetSemestersQuery, useGetCurrentSemesterQuery } from '../../../features/api/semestersApi';
 import { useGetMajorsQuery } from '../../../features/api/majorsApi';
-import { useGetFeesByStudentQuery, useGetPaymentsByStudentQuery, useCreatePaymentMutation, useGetTotalFeesByStudentQuery } from '../../../features/api/feesPaymentsApi';
+import { useGetFeesByStudentQuery, useGetPaymentsByStudentQuery, useCreatePaymentMutation } from '../../../features/api/feesPaymentsApi';
 import AdminLayout from '../AdminLayout';
 import Table from '../../../components/Table/Table';
 import styles from './StudentDetails.module.css';
 import defaultProfile from '../../../assets/images/profileImage.jpg';
-import { useGetFinancialAidsScholarshipsByStudentQuery } from '../../../features/api/financialAidApi';
+import { useGetFinancialAidsScholarshipsByStudentQuery, useCreateFinancialAidScholarshipMutation } from '../../../features/api/financialAidApi';
 
 const StudentDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,15 +25,20 @@ const StudentDetails: React.FC = () => {
   const { data: currentSemester } = useGetCurrentSemesterQuery();
   const { data: fees } = useGetFeesByStudentQuery(studentId);
   const { data: payments, refetch: refetchPayments } = useGetPaymentsByStudentQuery(studentId);
-  const { data: financialAidsScholarships } = useGetFinancialAidsScholarshipsByStudentQuery(studentId);
-  const { data: totalFees } = useGetTotalFeesByStudentQuery(studentId);
+  const { data: financialAidsScholarships, refetch: refetchFinancialAids } = useGetFinancialAidsScholarshipsByStudentQuery(studentId);
   const [createPayment] = useCreatePaymentMutation();
-
+  const [createFinancialAidScholarship] = useCreateFinancialAidScholarshipMutation();
   const [selectedSemester, setSelectedSemester] = useState<string>('All');
   const [paymentForm, setPaymentForm] = useState({
     amount_paid: '',
     payment_date: '',
     currency: 'USD',
+    description: ''
+  });
+
+  const [financialAidForm, setFinancialAidForm] = useState({
+    type: '',
+    percentage: '',
     description: ''
   });
 
@@ -79,6 +84,11 @@ const StudentDetails: React.FC = () => {
     setPaymentForm({ ...paymentForm, [name]: value });
   };
 
+  const handleFinancialAidInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setFinancialAidForm({ ...financialAidForm, [name]: value });
+  };
+
   const handlePaymentSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const { amount_paid, payment_date, currency, description } = paymentForm;
@@ -96,6 +106,24 @@ const StudentDetails: React.FC = () => {
       description: ''
     });
     refetchPayments()
+  };
+
+  
+  const handleFinancialAidSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const { type, percentage, description } = financialAidForm;
+    await createFinancialAidScholarship({
+      student_id: studentId,
+      type,
+      percentage,
+      description,
+    });
+    setFinancialAidForm({
+      type: '',
+      percentage: '',
+      description: ''
+    });
+    refetchFinancialAids();
   };
 
 
@@ -149,7 +177,7 @@ const StudentDetails: React.FC = () => {
     
     return (
       <Table
-        columns={columnsPayments} // Use columnsPayments here
+        columns={columnsPayments} 
         data={[
           ...feeRows,
           ...paymentRows,
@@ -287,6 +315,40 @@ const StudentDetails: React.FC = () => {
                   />
                 </label>
                 <button type="submit" className={styles.submitButton}>Add Payment</button>
+              </form>
+            </div>
+            <div className={styles.paymentContainer} style={{ marginTop: '4rem' }}>
+            <h3 className={styles.headingSecondary}>Add Financial Aid/Scholarship</h3>
+              <form onSubmit={handleFinancialAidSubmit} className={styles.uploadForm}>
+                <label>
+                  Type:
+                  <input
+                    type="text"
+                    name="type"
+                    value={financialAidForm.type}
+                    onChange={handleFinancialAidInputChange}
+                    required
+                  />
+                </label>
+                <label>
+                  Percentage:
+                  <input
+                    type="number"
+                    name="percentage"
+                    value={financialAidForm.percentage}
+                    onChange={handleFinancialAidInputChange}
+                    required
+                  />
+                </label>
+                <label>
+                  Description:
+                  <textarea
+                    name="description"
+                    value={financialAidForm.description}
+                    onChange={handleFinancialAidInputChange}
+                  />
+                </label>
+                <button type="submit" className={styles.submitButton}>Add FA</button>
               </form>
             </div>
           </div>
