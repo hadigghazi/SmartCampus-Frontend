@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, User } from './types';
 import { RootState } from '../../store';
+import { isTokenExpired } from '../auth/jwtUtils';
+
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const authApi = createApi({
@@ -9,8 +11,11 @@ export const authApi = createApi({
     baseUrl: apiUrl,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;
+
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
+        if (!isTokenExpired(token)) {
+          headers.set('Authorization', `Bearer ${token}`);
+        }
       }
       headers.set('Accept', `application/json`);
       return headers;
