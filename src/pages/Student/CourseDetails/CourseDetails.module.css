@@ -164,7 +164,9 @@
   .questions {
     margin-top: 2rem;
     padding: 1.5rem;
+    font-size: 1.3rem;
     background-color: #e0f7fa;
+    font-family: 'Metrophobic', sans-serif;
     border-left: 4px solid var(--primary-color);
     border-radius: 8px;
   }

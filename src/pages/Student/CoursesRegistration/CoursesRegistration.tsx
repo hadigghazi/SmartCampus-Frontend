@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { useGetAvailableCoursesForStudentQuery } from '../../../features/api/registrationsApi';
+import axios from 'axios';
 import Table from '../../../components/Table/Table'; 
 import SearchInput from '../../../components/SearchInput/SearchInput';
 import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import Pagination from '../../../components/Pagination/Pagination';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../Admin/Courses/Courses.module.css'; 
+import aistyles from '../CourseDetails/CourseDetails.module.css';
+import { useGetAvailableCoursesForStudentQuery } from '../../../features/api/registrationsApi';
+
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 const CoursesRegistration: React.FC = () => {
   const { data: availableCourses, isLoading, error } = useGetAvailableCoursesForStudentQuery();
-
   const [localCourses, setLocalCourses] = useState(availableCourses || []);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
+  const [aiSuggestions, setAiSuggestions] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -54,6 +58,22 @@ const CoursesRegistration: React.FC = () => {
     navigate(`/registrations/${courseId}`);
   };
 
+  const handleGetSuggestions = async () => {
+    const token = localStorage.getItem('token'); 
+    try {
+      const response = await axios.get(`${apiUrl}/suggest-courses`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setAiSuggestions(response.data.suggestions);
+    } catch (error) {
+      console.error("Failed to fetch AI suggestions", error);
+    }
+  };
+
+  const formattedSuggestions = aiSuggestions ? aiSuggestions.replace(/\n/g, '<br/>') : '';
+
   return (
     <div className={styles.container}>
       <h1 className={styles.headingPrimary}>Courses Registration</h1>
@@ -74,6 +94,17 @@ const CoursesRegistration: React.FC = () => {
         )}
       />
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+      <div className={styles.suggestionsSection}>
+        <h2 className={styles.headingSecondary} style={{marginTop: "7rem"}}>AI Course Suggestions</h2>
+        <button style={{marginTop: "2rem"}} onClick={handleGetSuggestions} className={`${aistyles.submitButton}`}>
+          Get AI Course Suggestions
+        </button>
+        {aiSuggestions && (
+          <div className={aistyles.questions}>
+            <div dangerouslySetInnerHTML={{ __html: formattedSuggestions }} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

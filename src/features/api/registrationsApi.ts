@@ -51,6 +51,9 @@ export const registrationsApi = createApi({
     getAvailableCoursesForStudent: builder.query({
       query: () => `available-courses/student`,
     }),
+    suggestCourses: builder.query({
+      query: () => 'suggest-courses',
+    }),
   }),
 });
 
@@ -62,5 +65,6 @@ export const {
   useDeleteRegistrationMutation,
   useGetRegistrationsByStudentQuery,
   useGetRegisteredStudentsQuery,
-  useGetAvailableCoursesForStudentQuery
+  useGetAvailableCoursesForStudentQuery,
+  useSuggestCoursesQuery
 } = registrationsApi;
