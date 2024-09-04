@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../Admin/CourseDetails/CourseDetails.module.css';
+import stylesbtn from './Registrations.module.css';
 import personalImage from '../../../assets/images/profileImage.jpg';
 import {
   useGetCourseByIdQuery,
@@ -8,6 +9,7 @@ import {
 } from '../../../features/api/coursesApi';
 import { getCartFromLocalStorage, setCartInLocalStorage } from '../../../features/api/cartSlice';
 import { useGetAvailableCoursesForStudentQuery } from '../../../features/api/registrationsApi';
+import Button from '../../../components/Button/Button';
 
 const CourseDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -43,8 +45,23 @@ const CourseDetails: React.FC = () => {
     });
   };
 
+  const handleRemoveFromCart = (courseId: number, optionId: number) => {
+    setCart((prevCart) => {
+      const updatedCart = { ...prevCart };
+
+      if (updatedCart[courseId]) {
+        updatedCart[courseId] = updatedCart[courseId].filter(id => id !== optionId);
+        if (updatedCart[courseId].length === 0) {
+          delete updatedCart[courseId]; 
+        }
+        setCartInLocalStorage(updatedCart);
+      }
+      return updatedCart;
+    });
+  };
+
   const handleGoToCart = () => {
-    navigate('/registrations/cart');
+    navigate('/registrations-cart');
   };
 
   if (courseLoading || optionsLoading || availableCoursesLoading) return <div>Loading...</div>;
@@ -64,7 +81,7 @@ const CourseDetails: React.FC = () => {
       {courseOptions && courseOptions.length > 0 ? (
         <ul className={styles.optionsList}>
           {courseOptions.map((option) => (
-            <li key={option.id} className={styles.optionItem}>
+            <li key={option.id} className={styles.optionItem} style={{position: "relative"}}>
               <img
                 src={personalImage}
                 alt={`${option?.instructor_name}`}
@@ -75,14 +92,23 @@ const CourseDetails: React.FC = () => {
               <p className={styles.optionText}>Schedule: {option?.schedule}</p>
               <p className={styles.optionText}>Available Seats: {option?.available_seats}</p>
               <p className={styles.optionText}>Semester: {option?.semester_name}</p>
-              <p className={styles.optionText}>Room: {option?.room}</p>
+              <p className={styles.optionText} style={{marginBottom: '3.5rem'}}>Room: {option?.room}</p>
               <div className={styles.btnsContainer}>
-                <button
-                  onClick={() => handleAddToCart(course.id, option.id)}
-                  className={styles.addButton}
-                >
-                  Add to Cart
-                </button>
+                {cart[course.id] && cart[course.id].includes(option.id) ? (
+                  <button
+                    onClick={() => handleRemoveFromCart(course.id, option.id)}
+                    className={stylesbtn.rejectBtn}
+                  >
+                    Remove from Cart
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleAddToCart(course.id, option.id)}
+                    className={stylesbtn.acceptBtn}
+                  >
+                    Add to Cart
+                  </button>
+                )}
               </div>
             </li>
           ))}
@@ -93,7 +119,7 @@ const CourseDetails: React.FC = () => {
 
       {Object.keys(cart).length > 0 && (
         <div className={styles.cartContainer}>
-          <button onClick={handleGoToCart} className={styles.cartButton}>
+          <button onClick={handleGoToCart}>
             Go to Cart
           </button>
         </div>
