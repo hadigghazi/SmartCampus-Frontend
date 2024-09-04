@@ -19,7 +19,11 @@ const CoursesRegistration: React.FC = () => {
 
   useEffect(() => {
     if (availableCourses) {
-      setLocalCourses(availableCourses);
+      const processedCourses = availableCourses.map(course => ({
+        ...course,
+        prerequisites: course.prerequisites.length > 0 ? course.prerequisites.join(', ') : 'None'
+      }));
+      setLocalCourses(processedCourses);
     }
   }, [availableCourses]);
 
@@ -62,12 +66,12 @@ const CoursesRegistration: React.FC = () => {
           { header: 'Course Name', accessor: 'course_name' },
           { header: 'Course Code', accessor: 'course_code' },
           { header: 'Credits', accessor: 'credits' },
-          { header: 'Prerequisites', accessor: 'prerequisites', render: (prerequisites: string[]) => prerequisites.length > 0 ? prerequisites.join(', ') : 'None' },
-          { header: 'Actions', accessor: 'actions', render: (course: { course_id: number }) => (
-            <button onClick={() => handleViewCourse(course.course_id)}>View</button>
-          )},
+          { header: 'Prerequisites', accessor: 'prerequisites' }
         ]}
         data={currentEntries || []}
+        actions={(course) => (
+          <button onClick={() => handleViewCourse(course.course_id)}>View</button>
+        )}
       />
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
     </div>
