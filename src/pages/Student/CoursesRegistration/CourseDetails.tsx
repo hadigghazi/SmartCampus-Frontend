@@ -4,17 +4,26 @@ import styles from '../../Admin/CourseDetails/CourseDetails.module.css';
 import personalImage from '../../../assets/images/profileImage.jpg';
 import {
   useGetCourseByIdQuery,
-  useGetCourseOptionsQuery,
+  useGetCourseOptionsQuery
 } from '../../../features/api/coursesApi';
 import { getCartFromLocalStorage, setCartInLocalStorage } from '../../../features/api/cartSlice';
+import { useGetAvailableCoursesForStudentQuery } from '../../../features/api/registrationsApi';
 
 const CourseDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { data: course, error: courseError, isLoading: courseLoading } = useGetCourseByIdQuery(Number(id));
   const { data: courseOptions, error: optionsError, isLoading: optionsLoading } = useGetCourseOptionsQuery(Number(id));
-  
+  const { data: availableCourses, isLoading: availableCoursesLoading } = useGetAvailableCoursesForStudentQuery();
+
   const [cart, setCart] = useState<{ [courseId: number]: number[] }>(getCartFromLocalStorage());
+
+  useEffect(() => {
+    const availableCourseIds = availableCourses?.map(course => course.course_id) || [];
+    if (Number(id) && !availableCourseIds.includes(Number(id))) {
+      navigate('/registrations');
+    }
+  }, [id, availableCourses, navigate]);
 
   useEffect(() => {
     setCart(getCartFromLocalStorage());
@@ -38,7 +47,7 @@ const CourseDetails: React.FC = () => {
     navigate('/registrations/cart');
   };
 
-  if (courseLoading || optionsLoading) return <div>Loading...</div>;
+  if (courseLoading || optionsLoading || availableCoursesLoading) return <div>Loading...</div>;
   if (courseError || optionsError) return <div>Error loading course details</div>;
   if (!course) return <div>Course not found</div>;
 
