@@ -45,8 +45,8 @@ const RegistrationCart: React.FC = () => {
   }
 
   return (
-    <div className={styles.cartContainer}>
-      <h1>Your Registration Cart</h1>
+    <div className={styles.content}>
+      <h1 className={styles.headingPrimary} style={{marginBottom: "2rem"}}>Your Registration Cart</h1>
       <ul className={styles.optionsList}>
         {Object.entries(cart).map(([courseId, optionIds]) => (
           <li key={courseId} className={styles.optionItem} style={{position: "relative"}}>
@@ -72,7 +72,7 @@ const RegistrationCart: React.FC = () => {
           </li>
         ))}
       </ul>
-      <button onClick={handleRegisterAll} className={stylesbtn.acceptBtn}>
+      <button onClick={handleRegisterAll} className={stylesbtn.goToCartButton}>
         Register All
       </button>
     </div>

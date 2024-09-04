@@ -5,17 +5,16 @@ import stylesbtn from './Registrations.module.css';
 import personalImage from '../../../assets/images/profileImage.jpg';
 import {
   useGetCourseByIdQuery,
-  useGetCourseOptionsQuery
+  useGetAvailableCourseOptionsQuery
 } from '../../../features/api/coursesApi';
 import { getCartFromLocalStorage, setCartInLocalStorage } from '../../../features/api/cartSlice';
 import { useGetAvailableCoursesForStudentQuery } from '../../../features/api/registrationsApi';
-import Button from '../../../components/Button/Button';
 
 const CourseDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { data: course, error: courseError, isLoading: courseLoading } = useGetCourseByIdQuery(Number(id));
-  const { data: courseOptions, error: optionsError, isLoading: optionsLoading } = useGetCourseOptionsQuery(Number(id));
+  const { data: courseOptions, error: optionsError, isLoading: optionsLoading } = useGetAvailableCourseOptionsQuery(Number(id));
   const { data: availableCourses, isLoading: availableCoursesLoading } = useGetAvailableCoursesForStudentQuery();
 
   const [cart, setCart] = useState<{ [courseId: number]: number[] }>(getCartFromLocalStorage());
@@ -118,11 +117,12 @@ const CourseDetails: React.FC = () => {
       )}
 
       {Object.keys(cart).length > 0 && (
-        <div className={styles.cartContainer}>
-          <button onClick={handleGoToCart}>
-            Go to Cart
-          </button>
-        </div>
+      <div>
+      <button onClick={handleGoToCart} className={` ${stylesbtn.goToCartButton}`}>
+        Go to Cart
+      </button>
+    </div>
+    
       )}
     </div>
   );
