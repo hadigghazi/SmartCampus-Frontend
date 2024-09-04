@@ -5,7 +5,16 @@ const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const registrationsApi = createApi({
   reducerPath: 'registrationsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: apiUrl,
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as any).auth.token;
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     getRegistrations: builder.query<Registration[], void>({
       query: () => 'registrations',
@@ -39,6 +48,9 @@ export const registrationsApi = createApi({
     getRegisteredStudents: builder.query({
       query: (id) => `course-instructor-students/${id}`, 
     }),
+    getAvailableCoursesForStudent: builder.query({
+      query: () => `available-courses/student`,
+    }),
   }),
 });
 
@@ -49,5 +61,6 @@ export const {
   useUpdateRegistrationMutation,
   useDeleteRegistrationMutation,
   useGetRegistrationsByStudentQuery,
-  useGetRegisteredStudentsQuery
+  useGetRegisteredStudentsQuery,
+  useGetAvailableCoursesForStudentQuery
 } = registrationsApi;
