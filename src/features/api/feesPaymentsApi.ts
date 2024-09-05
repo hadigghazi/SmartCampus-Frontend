@@ -5,7 +5,16 @@ const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const feesPaymentsApi = createApi({
   reducerPath: 'feesPaymentsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: apiUrl,
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as any).auth.token;
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     getFees: builder.query<Fee[], void>({
       query: () => 'fees',
@@ -69,6 +78,9 @@ export const feesPaymentsApi = createApi({
         method: 'DELETE',
       }),
     }),
+    checkFeesPaid: builder.query({
+      query: () => 'check-fees',
+    }),
   }),
 });
 
@@ -85,5 +97,6 @@ export const {
   useCreatePaymentMutation,
   useUpdatePaymentMutation,
   useDeletePaymentMutation,
-  useGetTotalFeesByStudentQuery
+  useGetTotalFeesByStudentQuery,
+  useCheckFeesPaidQuery
 } = feesPaymentsApi;

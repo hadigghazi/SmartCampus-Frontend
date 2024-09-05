@@ -81,6 +81,7 @@ const StudentProfile = lazy(() => import('./pages/Student/StudentDetails/Student
 const CoursesRegistration = lazy(() => import('./pages/Student/CoursesRegistration/CoursesRegistration'));
 const CoursesRegistrationDetails = lazy(() => import('./pages/Student/CoursesRegistration/CourseDetails'));
 const RegistrationCart = lazy(() => import('./pages/Student/CoursesRegistration/RegistrationCart'));
+const RemainingPayment = lazy(() => import('./pages/Student/CoursesRegistration/RemainingPayment'));
 
 const AIMajorSuggestor = lazy(() => import('./pages/AIMajorSuggestor/AIMajorSuggestor'));
 const InstructorPage = lazy(() => import('./pages/InstructorPage/InstructorPage')); 
@@ -404,6 +405,10 @@ const routes: CustomRouteProps[] = [
   {
     path: '/registrations-cart',
     component: RegistrationCart,
+  },
+  {
+    path: '/remaining-payments',
+    component: RemainingPayment,
   },
 ];
 

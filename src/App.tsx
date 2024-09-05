@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import routes from './routes';
 import PublicRoute from './components/ProtectedRoutes/PublicRoute';
 import AuthCheckComponent from './components/AuthCheckComponent';
+import PaymentRoute from './components/ProtectedRoutes/PaymentRoute';
 
 const App: React.FC = () => {
   return (
@@ -25,6 +26,22 @@ const App: React.FC = () => {
                         <Element />
                       </Layout>
                     </PublicRoute>
+                  }
+                />
+              );
+            }
+
+            if (route.path === '/registrations' || route.path === '/registrations/:id' || route.path === '/registrations-cart') {
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <PaymentRoute>
+                      <Layout>
+                        <Element />
+                      </Layout>
+                    </PaymentRoute>
                   }
                 />
               );
