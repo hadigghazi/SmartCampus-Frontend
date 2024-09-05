@@ -13,9 +13,9 @@ const ProtectedRoute = ({ children }) => {
     return <div>Error loading fees data</div>;
   }
 
-  const { fees_paid } = data;
+  const { fees_paid, remaining_fees_usd, remaining_fees_lbp } = data;
 
-  if (!fees_paid) {
+  if (!fees_paid && !remaining_fees_usd && !remaining_fees_lbp) {
     return <Navigate to="/remaining-payments" />;
   }
 

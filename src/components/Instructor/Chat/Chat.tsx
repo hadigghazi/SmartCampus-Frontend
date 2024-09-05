@@ -1,80 +1,90 @@
-// @ts-nocheck
-
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import styles from "./Chat.module.css";
 
-export const Chat: React.FC = () => {
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
+type Interaction = {
+  user: string;
+  bot: string;
+};
+
+type Props = {
+  chatHistory: Interaction[];
+  updateChatHistory: (newHistory: Interaction[]) => void;
+};
+
+export const Chat: React.FC<Props> = ({ chatHistory, updateChatHistory }) => {
   const [userInput, setUserInput] = useState("");
-  const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const recognitionRef = useRef(null);
-  const synthesisRef = useRef(window.speechSynthesis);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const synthesisRef = useRef<SpeechSynthesis>(window.speechSynthesis);
 
-  const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
+  const token = localStorage.getItem("token");
 
-    const startListening = () => {
-        if (!SpeechRecognition) {
-          console.error("Speech recognition is not supported in this browser.");
-          return;
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  const startListening = () => {
+    if (!SpeechRecognition) {
+      console.error("Speech recognition is not supported in this browser.");
+      return;
+    }
+
+    console.log("Starting speech recognition");
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en";
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognitionRef.current = recognition;
+
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      console.log("Speech recognition result:", event);
+
+      let interimTranscript = "";
+      let finalTranscript = "";
+
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript + " ";
+        } else {
+          interimTranscript += transcript;
         }
-      
-        console.log("Starting speech recognition");
-      
-        const recognition = new SpeechRecognition();
-        recognition.lang = "en";
-        recognition.continuous = true;
-        recognition.interimResults = true;
-        recognitionRef.current = recognition;
-      
-        recognition.onresult = (event) => {
-          console.log("Speech recognition result:", event);
-      
-          let interimTranscript = "";
-          let finalTranscript = "";
-      
-          for (let i = event.resultIndex; i < event.results.length; i++) {
-            const transcript = event.results[i][0].transcript;
-            if (event.results[i].isFinal) {
-              finalTranscript += transcript + " ";
-            } else {
-              interimTranscript += transcript;
-            }
-          }
-      
-          setUserInput(finalTranscript);
-        };
-      
-        recognition.onerror = (event) => {
-          console.error("Speech recognition error:", event.error);
-          setIsListening(false);
-        };
-      
-        recognition.onend = () => {
-          console.log("Speech recognition ended");
-          setIsListening(false);
-          if (userInput.trim() !== "") {
-            handleSubmit(new Event("submit"));
-          }
-        };
-      
-        recognition.start();
-        setIsListening(true);
-      };
-      
-      const stopListening = () => {
-        if (recognitionRef.current) {
-          console.log("Stopping speech recognition");
-          recognitionRef.current.stop();
-          setIsListening(false);
-        }
-      };
-      
-  const speak = (text) => {
+      }
+
+      setUserInput(finalTranscript);
+    };
+
+    recognition.onerror = (event: SpeechRecognitionError) => {
+      console.error("Speech recognition error:", event.error);
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      console.log("Speech recognition ended");
+      setIsListening(false);
+      if (userInput.trim() !== "") {
+        handleSubmit(new Event("submit"));
+      }
+    };
+
+    recognition.start();
+    setIsListening(true);
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      console.log("Stopping speech recognition");
+      recognitionRef.current.stop();
+      setIsListening(false);
+    }
+  };
+
+  const speak = (text: string) => {
     const synthesis = synthesisRef.current;
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "en-US";
@@ -95,7 +105,7 @@ export const Chat: React.FC = () => {
   const stopSpeaking = () => {
     const synthesis = synthesisRef.current;
     if (synthesis.speaking) {
-      synthesis.cancel(); 
+      synthesis.cancel();
       setIsSpeaking(false);
     }
   };
@@ -107,60 +117,60 @@ export const Chat: React.FC = () => {
     }
   }, [chatHistory]);
 
-  const handleUserInput = (e) => {
+  const handleUserInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-  
+
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/chatgpt",
-        {
-          message: userInput,
-        },
+        `${apiUrl}/openai-instructor`,
+        { message: userInput },
         {
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
           },
         }
       );
       const generatedText = response.data.response;
-  
-      setChatHistory([...chatHistory, { user: userInput, bot: generatedText }]);
+
+      // Use a functional update to ensure state is updated correctly
+      updateChatHistory(prevHistory => [
+        ...prevHistory,
+        { user: userInput, bot: generatedText }
+      ]);
       setUserInput("");
-  
-      axios.post(
-        "http://localhost:8000/api/ai_instructor_interactions",
+
+      await axios.post(
+        `${apiUrl}/ai_instructor_interactions`,
         {
-          user_id: 1, 
           question: userInput,
           answer: generatedText,
         },
         {
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
           },
         }
-      ).catch((error) => {
-        console.error("Error saving interaction:", error);
-      });
+      );
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error during submission:", error);
+    } finally {
+      setLoading(false);
     }
-  
-    setLoading(false);
   };
-  
-  
+
   const toggleInput = () => {
     setShowInput(!showInput);
   };
 
   const handleClear = () => {
-    setChatHistory([]);
+    updateChatHistory([]);
     setUserInput("");
   };
 

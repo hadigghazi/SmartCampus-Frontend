@@ -2,19 +2,27 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./ChatHistory.module.css";
 
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
 type Interaction = {
-    id: number;
-    user_id: number;
-    question: string;
-    answer: string;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-  };
-  
-export const ChatHistory: React.FC = () => {
-  const [history, setHistory] = useState<Interaction[]>([]);
+  id: number;
+  user_id: number;
+  question: string;
+  answer: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+};
+
+type Props = {
+  chatHistory: Interaction[];
+  updateChatHistory: (newHistory: Interaction[]) => void;
+};
+
+export const ChatHistory: React.FC<Props> = ({ chatHistory, updateChatHistory }) => {
   const [showHistory, setShowHistory] = useState(false);
+
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     if (showHistory) {
@@ -25,9 +33,14 @@ export const ChatHistory: React.FC = () => {
   const fetchHistory = async () => {
     try {
       const response = await axios.get<Interaction[]>(
-        "http://localhost:8000/api/ai_instructor_interactions"
+        `${apiUrl}/ai_instructor_interactions`,
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        }
       );
-      setHistory(response.data);
+      updateChatHistory(response.data);
     } catch (error) {
       console.error("Error fetching chat history:", error);
     }
@@ -36,9 +49,14 @@ export const ChatHistory: React.FC = () => {
   const deleteInteraction = async (id: number) => {
     try {
       await axios.delete(
-        `http://localhost:8000/api/ai_instructor_interactions/${id}`
+        `${apiUrl}/ai_instructor_interactions/${id}`,
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        }
       );
-      setHistory(history.filter((interaction) => interaction.id !== id));
+      updateChatHistory(chatHistory.filter((interaction) => interaction.id !== id));
     } catch (error) {
       console.error("Error deleting interaction:", error);
     }
@@ -46,8 +64,12 @@ export const ChatHistory: React.FC = () => {
 
   const clearHistory = async () => {
     try {
-      await axios.delete("http://localhost:8000/api/ai_instructor_interactions/clear");
-      setHistory([]);
+      await axios.delete(`${apiUrl}/ai_instructor_interactions/clear`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      updateChatHistory([]);
     } catch (error) {
       console.error("Error clearing chat history:", error);
     }
@@ -62,16 +84,16 @@ export const ChatHistory: React.FC = () => {
       <button className={styles.toggleButton} onClick={toggleHistory}>
         {showHistory ? "Hide History" : "Show History"}
       </button>
-      
+
       {showHistory && (
         <>
           <h2>Chat History</h2>
           <button className={styles.clearButton} onClick={clearHistory}>
             Clear All
           </button>
-          {history.length > 0 ? (
+          {chatHistory.length > 0 ? (
             <ul className={styles.historyList}>
-              {history.map((interaction) => (
+              {chatHistory.map((interaction) => (
                 <li key={interaction.id} className={styles.historyItem}>
                   <div>
                     <strong>You:</strong> {interaction.question}
