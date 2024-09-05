@@ -228,9 +228,8 @@ export const Chat: React.FC<Props> = ({ chatHistory, updateChatHistory }) => {
                   disabled={loading}
                 >
                   <i className={styles.sendIcon}>
-                    {loading ? "Sending..." : "➤ "}
+                    {loading ? "Sending..." : "Send ➤ "}
                   </i>
-                  <span>Send</span>
                 </button>
               </form>
             </div>
