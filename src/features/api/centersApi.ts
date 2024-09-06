@@ -1,10 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { Center } from './types';
-const apiUrl = import.meta.env.VITE_BASE_URL;
+import { baseQuery } from './baseQuery';
 
 export const centersApi = createApi({
   reducerPath: 'centersApi',
-  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }), 
+  baseQuery, 
   endpoints: (builder) => ({
     getCenters: builder.query<Center[], void>({
       query: () => 'centers',
