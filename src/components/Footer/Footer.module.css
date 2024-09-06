@@ -1,100 +1,153 @@
 .footer {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+  flex-wrap: wrap; 
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; 
+}
+
+.logo {
+  height: 60px; 
+  filter: invert(1) sepia(1) saturate(5) hue-rotate(180deg);
+  margin-right: 15px;
+}
+
+.footerTitle {
+  font-size: 1.8em; 
+  color: var(--secondary-color);
+  margin-top: 20px; 
+  margin-left: 10px;
+}
+
+.footerContent {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.footerColumn {
+  flex: 1;
+  margin: 10px;
+  min-width: 200px; 
+}
+
+.footerColumn h4 {
+  font-size: 1.3em; 
+  margin-bottom: 10px;
+}
+
+.footerColumn a {
+  font-size: 0.9em; 
+  line-height: 2rem;
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-family: 'Metrophobic', sans-serif; 
+}
+
+.footerColumn p {
+  font-size: 0.9em; 
+  line-height: 1.8rem; 
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-family: 'Metrophobic', sans-serif; 
+}
+
+.footerColumn a:hover {
+  text-decoration: underline;
+}
+
+.footerBottom {
+  width: 100%;
+  padding-top: 20px;
+  border-top: 1px solid var(--secondary-color);
+  font-size: 0.9em; 
+  display: flex;
+  font-family: 'Metrophobic', sans-serif; 
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; 
+}
+
+.footerBottom p {
+  margin: 0;
+}
+
+.socialIcons {
+  display: flex;
+  justify-content: center; 
+  margin: 0;
+}
+
+.socialIcons a {
+  margin-left: 10px;
+  color: var(--secondary-color);
+  font-size: 1.3em; 
+}
+
+@media (max-width: 768px) {
   .footerTop {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 20px;
+      flex-direction: column;
+      align-items: flex-start;
+      font-size: 1.5rem;
   }
-  
-  .logoContainer {
-    display: flex;
-    align-items: center;
-  }
-  
+
   .logo {
-    height: 80px;
-    filter: invert(1) sepia(1) saturate(5) hue-rotate(180deg);
-    margin-right: 15px;
+      height: 50px; 
   }
-  
+
   .footerTitle {
-    font-size: 2.3em;
-    color: var(--secondary-color);
-    margin-top: 40px;
-    margin-left: 10px;
+      font-size: 1.5em;
+      margin-top: 10px;
   }
-  
-  .footerContent {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-  }
-  
+
   .footerColumn {
-    flex: 1;
-    margin: 10px;
+      flex: 1 0 100%; 
   }
-  
-  .footerColumn h4 {
-    font-size: 1.5em;
-    margin-bottom: 15px;
-  }
-  
-  .footerColumn a {
-    font-size: 1em;
-    line-height: 2.5rem;
-    color: var(--secondary-color);
-    text-decoration: none;
-    font-family: 'Metrophobic', sans-serif; 
-  }  
-  
-  .footerColumn p {
-    font-size: 1em;
-    line-height: 2rem;
-    color: var(--secondary-color);
-    text-decoration: none;
-    font-family: 'Metrophobic', sans-serif; 
-  }
-  
-  .footerColumn a:hover {
-    text-decoration: underline;
-  }
-  
+
   .footerBottom {
-    width: 100%;
-    padding-top: 20px;
-    border-top: 1px solid var(--secondary-color);
-    font-size: 1em;
-    display: flex;
-    font-family: 'Metrophobic', sans-serif; 
-    justify-content: space-between;
-    align-items: center; 
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: center;
   }
-  
-  .footerBottom p {
-    margin: 0;
-  }
-  
+
   .socialIcons {
-    display: flex;
-    justify-content: flex-end;
-    margin: 0;
+      justify-content: center;
+      margin-top: 10px;
   }
-  
+}
+
+@media (max-width: 480px) {
+  .footerTitle {
+      font-size: 1.3em; 
+  }
+
+  .footerColumn h4 {
+      font-size: 1.2em; 
+  }
+
+  .footerColumn a, .footerColumn p {
+      font-size: 0.8em; 
+  }
+
   .socialIcons a {
-    margin-left: 20px;
-    color: var(--secondary-color);
-    font-size: 1.5em;
+      font-size: 1.2em; 
   }
-  
+}
