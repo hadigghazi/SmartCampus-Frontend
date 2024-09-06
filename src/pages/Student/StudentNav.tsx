@@ -42,6 +42,9 @@ const Navbar: React.FC = () => {
           <Link to="/courses">Courses</Link>
         </li>
         <li className={`${styles.menuItem} ${styles.spmenuItem}`}>
+          <Link to="/library">Library</Link>
+        </li>
+        <li className={`${styles.menuItem} ${styles.spmenuItem}`}>
           <Link to="/profile">
             <img
               src={user?.profile_picture || defaultProfile}
