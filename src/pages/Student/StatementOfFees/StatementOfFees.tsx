@@ -138,11 +138,11 @@ const StatementOfFees: React.FC = () => {
       </div>
       <div className={styleshead.deadlineSection}>
   <h3 className={styleshead.headingSecondary}>Payment Deadlines</h3>
-  <ul>
-    <li><span>25% Payment Deadline:</span> <span className={styleshead.deadlineDate}>{deadlines[0]}</span></li>
-    <li><span>50% Payment Deadline:</span> <span className={styleshead.deadlineDate}>{deadlines[1]}</span></li>
-    <li><span>75% Payment Deadline:</span> <span className={styleshead.deadlineDate}>{deadlines[2]}</span></li>
-    <li><span>100% Payment Deadline:</span> <span className={styleshead.deadlineDate}>{deadlines[3]}</span></li>
+  <ul className={styleshead.list}>
+    <li className={styleshead.listitem}><span>25% Payment Deadline:</span> <span className={styleshead.deadlineDate}>{deadlines[0]}</span></li>
+    <li className={styleshead.listitem}><span>50% Payment Deadline:</span> <span className={styleshead.deadlineDate}>{deadlines[1]}</span></li>
+    <li className={styleshead.listitem}><span>75% Payment Deadline:</span> <span className={styleshead.deadlineDate}>{deadlines[2]}</span></li>
+    <li className={styleshead.listitem}><span>100% Payment Deadline:</span> <span className={styleshead.deadlineDate}>{deadlines[3]}</span></li>
   </ul>
 </div>
     </div>

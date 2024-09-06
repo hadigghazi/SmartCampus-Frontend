@@ -10,6 +10,7 @@ import {
 import { getCartFromLocalStorage, setCartInLocalStorage } from '../../../features/api/cartSlice';
 import { useGetAvailableCoursesForStudentQuery } from '../../../features/api/registrationsApi';
 import StudentLayout from '../StudentLayout';
+import ProtectedRoute from '../../../components/ProtectedRoutes/PaymentRoute';
 
 const CourseDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -69,6 +70,7 @@ const CourseDetails: React.FC = () => {
   if (!course) return <div>Course not found</div>;
 
   return (
+    <ProtectedRoute>
     <StudentLayout>
     <div className={styles.content}>
       <h1 className={styles.headingPrimary}>{course.name}</h1>
@@ -128,6 +130,7 @@ const CourseDetails: React.FC = () => {
       )}
     </div>
     </StudentLayout>
+    </ProtectedRoute>
   );
 };
 

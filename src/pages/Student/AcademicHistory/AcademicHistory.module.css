@@ -25,13 +25,13 @@
   padding: 20px;
 }
 
-ul {
+.list {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
-li {
+.listitem {
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
@@ -40,15 +40,15 @@ li {
   border-bottom: 1px solid #ddd;
 }
 
-li:last-child {
+.listitem:last-child {
   border-bottom: none;
 }
 
-li span {
+.listitem span {
   font-weight: 500;
 }
 
-li .deadlineDate {
+.listitem .deadlineDate {
   font-weight: 600;
 }
 

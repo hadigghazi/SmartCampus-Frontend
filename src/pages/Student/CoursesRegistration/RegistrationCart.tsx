@@ -6,6 +6,7 @@ import styles from '../../Admin/CourseDetails/CourseDetails.module.css';
 import stylesbtn from './Registrations.module.css';
 import personalImage from '../../../assets/images/profileImage.jpg';
 import StudentLayout from '../StudentLayout';
+import ProtectedRoute from '../../../components/ProtectedRoutes/PaymentRoute';
 
 const RegistrationCart: React.FC = () => {
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ const RegistrationCart: React.FC = () => {
   }
 
   return (
+    <ProtectedRoute>
     <StudentLayout>
     <div className={styles.content}>
       <h1 className={styles.headingPrimary} style={{marginBottom: "2rem"}}>Your Registration Cart</h1>
@@ -79,6 +81,7 @@ const RegistrationCart: React.FC = () => {
       </button>
     </div>
     </StudentLayout>
+    </ProtectedRoute>
   );
 };
 
