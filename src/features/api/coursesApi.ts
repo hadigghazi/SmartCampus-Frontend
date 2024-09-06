@@ -38,6 +38,9 @@ export const coursesApi = createApi({
         method: 'DELETE',
       }),
     }),
+    getCourseInstructorById: builder.query<Course, number>({
+      query: (id) => `/course-instructors/${id}`,
+    }),
     getCourseOptions: builder.query<CourseOption[], number>({
       query: (id) => `/courses/${id}/options`,
     }),
@@ -91,5 +94,6 @@ export const {
   useGetCourseInstructorsQuery,
   useGetCoursesAssignedToInstructorQuery,
   useGetCourseDetailsByInstructorIdQuery,
-  useGetAvailableCourseOptionsQuery
+  useGetAvailableCourseOptionsQuery,
+  useGetCourseInstructorByIdQuery
 } = coursesApi;

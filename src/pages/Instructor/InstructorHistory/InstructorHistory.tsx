@@ -5,6 +5,7 @@ import { useGetSemestersByInstructorQuery } from '../../../features/api/semester
 import { useGetCoursesAssignedToInstructorQuery } from '../../../features/api/coursesApi';
 import Table from '../../../components/Table/Table';
 import styles from './InstructorHistory.module.css';
+import InstructorLayout from '../InstructorLayout';
 
 const InstructorHistory: React.FC = () => {
   const { data: user } = useGetUserQuery();
@@ -36,6 +37,7 @@ const InstructorHistory: React.FC = () => {
   };
 
   return (
+    <InstructorLayout>
     <div className={styles.container}>
       <h2 className={styles.headingPrimary}>Instructor History</h2>
       {instructor && (
@@ -67,6 +69,7 @@ const InstructorHistory: React.FC = () => {
         );
       })}
     </div>
+    </InstructorLayout>
   );
 };
 

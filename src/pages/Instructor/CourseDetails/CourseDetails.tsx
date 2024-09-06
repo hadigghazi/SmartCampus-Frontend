@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import {
+  useGetCourseInstructorByIdQuery,
+  useGetCourseDetailsByInstructorIdQuery,
+} from '../../../features/api/coursesApi'; 
 import {
   useFetchCourseMaterialsByInstructorQuery,
   useAddCourseMaterialMutation,
@@ -14,22 +18,28 @@ import {
   useGetDropRequestsByInstructorQuery,
   useUpdateStatusMutation
 } from '../../../features/api/courseDropRequestsApi';
-import { useGetCourseDetailsByInstructorIdQuery } from '../../../features/api/coursesApi'; 
 import MaterialsList from '../../../components/MaterialsList/MaterialsList';
 import AssignmentsList from '../../../components/AssignmentsList/AssignmentsList';
 import StudentsList from '../../../components/StudentsList/StudentsList'; 
 import styles from './CourseDetails.module.css';
 import { useGetRegisteredStudentsQuery } from '../../../features/api/registrationsApi';
-import { Link } from 'react-router-dom';
+import InstructorLayout from '../InstructorLayout';
+import { useGetInstructorByUserIdQuery } from '../../../features/api/instructorsApi';
+import { useGetUserQuery } from '../../../features/api/authApi';
+import { useGetCurrentSemesterQuery } from '../../../features/api/semestersApi';
 
 const CourseDetailsPage: React.FC = () => {
   const { courseInstructorId } = useParams<{ courseInstructorId: string }>();
-  
+  const navigate = useNavigate();
+  const { data: user, isLoading: isUserLoading } = useGetUserQuery();
+  const { data: authenticatedInstructor, isLoading: isInstructorLoading } = useGetInstructorByUserIdQuery(user?.id, { skip: !user?.id });
+  const { data: courseInstructor, isLoading: isCourseInstructorLoading } = useGetCourseInstructorByIdQuery(Number(courseInstructorId), { skip: !courseInstructorId });
   const { data: courseDetails, isLoading: isCourseLoading } = useGetCourseDetailsByInstructorIdQuery(Number(courseInstructorId));
   const { data: materials = [], refetch: refetchMaterials } = useFetchCourseMaterialsByInstructorQuery(Number(courseInstructorId));
   const { data: assignments = [], refetch: refetchAssignments } = useFetchAssignmentsByInstructorQuery(Number(courseInstructorId));
   const { data: students = [] } = useGetRegisteredStudentsQuery(Number(courseInstructorId));
   const { data: dropRequests = [], refetch: refetchDropRequests } = useGetDropRequestsByInstructorQuery(Number(courseInstructorId));
+  const { data: currentSemester , isLoading: isSemesterLoading} = useGetCurrentSemesterQuery();
   
   const [addMaterial] = useAddCourseMaterialMutation();
   const [deleteMaterial] = useDeleteCourseMaterialMutation();
@@ -45,6 +55,15 @@ const CourseDetailsPage: React.FC = () => {
   const [dueDate, setDueDate] = useState('');
 
   const [editingRequestId, setEditingRequestId] = useState<number | null>(null);
+  const isLoading = isUserLoading || isInstructorLoading || isCourseInstructorLoading || isSemesterLoading;
+
+  useEffect(() => {
+    if (!isInstructorLoading && authenticatedInstructor && courseInstructor && currentSemester) {
+      if (authenticatedInstructor.id !== courseInstructor.instructor_id || courseInstructor?.semester_id !== currentSemester.id) {
+        navigate('/instructor-courses'); 
+      }
+    }
+  }, [authenticatedInstructor, courseInstructor, isInstructorLoading, navigate]);
 
   const handleDeleteMaterial = async (materialId: number) => {
     try {
@@ -124,7 +143,12 @@ const CourseDetailsPage: React.FC = () => {
     setEditingRequestId(id);
   };
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
   return (
+    <InstructorLayout>
     <div className={styles.container}>
       {isCourseLoading ? (
         <p>Loading course details...</p>
@@ -232,6 +256,7 @@ const CourseDetailsPage: React.FC = () => {
         ))}
       </div>
     </div>
+    </InstructorLayout>
   );
 };
 

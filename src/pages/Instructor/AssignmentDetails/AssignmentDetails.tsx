@@ -4,6 +4,7 @@ import { useGetAssignmentDetailsQuery } from '../../../features/api/assignmentsA
 import { useGetAllSubmissionsQuery } from '../../../features/api/submissionsApi';
 import styles from './AssignmentDetails.module.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import InstructorLayout from '../InstructorLayout';
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
@@ -20,7 +21,6 @@ const AssignmentDetails: React.FC = () => {
     return <p>Assignment not found.</p>;
   }
 
-  // Group submissions by student_id
   const groupedSubmissions = submissions?.reduce((acc, submission) => {
     const { student_id } = submission;
     if (!acc[student_id]) {
@@ -34,6 +34,7 @@ const AssignmentDetails: React.FC = () => {
   }, {} as Record<string, { student: typeof submissions[0]['student']; files: typeof submissions }>);
 
   return (
+    <InstructorLayout>
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.iconContainer}>
@@ -87,6 +88,7 @@ const AssignmentDetails: React.FC = () => {
         )}
       </div>
     </div>
+    </InstructorLayout>
   );
 };
 

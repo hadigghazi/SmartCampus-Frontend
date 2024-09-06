@@ -10,6 +10,7 @@ import { useGetCurrentSemesterQuery } from '../../../features/api/semestersApi';
 import { useGetCoursesAssignedToInstructorQuery } from '../../../features/api/coursesApi';
 import { useGetExamInstructorDetailsQuery } from '../../../features/api/examsApi'; 
 import styles from './InstructorDashboard.module.css';
+import InstructorLayout from '../InstructorLayout';
 
 const InstructorDashboard: React.FC = () => {
   const { data: user } = useGetUserQuery();
@@ -69,7 +70,7 @@ const InstructorDashboard: React.FC = () => {
   ];
 
   return (
-    <div>
+    <InstructorLayout>
       <div className={styles.dashboardContainer}>
         <div className={styles.profileSection}>
           <h2 className={styles.headingSecondary}>Profile</h2>
@@ -111,7 +112,7 @@ const InstructorDashboard: React.FC = () => {
           <p>Loading exam details...</p>
         )}
       </div>
-    </div>
+    </InstructorLayout>
   );
 };
 

@@ -213,5 +213,8 @@
       flex-direction: column;
       align-items: stretch;
     }
+    .headingPrimary {
+        font-size: 1.75rem;
+    }
   }
   
