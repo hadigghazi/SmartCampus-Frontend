@@ -8,6 +8,7 @@ import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import Pagination from '../../../components/Pagination/Pagination';
 import { LibraryBook, Campus } from '../../../features/api/types';
 import { useGetCampusesQuery } from '../../../features/api/campusesApi';
+import StudentLayout from '../StudentLayout';
 
 const LibraryBooksStudent: React.FC = () => {
   const { data: books, isLoading, error } = useGetLibraryBooksQuery();
@@ -62,6 +63,7 @@ const LibraryBooksStudent: React.FC = () => {
   };
 
   return (
+    <StudentLayout>
       <div className={styles.container}>
         <h1 className={styles.headingPrimary}>Library Books</h1>
         <div className={styles.filters}>
@@ -114,6 +116,7 @@ const LibraryBooksStudent: React.FC = () => {
           onPageChange={handlePageChange}
         />
       </div>
+      </StudentLayout>
   );
 };
 

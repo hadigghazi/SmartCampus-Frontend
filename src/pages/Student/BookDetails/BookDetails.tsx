@@ -4,6 +4,7 @@ import { useGetLibraryBookByIdQuery } from '../../../features/api/libraryBooksAp
 import { useGetCampusByIdQuery } from '../../../features/api/campusesApi';
 import { useBorrowBookMutation, useGetBorrowRequestsForBookByUserQuery } from '../../../features/api/borrowRequestsApi';
 import styles from '../../Admin/CourseDetails/CourseDetails.module.css';
+import StudentLayout from '../StudentLayout';
 
 const BookDetailsForStudent: React.FC = () => {
   const { id: bookId } = useParams<{ id: string }>();
@@ -61,7 +62,7 @@ const BookDetailsForStudent: React.FC = () => {
   if (bookError || campusError || borrowRequestsError || borrowError) return <p>Something went wrong!</p>;
 
   return (
-    <div>
+    <StudentLayout>
       {book && (
         <div className={styles.content}>
           <h1 className={styles.headingPrimary}>{book.title}</h1>
@@ -109,7 +110,7 @@ const BookDetailsForStudent: React.FC = () => {
           )}
         </div>
       )}
-    </div>
+    </StudentLayout>
   );
 };
 

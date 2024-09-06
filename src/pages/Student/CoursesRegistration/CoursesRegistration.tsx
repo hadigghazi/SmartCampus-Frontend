@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../Admin/Courses/Courses.module.css'; 
 import aistyles from '../CourseDetails/CourseDetails.module.css';
 import { useGetAvailableCoursesForStudentQuery } from '../../../features/api/registrationsApi';
+import StudentLayout from '../StudentLayout';
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
@@ -75,6 +76,7 @@ const CoursesRegistration: React.FC = () => {
   const formattedSuggestions = aiSuggestions ? aiSuggestions.replace(/\n/g, '<br/>') : '';
 
   return (
+    <StudentLayout>
     <div className={styles.container}>
       <h1 className={styles.headingPrimary}>Courses Registration</h1>
       <div className={styles.filters}>
@@ -106,6 +108,7 @@ const CoursesRegistration: React.FC = () => {
         )}
       </div>
     </div>
+    </StudentLayout>
   );
 };
 

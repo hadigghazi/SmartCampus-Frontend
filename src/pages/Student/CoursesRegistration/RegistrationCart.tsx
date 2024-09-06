@@ -5,6 +5,7 @@ import { getCartFromLocalStorage, setCartInLocalStorage } from '../../../feature
 import styles from '../../Admin/CourseDetails/CourseDetails.module.css';
 import stylesbtn from './Registrations.module.css';
 import personalImage from '../../../assets/images/profileImage.jpg';
+import StudentLayout from '../StudentLayout';
 
 const RegistrationCart: React.FC = () => {
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ const RegistrationCart: React.FC = () => {
   }
 
   return (
+    <StudentLayout>
     <div className={styles.content}>
       <h1 className={styles.headingPrimary} style={{marginBottom: "2rem"}}>Your Registration Cart</h1>
       <ul className={styles.optionsList}>
@@ -76,6 +78,7 @@ const RegistrationCart: React.FC = () => {
         Register All
       </button>
     </div>
+    </StudentLayout>
   );
 };
 

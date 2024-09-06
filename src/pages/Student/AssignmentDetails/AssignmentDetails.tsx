@@ -6,6 +6,7 @@ import styles from './AssignmentDetails.module.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { toast, ToastContainer } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css'; 
+import StudentLayout from '../StudentLayout';
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 const AssignmentSubmission: React.FC = () => {
@@ -92,6 +93,7 @@ const AssignmentSubmission: React.FC = () => {
   }
 
   return (
+    <StudentLayout>
     <div className={styles.container}>
       <div className={styles.detailsContainer}>
         <div className={styles.header}>
@@ -168,6 +170,7 @@ const AssignmentSubmission: React.FC = () => {
 
       </div>
     </div>
+    </StudentLayout>
   );
 };
 

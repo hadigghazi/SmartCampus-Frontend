@@ -10,6 +10,7 @@ import { useGetRegistrationsByStudentQuery } from '../../../features/api/registr
 import { useGetCurrentSemesterQuery } from '../../../features/api/semestersApi';
 import { useGetExamDetailsQuery } from '../../../features/api/examsApi';
 import styles from './StudentDashboard.module.css';
+import StudentLayout from '../StudentLayout';
 
 const Dashboard: React.FC = () => {
   const { data: user } = useGetUserQuery();
@@ -71,7 +72,7 @@ const Dashboard: React.FC = () => {
   ];
 
   return (
-    <div>
+    <StudentLayout>
       <div className={styles.dashboardContainer}>
         <div className={styles.profileSection}>
           <h2 className={styles.headingSecondary}>Profile</h2>
@@ -113,7 +114,7 @@ const Dashboard: React.FC = () => {
           <p>Loading exam details...</p>
         )}
       </div>
-    </div>
+    </StudentLayout>
   );
 };
 

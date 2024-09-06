@@ -2,19 +2,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
-  position: absolute;
+  padding: 0rem 1.5rem 1rem 1.5rem;
+  position: block; 
   width: 100%;
   top: 0;
   left: 0;
   z-index: 10;
-  background-color: transparent;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: 'Merriweather', serif;
   box-sizing: border-box; 
 }
 
 .logo {
-  width: 70px; 
+  width: 100px; 
   height: auto; 
 }
 
@@ -36,12 +37,12 @@
 }
 
 .menuItem:hover {
-  color: var(--primary-color);
+  color: #658fc0;
 }
 
 @media (min-width: 768px) {
   .logo {
-    width: 130px; 
+    width: 100px; 
   }
 
   .menu {
@@ -49,7 +50,7 @@
   }
 
   .menuItem {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 500;
     margin-top: 20px;
   }

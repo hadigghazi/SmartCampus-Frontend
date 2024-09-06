@@ -8,6 +8,7 @@ import { useGetMajorsQuery } from '../../../features/api/majorsApi';
 import Table from '../../../components/Table/Table';
 import styles from './StudentDetails.module.css';
 import defaultProfile from '../../../assets/images/profileImage.jpg';
+import StudentLayout from '../StudentLayout';
 
 const StudentDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -47,6 +48,7 @@ const StudentDetails: React.FC = () => {
   ];
 
   return (
+    <StudentLayout>
       <div className={styles.studentDetailsContainer}>
         <h1 className={styles.headingPrimary}>Student Details</h1>
         {user && student ? (
@@ -119,6 +121,7 @@ const StudentDetails: React.FC = () => {
           <p>No student data found.</p>
         )}
       </div>
+      </StudentLayout>
   );
 };
 

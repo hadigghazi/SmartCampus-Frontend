@@ -6,6 +6,7 @@ import styles from './Courses.module.css';
 import { Course } from '../../../features/api/types'; 
 import { useGetUserQuery } from '../../../features/api/authApi';
 import { useGetStudentByUserIdQuery } from '../../../features/api/studentsApi';
+import StudentLayout from '../StudentLayout';
 
 const CoursesPage: React.FC = () => {
   const { data: user } = useGetUserQuery();
@@ -18,6 +19,7 @@ const CoursesPage: React.FC = () => {
   );
 
   return (
+    <StudentLayout>
     <div className={styles.container}>
         <h2 className={styles.headingSecondary}>- Your Courses</h2>
         <h1 className={styles.headingPrimary}>Courses Overview</h1>
@@ -31,6 +33,7 @@ const CoursesPage: React.FC = () => {
       )}
     </div>
     </div>
+    </StudentLayout>
   );
 };
 

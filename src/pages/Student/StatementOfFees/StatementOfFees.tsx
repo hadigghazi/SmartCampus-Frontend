@@ -7,6 +7,7 @@ import styles from '../../Admin/StudentDetails/StudentDetails.module.css';
 import styleshead from '../AcademicHistory/AcademicHistory.module.css';
 import { useGetFinancialAidsScholarshipsByStudentQuery } from '../../../features/api/financialAidApi';
 import { useGetCurrentSemesterQuery } from '../../../features/api/semestersApi';
+import StudentLayout from '../StudentLayout';
 
 const StatementOfFees: React.FC = () => {
   const { data: user, isLoading: userLoading, error: userError } = useGetUserQuery();
@@ -121,6 +122,7 @@ const StatementOfFees: React.FC = () => {
     : [];
 
   return (
+    <StudentLayout>
     <div className={styleshead.container}>
       <h2 className={styleshead.headingPrimary}>Statement Of Fees</h2>
       {student && (
@@ -144,6 +146,7 @@ const StatementOfFees: React.FC = () => {
   </ul>
 </div>
     </div>
+    </StudentLayout>
   );
 };
 

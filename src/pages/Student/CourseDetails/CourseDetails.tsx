@@ -10,6 +10,7 @@ import { useRequestDropMutation, useDeleteDropRequestMutation, useCheckDropReque
 import { useGeneratePracticeQuestionsMutation } from '../../../features/api/courseMaterialsApi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import StudentLayout from '../StudentLayout';
 
 const StudentCourseDetailsPage: React.FC = () => {
   const { courseInstructorId } = useParams<{ courseInstructorId: string }>();
@@ -85,6 +86,7 @@ const StudentCourseDetailsPage: React.FC = () => {
   };
   
   return (
+    <StudentLayout>
     <div className={styles.container}>
       {isCourseLoading ? (
         <p>Loading course details...</p>
@@ -162,6 +164,7 @@ const StudentCourseDetailsPage: React.FC = () => {
       </div>
       <ToastContainer />
     </div>
+    </StudentLayout>
   );
 };
 

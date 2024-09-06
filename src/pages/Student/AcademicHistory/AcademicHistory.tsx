@@ -5,6 +5,7 @@ import { useGetSemestersByStudentQuery } from '../../../features/api/semestersAp
 import { useGetRegistrationsByStudentQuery } from '../../../features/api/registrationsApi';
 import Table from '../../../components/Table/Table';
 import styles from './AcademicHistory.module.css';
+import StudentLayout from '../StudentLayout';
 
 const AcademicHistory: React.FC = () => {
   const { data: user } = useGetUserQuery();
@@ -45,6 +46,7 @@ const AcademicHistory: React.FC = () => {
   };
 
   return (
+    <StudentLayout>
     <div className={styles.container}>
       <h2 className={styles.headingPrimary}>Academic History</h2>
       {student && (
@@ -81,6 +83,7 @@ const AcademicHistory: React.FC = () => {
         );
       })}
     </div>
+    </StudentLayout>
   );
 };
 
