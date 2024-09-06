@@ -103,7 +103,12 @@
 
   .menu.closed {
     max-height: 0;
-    background-color: white; 
+    color: transparent;
+    background-color: transparent; 
+  }
+
+  .menu.closed .menuItem {
+    color: transparent;
   }
 
   .menu {
@@ -126,12 +131,7 @@
     max-height: 500px; 
     background-color: var(--secondary-color);
   }
-
-  .menu.closed {
-    max-height: 0;
-    background-color: white; 
-  }
-
+  
   .spmenuItem {
     color: white;
   }

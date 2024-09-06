@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { useLogoutMutation } from '../../features/api/authApi';
@@ -12,6 +12,7 @@ const Navbar: React.FC = () => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const [logoutMutation] = useLogoutMutation();
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -23,12 +24,19 @@ const Navbar: React.FC = () => {
     }
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <nav className={styles.nav}>
       <Link to="/">
         <img src={NavbarLogo} alt="header_logo" className={styles.logo} />
       </Link>
-      <ul className={styles.menu}>
+      <button className={`${styles.hamburger} ${isMenuOpen ? styles.open : ''}`} onClick={toggleMenu}>
+        {isMenuOpen ? '✕' : '☰'} {/* Hamburger icon changes to X when menu is open */}
+      </button>
+      <ul className={`${styles.menu} ${isMenuOpen ? styles.open : styles.closed}`}>
         <li className={styles.menuItem}>
           <Link to="/admissions/requirements">Admissions</Link>
         </li>
@@ -40,13 +48,13 @@ const Navbar: React.FC = () => {
         </li>
         {isAuthenticated ? (
           <>
-          <li className={styles.menuItem}>
-            <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
-          </li>
-          <li className={styles.menuItem}>
-          <Link to="/login">Portal</Link>
-        </li>
-        </>
+            <li className={styles.menuItem}>
+              <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
+            </li>
+            <li className={styles.menuItem}>
+              <Link to="/login">Portal</Link>
+            </li>
+          </>
         ) : (
           <li className={styles.menuItem}>
             <Link to="/login">Portal</Link>
