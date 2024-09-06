@@ -1,10 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useGetUserQuery } from '../../features/api/authApi'; 
 import NavbarLogo from '../../assets/images/logo.png';
+import defaultProfile from '../../assets/images/profileImage.jpg';
 import styles from '../../components/Navbar/Navbar.module.css';
 
 const Navbar: React.FC = () => {
-
+  const { data: user, isLoading } = useGetUserQuery(); 
+  
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <nav className={`${styles.nav} ${styles.spnav}`}>
@@ -28,7 +32,13 @@ const Navbar: React.FC = () => {
           <Link to="/courses">Courses</Link>
         </li>
         <li className={`${styles.menuItem} ${styles.spmenuItem}`}>
-          <Link to="/profile">Profile</Link>
+          <Link to="/profile">
+            <img
+              src={user?.profile_picture || defaultProfile}
+              alt="profile"
+              className={styles.profileImage}
+            />
+          </Link>
         </li>
       </ul>
     </nav>
