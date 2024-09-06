@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import styles from "./Chat.module.css";
+import FloatingButton from "../../FloatingButton/FloatingButton";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
@@ -138,7 +140,6 @@ export const Chat: React.FC<Props> = ({ chatHistory, updateChatHistory }) => {
       );
       const generatedText = response.data.response;
 
-      // Use a functional update to ensure state is updated correctly
       updateChatHistory(prevHistory => [
         ...prevHistory,
         { user: userInput, bot: generatedText }
@@ -177,6 +178,11 @@ export const Chat: React.FC<Props> = ({ chatHistory, updateChatHistory }) => {
   return (
     <div className={styles.chatComponent}>
       <button className={styles.chatButton} onClick={toggleInput}>
+      <FloatingButton
+        linkTo="/student-dashboard"
+        icon={faUser}
+        ariaLabel="Go to Dashboard"
+      />
         {showInput ? "Close Chat" : "Ask a Question"}
       </button>
       {showInput && (
@@ -247,8 +253,8 @@ export const Chat: React.FC<Props> = ({ chatHistory, updateChatHistory }) => {
               </div>
             )}
           </div>
-        </div>
-      )}
+        </div>     
+      )}   
     </div>
   );
 };

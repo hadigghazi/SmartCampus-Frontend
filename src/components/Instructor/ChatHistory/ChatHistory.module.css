@@ -32,7 +32,7 @@
   }
   
   .toggleButton:hover {
-    background-color: var(--secondary-color);
+    background-color: #3b1e86;
   }
   
   h2 {
@@ -71,7 +71,7 @@
   }
   
   .historyItem button:hover {
-    background-color: var(--secondary-color);
+    background-color: #3b1e86;
   }
   
   .clearButton {
@@ -91,7 +91,7 @@
   }
   
   .clearButton:hover {
-    background-color: var(--secondary-color);
+    background-color: #3b1e86;
   }
   
   .deleteButton {
@@ -106,7 +106,7 @@
   }
   
   .deleteButton:hover {
-    background-color: var(--secondary-color);
+    background-color: #3b1e86;
   }
   
   p {
