@@ -2,8 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0rem 1.5rem 1rem 1.5rem;
-  position: absolute; 
+  padding: 0.5rem 1.5rem;
+  position: absolute;
   width: 100%;
   top: 0;
   left: 0;
@@ -11,7 +11,12 @@
   background-color: var(--secondary-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: 'Merriweather', serif;
-  box-sizing: border-box; 
+  box-sizing: border-box;
+}
+
+.logo {
+  width: 80px;
+  height: auto;
 }
 
 .profileImage {
@@ -21,13 +26,8 @@
   object-fit: cover;
 }
 
-.logo {
-  width: 100px; 
-  height: auto; 
-}
-
 .menu {
-  display: flex;
+  display: none;
   flex: 1;
   justify-content: center;
   align-items: center;
@@ -35,16 +35,19 @@
   list-style-type: none;
   padding: 0;
   margin: 0;
-  gap: 1rem; 
-}
-
-.menuItem {
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-.menuItem:hover {
-  color: #658fc0;
+  gap: 1rem;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: -2rem;
+  width: 100%;
+  background-color: var(--secondary-color);
+  padding: 1rem;
+  gap: 1.5rem;
+  transition: max-height 0.3s ease-in-out, background-color 0.3s ease-in-out; 
+  max-height: 0;
+  overflow: hidden;
+  z-index: 9;
 }
 
 .spnav {
@@ -56,18 +59,94 @@
   color: white;
 }
 
-@media (min-width: 768px) {
-  .logo {
-    width: 100px; 
-  }
+.spmenu {
+  background-color: var(--primary-color);
+}
 
+.hamburger {
+  display: block;
+  cursor: pointer;
+  font-size: 2rem;
+  color: white;
+  background: none;
+  border: none;
+}
+
+@media (min-width: 768px) {
   .menu {
-    gap: 5rem; 
+    display: flex;
+    gap: 5rem;
+    position: static;
+    max-height: none;
   }
 
   .menuItem {
     font-size: 1.2rem;
     font-weight: 500;
     margin-top: 20px;
+  }
+
+  .hamburger {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .nav {
+    justify-content: space-between;
+    padding: 1rem;
+  }
+
+  .logo {
+    width: 70px;
+  }
+
+  .menu.closed {
+    max-height: 0;
+    background-color: white; 
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    gap: 1.5rem;
+    transition: max-height 0.3s ease-in-out, background-color 0.3s ease-in-out; 
+    max-height: 0;
+    overflow: hidden;
+    margin-top: 0;
+    z-index: 9;
+  }
+
+  .menu.open {
+    max-height: 500px; 
+    background-color: var(--secondary-color);
+  }
+
+  .menu.closed {
+    max-height: 0;
+    background-color: white; 
+  }
+
+  .spmenuItem {
+    color: white;
+  }
+
+  .menuItem {
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .spmenu.open {
+    background-color: var(--primary-color);
+  }
+
+  .hamburger.open {
+    content: '✕';
   }
 }
