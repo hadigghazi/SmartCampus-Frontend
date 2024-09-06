@@ -29,7 +29,7 @@ const RegistrationCart: React.FC = () => {
 
     setCart({});
     setCartInLocalStorage({});
-    navigate('/registrations');
+    navigate('/student-dashboard');
   };
 
   const handleRemoveFromCart = (courseId: number) => {

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useCheckFeesPaidQuery } from '../../features/api/feesPaymentsApi'
 
@@ -15,7 +14,7 @@ const ProtectedRoute = ({ children }) => {
 
   const { fees_paid, remaining_fees_usd, remaining_fees_lbp } = data;
 
-  if (!fees_paid && !remaining_fees_usd && !remaining_fees_lbp) {
+  if ((!fees_paid && !remaining_fees_usd) || (!fees_paid && !remaining_fees_lbp)) {
     return <Navigate to="/remaining-payments" />;
   }
 
