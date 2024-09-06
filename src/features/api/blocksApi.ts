@@ -1,11 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { Block } from '../api/types'; 
-
-const apiUrl = import.meta.env.VITE_BASE_URL;
+import { baseQuery } from './baseQuery';
 
 export const blocksApi = createApi({
   reducerPath: 'blocksApi',
-  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }),
+  baseQuery,
   tagTypes: ['Block'],
   endpoints: (builder) => ({
     getBlocks: builder.query<Block[], void>({
