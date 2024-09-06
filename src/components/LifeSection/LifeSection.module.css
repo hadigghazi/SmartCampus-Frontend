@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  min-height: 100vh;
   background-color: white;
   padding: 2rem;
   margin-top: 7rem; 
@@ -72,6 +71,7 @@
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
+    margin-top: 2rem; 
   }
 
   .headingPrimary {
@@ -84,6 +84,7 @@
 
   .paragraph {
     font-size: 1rem;
+    line-height: 1.6rem;
   }
 
   .contentWrapper {
@@ -95,9 +96,11 @@
   .imageWrapper {
     width: 100%;
     max-width: 400px;
+    margin-bottom: 1rem;
   }
 
-  .paragraph {
-    line-height: 1.6rem;
+  .textWrapper {
+    width: 100%;
+    text-align: center; 
   }
 }
