@@ -1,11 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { Student } from './types'; 
-
-const apiUrl = import.meta.env.VITE_BASE_URL;
+import { baseQuery } from './baseQuery';
 
 export const studentsApi = createApi({
   reducerPath: 'studentsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }),
+  baseQuery,
   endpoints: (builder) => ({
     getStudents: builder.query<Student[], void>({
       query: () => '/students',

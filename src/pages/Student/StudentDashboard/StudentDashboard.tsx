@@ -21,11 +21,14 @@ const Dashboard: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const announcementsPerPage = 6;
+  const filteredAnnouncements = announcements?.filter(
+    (announcement) => announcement.visibility === 'Students'
+  );
 
   const totalPages = announcements ? Math.ceil(announcements.length / announcementsPerPage) : 1;
 
-  const currentAnnouncements = announcements
-    ? announcements.slice(
+  const currentAnnouncements = filteredAnnouncements
+    ? filteredAnnouncements.slice(
         (currentPage - 1) * announcementsPerPage,
         currentPage * announcementsPerPage
       )
