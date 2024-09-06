@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Semester } from './types'; 
+import { baseQuery } from './baseQuery';
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const semestersApi = createApi({
   reducerPath: 'semestersApi',
-  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }),
+  baseQuery,
   tagTypes: ['Semester'],
   endpoints: (builder) => ({
     getSemesters: builder.query<Semester[], void>({

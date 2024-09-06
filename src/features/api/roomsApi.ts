@@ -1,11 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { Room } from '../api/types'; 
-
-const apiUrl = import.meta.env.VITE_BASE_URL;
+import { baseQuery } from './baseQuery';
 
 export const roomsApi = createApi({
   reducerPath: 'roomsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }),
+  baseQuery,
   tagTypes: ['Room'],
   endpoints: (builder) => ({
     getRooms: builder.query<Room[], void>({

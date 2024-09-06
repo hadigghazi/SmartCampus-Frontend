@@ -1,10 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { PaymentSetting } from './types';
-const apiUrl = import.meta.env.VITE_BASE_URL;
+import { baseQuery } from './baseQuery';
 
 export const paymentSettingsApi = createApi({
   reducerPath: 'paymentSettingsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }),
+  baseQuery,
   endpoints: (builder) => ({
     getPaymentSettings: builder.query<PaymentSetting[], void>({
       query: () => '/payment-settings',

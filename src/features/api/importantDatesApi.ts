@@ -1,10 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { ImportantDate } from './types';
-const apiUrl = import.meta.env.VITE_BASE_URL;
+import { baseQuery } from './baseQuery';
 
 export const importantDatesApi = createApi({
   reducerPath: 'importantDatesApi',
-  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }),
+  baseQuery,
   endpoints: (builder) => ({
     getImportantDates: builder.query<ImportantDate[], void>({
       query: () => 'important_dates',

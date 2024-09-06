@@ -1,11 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { FinancialAidScholarship } from './types'; // Adjust the import according to your project structure
-
-const apiUrl = import.meta.env.VITE_BASE_URL;
+import { baseQuery } from './baseQuery';
 
 export const financialAidApi = createApi({
   reducerPath: 'financialAidApi',
-  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }), 
+  baseQuery, 
   endpoints: (builder) => ({
     getFinancialAidsScholarshipsByStudent: builder.query<FinancialAidScholarship[], number>({
       query: (studentId) => `financial-aid-scholarships/student/${studentId}`,
