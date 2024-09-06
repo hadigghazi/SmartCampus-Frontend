@@ -25,7 +25,20 @@ const Login: React.FC = () => {
 
       if (access_token && user) {
         dispatch(setCredentials({ token: access_token, user }));
-        navigate('/');
+        
+        switch (user.role) {
+          case 'Student':
+            navigate('/student-dashboard');
+            break;
+          case 'Instructor':
+            navigate('/instructor-dashboard');
+            break;
+          case 'Admin':
+            navigate('/admin/applications/students');
+            break;
+          default:
+            console.error('Unknown user role');
+        }
       } else {
         console.error('Login failed: Token or user not found');
       }

@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
     try {
       await logoutMutation().unwrap();
       dispatch(logout());
-      navigate('/login'); // Redirect after logout
+      navigate('/');
     } catch (error) {
       console.error('Failed to logout:', error);
     }
