@@ -1,20 +1,6 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { Submission } from './types';
-
-const apiUrl = import.meta.env.VITE_BASE_URL;
-
-const baseQuery = fetchBaseQuery({
-  baseUrl: apiUrl,
-  prepareHeaders: (headers, { getState }) => {
-    const token = localStorage.getItem('token'); 
-
-    if (token) {
-      headers.set('Authorization', `Bearer ${token}`);
-    }
-
-    return headers;
-  },
-});
+import { baseQuery } from './baseQuery';
 
 export const submissionsApi = createApi({
   reducerPath: 'submissionsApi',

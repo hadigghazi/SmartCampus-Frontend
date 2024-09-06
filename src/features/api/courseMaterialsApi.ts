@@ -1,11 +1,11 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { CourseMaterial } from './types';
+import { baseQuery } from './baseQuery';
 
-const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const courseMaterialsApi = createApi({
   reducerPath: 'courseMaterialsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: apiUrl }),
+  baseQuery,
   endpoints: (builder) => ({
     fetchCourseMaterialsByInstructor: builder.query<CourseMaterial[], number>({
       query: (courseInstructorId) => `instructor-courses/${courseInstructorId}/materials`,
