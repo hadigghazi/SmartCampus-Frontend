@@ -39,9 +39,14 @@ const Navbar: React.FC = () => {
           <Link to="/campuses">Campuses</Link>
         </li>
         {isAuthenticated ? (
+          <>
           <li className={styles.menuItem}>
             <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
           </li>
+          <li className={styles.menuItem}>
+          <Link to="/login">Portal</Link>
+        </li>
+        </>
         ) : (
           <li className={styles.menuItem}>
             <Link to="/login">Portal</Link>
