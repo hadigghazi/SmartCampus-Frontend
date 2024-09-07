@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 import Spinner from '../../../components/Spinner/Spinner';
 
 const Courses: React.FC = () => {
-  const { data: courses, isLoading, error } = useGetCoursesQuery();
+  const { data: courses, isLoading, error, refetch } = useGetCoursesQuery();
   const { data: faculties } = useGetFacultiesQuery();
   
   const [selectedFacultyFilter, setSelectedFacultyFilter] = useState<number | 'all'>('all');
@@ -80,6 +80,7 @@ const Courses: React.FC = () => {
       try {
         await deleteCourse(courseId).unwrap();
         toast.success('Course deleted successfully!');
+        refetch();
       } catch (err) {
         console.error('Error deleting course:', err);
         toast.error('Failed to delete course.');
@@ -130,6 +131,7 @@ const Courses: React.FC = () => {
       await addCourse(courseData).unwrap();
       toast.success('Course added successfully!');
       handleCloseModal();
+      refetch();
     } catch (err) {
       console.error('Error adding course:', err);
       toast.error('Failed to add course.');
@@ -292,6 +294,7 @@ const Courses: React.FC = () => {
           </div>
         </div>
       )}
+      <ToastNotifications />
     </AdminLayout>
   );
 };
