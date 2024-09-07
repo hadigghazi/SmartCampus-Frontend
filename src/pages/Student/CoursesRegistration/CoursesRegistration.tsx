@@ -10,6 +10,7 @@ import aistyles from '../CourseDetails/CourseDetails.module.css';
 import { useGetAvailableCoursesForStudentQuery } from '../../../features/api/registrationsApi';
 import StudentLayout from '../StudentLayout';
 import ProtectedRoute from '../../../components/ProtectedRoutes/PaymentRoute';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
@@ -33,7 +34,7 @@ const CoursesRegistration: React.FC = () => {
     }
   }, [availableCourses]);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <StudentLayout><Spinner /></StudentLayout>;
   if (error) return <p>Something went wrong!</p>;
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);

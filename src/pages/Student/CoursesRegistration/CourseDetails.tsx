@@ -11,6 +11,7 @@ import { getCartFromLocalStorage, setCartInLocalStorage } from '../../../feature
 import { useGetAvailableCoursesForStudentQuery } from '../../../features/api/registrationsApi';
 import StudentLayout from '../StudentLayout';
 import ProtectedRoute from '../../../components/ProtectedRoutes/PaymentRoute';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const CourseDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -65,7 +66,7 @@ const CourseDetails: React.FC = () => {
     navigate('/registrations-cart');
   };
 
-  if (courseLoading || optionsLoading || availableCoursesLoading) return <div>Loading...</div>;
+  if (courseLoading || optionsLoading || availableCoursesLoading) return <StudentLayout><Spinner /></StudentLayout>;
   if (courseError || optionsError) return <div>Error loading course details</div>;
   if (!course) return <div>Course not found</div>;
 

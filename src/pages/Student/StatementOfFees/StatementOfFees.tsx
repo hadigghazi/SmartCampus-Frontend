@@ -8,6 +8,7 @@ import styleshead from '../AcademicHistory/AcademicHistory.module.css';
 import { useGetFinancialAidsScholarshipsByStudentQuery } from '../../../features/api/financialAidApi';
 import { useGetCurrentSemesterQuery } from '../../../features/api/semestersApi';
 import StudentLayout from '../StudentLayout';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const StatementOfFees: React.FC = () => {
   const { data: user, isLoading: userLoading, error: userError } = useGetUserQuery();
@@ -21,7 +22,7 @@ const StatementOfFees: React.FC = () => {
   const { data: payments } = useGetPaymentsByStudentQuery(studentId || -1);
   const { data: financialAidsScholarships } = useGetFinancialAidsScholarshipsByStudentQuery(studentId);
 
-  if (userLoading || studentLoading) return <p>Loading...</p>;
+  if (userLoading || studentLoading) return <StudentLayout><Spinner /></StudentLayout>;
   if (userError || studentError) return <p>Error loading data.</p>;
 
   const filteredFees = fees || [];

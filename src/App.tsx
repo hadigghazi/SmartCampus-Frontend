@@ -3,11 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import routes from './routes';
 import PublicRoute from './components/ProtectedRoutes/PublicRoute';
 import AuthCheckComponent from './components/AuthCheckComponent';
+import Spinner from './components/Spinner/Spinner';
 
 const App: React.FC = () => {
   return (
     <Router>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Spinner />}>
         <AuthCheckComponent />
         <Routes>
           {routes.map((route, index) => {

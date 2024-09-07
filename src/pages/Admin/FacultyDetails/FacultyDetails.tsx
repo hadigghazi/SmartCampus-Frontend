@@ -8,6 +8,7 @@ import SearchInput from '../../../components/SearchInput/SearchInput';
 import Pagination from '../../../components/Pagination/Pagination';
 import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import styles from '../CourseDetails/CourseDetails.module.css';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const FacultyDetails: React.FC = () => {
   const { id: facultyId } = useParams<{ id: string }>();
@@ -59,7 +60,7 @@ const FacultyDetails: React.FC = () => {
     },
   ];
 
-  if (facultyLoading || majorsLoading) return <p>Loading...</p>;
+  if (facultyLoading || majorsLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (facultyError || majorsError) return <p>Something went wrong!</p>;
 
   return (

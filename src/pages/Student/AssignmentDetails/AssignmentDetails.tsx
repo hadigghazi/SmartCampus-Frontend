@@ -7,6 +7,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import { toast, ToastContainer } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css'; 
 import StudentLayout from '../StudentLayout';
+import Spinner from '../../../components/Spinner/Spinner';
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 const AssignmentSubmission: React.FC = () => {
@@ -85,7 +86,7 @@ const AssignmentSubmission: React.FC = () => {
   };
 
   if (assignmentLoading || submissionsLoading) {
-    return <p>Loading...</p>;
+    return <StudentLayout><Spinner /></StudentLayout>;
   }
 
   if (!assignment) {

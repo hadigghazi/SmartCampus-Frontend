@@ -11,6 +11,7 @@ import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationD
 import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 import { toast } from 'react-toastify';
 import { useGetDepartmentsQuery } from '../../../features/api/departmentsApi';
+import Spinner from '../../../components/Spinner/Spinner';
 
 type Admin = {
   id: number;
@@ -54,7 +55,7 @@ const Admins: React.FC = () => {
     }
   }, [selectedAdmin]);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return (<AdminLayout><Spinner /></AdminLayout>);
   if (error) {
     console.error('Error fetching admins:', error);
     return <p>Something went wrong!</p>;

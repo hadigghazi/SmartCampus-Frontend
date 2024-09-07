@@ -5,6 +5,7 @@ import { useGetDepartmentByIdQuery } from '../../../features/api/departmentsApi'
 import AdminLayout from '../AdminLayout';
 import styles from '../InstructorDetails/InstructorDetails.module.css'; 
 import defaultProfile from '../../../assets/images/profileImage.jpg';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const AdminDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,7 +19,7 @@ const AdminDetails: React.FC = () => {
   const departmentId = admin?.department_id;
   const { data: department, isLoading: departmentLoading, error: departmentError } = useGetDepartmentByIdQuery(departmentId || -1);
 
-  if (adminLoading || userLoading || departmentLoading) return <p>Loading...</p>;
+  if (adminLoading || userLoading || departmentLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (adminError || userError || departmentError) return <p>User is deleted from the system!</p>;
 
   return (

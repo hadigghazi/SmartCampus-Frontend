@@ -5,6 +5,7 @@ import { useGetCampusByIdQuery } from '../../../features/api/campusesApi';
 import { useBorrowBookMutation, useGetBorrowRequestsForBookByUserQuery } from '../../../features/api/borrowRequestsApi';
 import styles from '../../Admin/CourseDetails/CourseDetails.module.css';
 import StudentLayout from '../StudentLayout';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const BookDetailsForStudent: React.FC = () => {
   const { id: bookId } = useParams<{ id: string }>();
@@ -58,7 +59,7 @@ const BookDetailsForStudent: React.FC = () => {
     }
   };
 
-  if (bookLoading || campusLoading || borrowRequestsLoading) return <p>Loading...</p>;
+  if (bookLoading || campusLoading || borrowRequestsLoading) return <StudentLayout><Spinner /></StudentLayout>;
   if (bookError || campusError || borrowRequestsError || borrowError) return <p>Something went wrong!</p>;
 
   return (

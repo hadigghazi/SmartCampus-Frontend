@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   useGetFacultiesQuery,
@@ -14,14 +14,15 @@ import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import Pagination from '../../../components/Pagination/Pagination';
 import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
 import { toast } from 'react-toastify';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const Faculties: React.FC = () => {
-  const { data: initialFaculties, isLoading, error } = useGetFacultiesQuery();
+  const { data: faculties, isLoading, error, refetch } = useGetFacultiesQuery();
   const [deleteFaculty] = useDeleteFacultyMutation();
   const [addFaculty] = useCreateFacultyMutation();
   const [updateFaculty] = useUpdateFacultyMutation();
 
-  const [faculties, setFaculties] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
@@ -30,21 +31,16 @@ const Faculties: React.FC = () => {
     id: 0,
     name: '',
     description: '',
+    credit_price_usd: '',
   });
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (initialFaculties) {
-      setFaculties(initialFaculties);
-    }
-  }, [initialFaculties]);
-
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return (<AdminLayout><Spinner /></AdminLayout>);
   if (error) return <p>Something went wrong!</p>;
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
-  const filteredFaculties = faculties.filter((faculty) => {
+  const filteredFaculties = faculties!.filter((faculty) => {
     const facultyName = faculty.name.toLowerCase();
     return searchTerms.every(term => facultyName.includes(term));
   });
@@ -59,7 +55,7 @@ const Faculties: React.FC = () => {
     if (isConfirmed) {
       try {
         await deleteFaculty(facultyId).unwrap();
-        setFaculties(faculties.filter(faculty => faculty.id !== facultyId));
+        refetch();
         toast.success('Faculty deleted successfully!');
       } catch (err) {
         console.error('Error deleting faculty:', err);
@@ -87,6 +83,7 @@ const Faculties: React.FC = () => {
       id: 0,
       name: '',
       description: '',
+      credit_price_usd: '', 
     });
   };
 
@@ -108,25 +105,25 @@ const Faculties: React.FC = () => {
     try {
       if (facultyData.id) {
         await updateFaculty({ id: facultyData.id, updatedFaculty: facultyData }).unwrap();
-        setFaculties(faculties.map(faculty => faculty.id === facultyData.id ? facultyData : faculty));
         toast.success('Faculty updated successfully!');
       } else {
-        const newFaculty = await addFaculty(facultyData).unwrap();
-        setFaculties([...faculties, newFaculty]);
+        await addFaculty(facultyData).unwrap();
         toast.success('Faculty added successfully!');
       }
       handleCloseModal();
+      refetch();
     } catch (err) {
       console.error('Error submitting faculty:', err);
       toast.error('Failed to submit faculty.');
     }
   };
 
-  const handleEditFaculty = (faculty: typeof facultyData) => {
+  const handleEditFaculty = (faculty: any) => {
     setFacultyData({
       id: faculty.id,
       name: faculty.name || '',
       description: faculty.description || '',
+      credit_price_usd: faculty.credit_price_usd || '', 
     });
     setShowModal(true);
   };
@@ -144,6 +141,7 @@ const Faculties: React.FC = () => {
           columns={[
             { header: 'Faculty Name', accessor: 'name' },
             { header: 'Description', accessor: 'description' },
+            { header: 'Credit Price (USD)', accessor: 'credit_price_usd' }, 
           ]}
           data={currentEntries || []}
           actions={(faculty) => (
@@ -181,14 +179,27 @@ const Faculties: React.FC = () => {
                   onChange={handleChange}
                 />
               </label>
+              <label>
+                Credit Price (USD):
+                <input
+                  type="number"
+                  name="credit_price_usd"
+                  value={facultyData.credit_price_usd || ''}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
               <div className={styles.btnContainer}>
-                <button type="submit" className={styles.acceptBtn}>{facultyData.id ? 'Update Faculty' : 'Add Faculty'}</button>
+                <button type="submit" className={styles.acceptBtn}>
+                  {facultyData.id ? 'Update Faculty' : 'Add Faculty'}
+                </button>
                 <button type="button" onClick={handleCloseModal} className={styles.rejectBtn}>Cancel</button>
               </div>
             </form>
           </div>
         </div>
       )}
+      <ToastNotifications />
     </AdminLayout>
   );
 };

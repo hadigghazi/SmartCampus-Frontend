@@ -16,6 +16,7 @@ import StudentLayout from '../StudentLayout';
 import { useGetCurrentSemesterQuery } from '../../../features/api/semestersApi';
 import { useGetRegistrationsByStudentQuery } from '../../../features/api/registrationsApi';
 import { useGetStudentByIdQuery } from '../../../features/api/studentsApi';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const StudentCourseDetailsPage: React.FC = () => {
   const { courseInstructorId } = useParams<{ courseInstructorId: string }>();
@@ -111,7 +112,7 @@ const StudentCourseDetailsPage: React.FC = () => {
   };
   
   if (!studentId || !currentSemester) {
-    return <p>Loading...</p>;
+    return <StudentLayout><Spinner /></StudentLayout>;
   }
   
   return (

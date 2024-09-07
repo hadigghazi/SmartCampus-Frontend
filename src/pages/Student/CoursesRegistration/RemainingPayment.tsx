@@ -1,3 +1,4 @@
+import Spinner from "../../../components/Spinner/Spinner";
 import { useCheckFeesPaidQuery } from "../../../features/api/feesPaymentsApi";
 import StudentLayout from "../StudentLayout";
 import styles from './Registrations.module.css';
@@ -22,7 +23,7 @@ const PaymentPage = () => {
       );
     }
   
-    return <div className={styles.container}>Loading...</div>;
+    return <StudentLayout><Spinner /></StudentLayout>;
   };
 
 export default PaymentPage;

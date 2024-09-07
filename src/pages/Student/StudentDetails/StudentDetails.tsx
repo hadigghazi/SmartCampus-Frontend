@@ -9,6 +9,7 @@ import styles from './StudentDetails.module.css';
 import defaultProfile from '../../../assets/images/profileImage.jpg';
 import StudentLayout from '../StudentLayout';
 import { RootState } from '../../../store'; 
+import Spinner from '../../../components/Spinner/Spinner';
 
 const StudentDetails: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -20,7 +21,7 @@ const StudentDetails: React.FC = () => {
 
   const [selectedSemester, setSelectedSemester] = useState<string>('All');
 
-  if (studentLoading || registrationsLoading || semestersLoading) return <p>Loading...</p>;
+  if (studentLoading || registrationsLoading || semestersLoading) return <StudentLayout><Spinner /></StudentLayout>;
   if (studentError || registrationsError || semestersError) return <p>Error loading data.</p>;
 
   const handleSemesterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

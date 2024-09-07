@@ -9,6 +9,7 @@ import Pagination from '../../../components/Pagination/Pagination';
 import { LibraryBook, Campus } from '../../../features/api/types';
 import { useGetCampusesQuery } from '../../../features/api/campusesApi';
 import StudentLayout from '../StudentLayout';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const LibraryBooksStudent: React.FC = () => {
   const { data: books, isLoading, error } = useGetLibraryBooksQuery();
@@ -21,7 +22,7 @@ const LibraryBooksStudent: React.FC = () => {
 
   const navigate = useNavigate();
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <StudentLayout><Spinner /></StudentLayout>;
   if (error) return <p>Something went wrong!</p>;
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
