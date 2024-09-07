@@ -7,7 +7,7 @@ import MajorSuggestorSection from '../../components/MajorSuggestorSection/MajorS
 import EventList from '../../components/EventList/EventList'
 import LifeSection from '../../components/LifeSection/LifeSection'
 import Footer from '../../components/Footer/Footer'
-import landingImage from '../../assets/images/Hero.png'
+import landingImage from '../../assets/images/cambridge.jpeg'
 
 const LandingPage = () => {
   return (

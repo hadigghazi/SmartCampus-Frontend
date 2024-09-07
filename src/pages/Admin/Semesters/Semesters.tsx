@@ -12,12 +12,11 @@ import ToastNotifications from '../../../components/DialogAndToast/ToastNotifica
 import { toast } from 'react-toastify';
 
 const Semesters: React.FC = () => {
-  const { data: semesters, isLoading, error } = useGetSemestersQuery();
+  const { data: semesters, isLoading, error, refetch } = useGetSemestersQuery();
   const [createSemester] = useCreateSemesterMutation();
   const [updateSemester] = useUpdateSemesterMutation();
   const [deleteSemester] = useDeleteSemesterMutation();
-  
-  const [localSemesters, setLocalSemesters] = useState(semesters || []);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
@@ -33,17 +32,11 @@ const Semesters: React.FC = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (semesters) {
-      setLocalSemesters(semesters);
-    }
-  }, [semesters]);
-
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Something went wrong!</p>;
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
-  const filteredSemesters = localSemesters.filter((semester) => {
+  const filteredSemesters = semesters.filter((semester) => {
     const semesterName = semester.name.toLowerCase();
     return searchTerms.every(term => semesterName.includes(term));
   });
@@ -58,8 +51,8 @@ const Semesters: React.FC = () => {
     if (isConfirmed) {
       try {
         await deleteSemester(semesterId).unwrap();
-        setLocalSemesters(prevSemesters => prevSemesters.filter(semester => semester.id !== semesterId));
         toast.success('Semester deleted successfully!');
+        refetch();  // Fetch the latest data
       } catch (err) {
         console.error('Error deleting semester:', err);
         toast.error('Failed to delete semester.');
@@ -111,15 +104,12 @@ const Semesters: React.FC = () => {
     try {
       if (isEditing) {
         await updateSemester(semesterData).unwrap();
-        setLocalSemesters(prevSemesters => prevSemesters.map(semester =>
-          semester.id === semesterData.id ? semesterData : semester
-        ));
         toast.success('Semester updated successfully!');
       } else {
-        const newSemester = await createSemester(semesterData).unwrap();
-        setLocalSemesters(prevSemesters => [...prevSemesters, newSemester]);
+        await createSemester(semesterData).unwrap();
         toast.success('Semester added successfully!');
       }
+      refetch();  // Fetch the latest data after mutation
       handleCloseModal();
     } catch (err) {
       console.error('Error saving semester:', err);

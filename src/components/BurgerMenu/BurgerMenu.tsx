@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { slide as Menu } from 'react-burger-menu';
 import './BurgerMenu.css';
 import logo from '../../assets/images/logo.png';
+import { Link } from 'react-router-dom';
 
 const BurgerMenu: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -14,7 +15,7 @@ const BurgerMenu: React.FC = () => {
     <Menu>
       <div className='menu_container'>
       <div className="menu-logo">
-        <img src={logo} alt="Menu Logo" />
+        <Link to='/'><img src={logo} alt="Menu Logo" /></Link>
       </div>
 
       <div className="accordion-item">
