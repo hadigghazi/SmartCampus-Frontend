@@ -3,7 +3,7 @@ import { useGetStudentsWithUserDetailsQuery, useDeleteStudentMutation, useUpdate
 import { useGetMajorsQuery } from '../../../features/api/majorsApi'; // Import the majors query
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../AdminLayout';
-import styles from './Students.module.css';
+import styles from '../Courses/Courses.module.css';
 import Table from '../../../components/Table/Table';
 import SearchInput from '../../../components/SearchInput/SearchInput';
 import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
@@ -27,7 +27,7 @@ type Student = {
   transportation: number;
   dorm_residency: number;
   emergency_contact_id: number;
-  major_id?: number; // Add major_id to student type
+  major_id?: number;
   created_at: string;
   updated_at: string;
   deleted_at: string | null;
@@ -40,11 +40,10 @@ type Student = {
 };
 
 const Students: React.FC = () => {
-  const { data: studentsData, isLoading, error } = useGetStudentsWithUserDetailsQuery({});
-  const { data: majorsData } = useGetMajorsQuery(); // Fetch majors
+  const { data: studentsData, isLoading, error, refetch } = useGetStudentsWithUserDetailsQuery({});
+  const { data: majorsData } = useGetMajorsQuery();
   const [deleteStudent] = useDeleteStudentMutation();
   const [updateStudent] = useUpdateStudentMutation();
-  const [students, setStudents] = useState<Student[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
@@ -63,11 +62,6 @@ const Students: React.FC = () => {
   });
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (studentsData) {
-      setStudents(studentsData);
-    }
-  }, [studentsData]);
 
   useEffect(() => {
     if (selectedStudent) {
@@ -80,7 +74,7 @@ const Students: React.FC = () => {
         transportation: selectedStudent.transportation,
         dorm_residency: selectedStudent.dorm_residency,
         emergency_contact_id: selectedStudent.emergency_contact_id,
-        major_id: selectedStudent.major_id, 
+        major_id: selectedStudent.major_id,
       });
     }
   }, [selectedStudent]);
@@ -93,7 +87,7 @@ const Students: React.FC = () => {
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
 
-  const filteredStudents = students.filter((student) => {
+  const filteredStudents = studentsData.filter((student) => {
     const fullName = `${student?.user?.first_name} ${student?.user?.middle_name || ''} ${student?.user?.last_name}`.toLowerCase();
     const studentId = student.id.toString();
     return searchTerms.every(term => fullName.includes(term) || studentId.includes(term));
@@ -114,8 +108,8 @@ const Students: React.FC = () => {
       const isConfirmed = await ConfirmationDialog('Are you sure?', 'You are about to delete this student!');
       if (isConfirmed) {
         await deleteStudent(studentId).unwrap();
-        setStudents(students.filter(student => student.id !== studentId));
         toast.success('Student deleted successfully!');
+        refetch(); 
       }
     } catch (err) {
       console.error('Error deleting student:', err);
@@ -128,7 +122,8 @@ const Students: React.FC = () => {
     setIsEditModalOpen(true);
   };
 
-  const handleSaveEdit = async () => {
+  const handleSaveEdit = async (e) => {
+    e.preventDefault(); 
     if (selectedStudent) {
       try {
         const updatedData = {
@@ -137,16 +132,9 @@ const Students: React.FC = () => {
         };
 
         await updateStudent(updatedData).unwrap();
-
-        setStudents(
-          students.map((student) =>
-            student.id === selectedStudent.id
-              ? { ...student, ...editedStudent }
-              : student
-          )
-        );
         setIsEditModalOpen(false);
         toast.success('Student updated successfully!');
+        refetch(); 
       } catch (err) {
         console.error('Error updating student:', err);
         toast.error('Failed to update student.');
@@ -187,7 +175,7 @@ const Students: React.FC = () => {
       {isEditModalOpen && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
-            <h2 className={styles.headingPrimary}>Edit Student</h2>
+            <h2 className={styles.headingSecondary}>Edit Student</h2>
             <form className={styles.form}>
               <div className={styles.formGroup}>
                 <label>Civil Status Number</label>
@@ -284,9 +272,9 @@ const Students: React.FC = () => {
                   ))}
                 </select>
               </div>
-              <div className={styles.modalActions}>
-                <button type="button" onClick={() => setIsEditModalOpen(false)}>Cancel</button>
-                <button type="button" onClick={handleSaveEdit}>Save</button>
+              <div className={styles.btnContainer}>
+                <button className={styles.acceptBtn} onClick={() => setIsEditModalOpen(false)}>Cancel</button>
+                <button className={styles.rejectBtn} onClick={handleSaveEdit}>Save</button>
               </div>
             </form>
           </div>
