@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import 'react-toastify/dist/ReactToastify.css';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import AdminLayout from '../AdminLayout';
 
 const PaymentSettings: React.FC = () => {
   const { data: paymentSettings, isLoading, isError, refetch } = useGetPaymentSettingsQuery();
@@ -85,6 +86,7 @@ const PaymentSettings: React.FC = () => {
   })) || [];
 
   return (
+    <AdminLayout requiredAdminType='Super Admin'>
     <div className={styles.container}>
       <h1 className={styles.headingPrimary}>Manage Payment Settings</h1>
 
@@ -149,6 +151,7 @@ const PaymentSettings: React.FC = () => {
       </div>
       <ToastContainer />
     </div>
+    </AdminLayout>
   );
 };
 

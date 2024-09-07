@@ -183,7 +183,7 @@ const CourseDetails: React.FC = () => {
   ];
 
   return (
-    <AdminLayout>
+    <AdminLayout requiredAdminType='Super Admin'>
       <div className={styles.content}>
         <h1 className={styles.headingPrimary}>{course.name}</h1>
         <h2 className={styles.headingSecondary}>{course.code}</h2>

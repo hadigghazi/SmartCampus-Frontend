@@ -13,7 +13,7 @@ const CenterDetails: React.FC = () => {
   if (!center) return <div>Center not found</div>;
 
   return (
-    <AdminLayout>
+    <AdminLayout requiredAdminType='Super Admin'>
       <div className={styles.content}>
         <h1 className={styles.headingPrimary}>{center.name}</h1>
         <h2 className={styles.headingSecondary} style={{marginTop: "3rem"}}>- Overview</h2>

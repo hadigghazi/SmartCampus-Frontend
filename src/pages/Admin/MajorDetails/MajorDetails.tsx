@@ -70,7 +70,7 @@ const MajorDetails: React.FC = () => {
   if (majorError || coursesError || facultyError) return <p>Something went wrong!</p>;
 
   return (
-    <AdminLayout>
+    <AdminLayout requiredAdminType='Super Admin'>
       {major && (
         <div className={styles.content}>
           <h1 className={styles.headingPrimary}>{major.name}</h1>

@@ -119,7 +119,7 @@ const CampusDetails: React.FC = () => {
   if (campusError || facultiesError) return <p>Something went wrong!</p>;
 
   return (
-    <AdminLayout>
+    <AdminLayout requiredAdminType='Super Admin'>
       {campus && (
         <div className={styles.content}>
           <h1 className={styles.headingPrimary}>{campus?.name}</h1>

@@ -140,7 +140,7 @@ const ImportantDatesPage: React.FC = () => {
   );
 
   return (
-    <AdminLayout>
+    <AdminLayout requiredAdminType='Super Admin'>
       <div className={styles.container}>
         <h1 className={styles.headingPrimary}>Important Dates</h1>
         <div className={styles.filters}>

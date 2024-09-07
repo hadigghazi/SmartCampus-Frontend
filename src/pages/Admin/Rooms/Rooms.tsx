@@ -145,7 +145,7 @@ const RoomsPage: React.FC = () => {
   );
 
   return (
-    <AdminLayout>
+    <AdminLayout requiredAdminType='Super Admin'>
       <div className={styles.content}>
         <h1 className={styles.headingPrimary}>Rooms</h1>
         <div className={styles.filters}>

@@ -128,7 +128,7 @@ const Semesters: React.FC = () => {
   };
 
   return (
-    <AdminLayout>
+    <AdminLayout requiredAdminType='Super Admin'>
       <div className={styles.container}>
         <h1 className={styles.headingPrimary}>Semesters</h1>
         <div className={styles.filters}>

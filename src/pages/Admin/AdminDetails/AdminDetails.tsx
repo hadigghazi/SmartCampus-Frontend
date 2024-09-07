@@ -22,7 +22,7 @@ const AdminDetails: React.FC = () => {
   if (adminError || userError || departmentError) return <p>User is deleted from the system!</p>;
 
   return (
-    <AdminLayout>
+    <AdminLayout requiredAdminType='Super Admin'>
       <div className={styles.instructorDetailsContainer}>
         <h1 className={styles.headingPrimary}>Admin Details</h1>
         {user && admin && department ? (

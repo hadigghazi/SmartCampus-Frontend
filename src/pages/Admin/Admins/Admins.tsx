@@ -127,7 +127,7 @@ const Admins: React.FC = () => {
   };
 
   return (
-    <AdminLayout>
+    <AdminLayout requiredAdminType='Super Admin'>
       <div className={styles.container}>
         <h2 className={styles.headingPrimary}>Admins</h2>
         <SearchInput value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
