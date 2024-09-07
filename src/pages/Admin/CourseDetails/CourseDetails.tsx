@@ -345,12 +345,14 @@ const CourseDetails: React.FC = () => {
                     required
                   />
                 </label>
-                <button type="submit" className={styles.saveButton}>
+                <div className={styles.btnContainer}>
+                <button type="submit" className={styles.acceptBtn}>
                   Save
                 </button>
-                <button type="button" onClick={handleCloseModal} className={styles.cancelButton}>
+                <button type="button" onClick={handleCloseModal} className={styles.rejectBtn}>
                   Cancel
                 </button>
+                </div>
               </form>
             </div>
           </div>
@@ -447,12 +449,14 @@ const CourseDetails: React.FC = () => {
                     required
                   />
                 </label>
-                <button type="submit" className={styles.saveButton}>
+                <div className={styles.btnContainer}>
+                <button type="submit" className={styles.acceptBtn}>
                   Save
                 </button>
-                <button type="button" onClick={handleCloseEditModal} className={styles.cancelButton}>
+                <button type="button" onClick={handleCloseEditModal} className={styles.rejectBtn}>
                   Cancel
                 </button>
+                </div>
               </form>
             </div>
           </div>
@@ -460,11 +464,8 @@ const CourseDetails: React.FC = () => {
          {showAddPrerequisiteModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
-            <button onClick={handleCloseAddPrerequisiteModal} className={styles.closeButton}>
-              &times;
-            </button>
-            <h2>Add Course Prerequisite</h2>
-            <form onSubmit={handleAddPrerequisiteSubmit}>
+            <h2 className={styles.headingSecondary}>Add Course Prerequisite</h2>
+            <form className={styles.form} onSubmit={handleAddPrerequisiteSubmit}>
               <select
                 name="prerequisite_course_id"
                 value={selectedPrerequisiteCourseId || ''}
@@ -477,7 +478,10 @@ const CourseDetails: React.FC = () => {
                   </option>
                 ))}
               </select>
-              <button type="submit">Add Prerequisite</button>
+              <div className={styles.btnContainer}>
+              <button className={styles.acceptBtn} type="submit">Add Prerequisite</button>
+              <button className={styles.rejectBtn} onClick={handleCloseAddPrerequisiteModal}>Cancel</button>
+              </div>
             </form>
           </div>
         </div>

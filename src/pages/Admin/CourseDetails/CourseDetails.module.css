@@ -25,6 +25,29 @@
     text-align: left;
 }
 
+.btnContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.acceptBtn, .rejectBtn {
+  padding: 0.4rem 0.75rem;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: .8rem;
+  color: #fff;
+  margin-right: 1rem;
+}
+
+.acceptBtn {
+  background-color: var(--primary-color); 
+}
+
+.rejectBtn {
+  background-color: #ff0000; 
+}
+
 .content {
     padding: 2rem;
     color: var(--primary-color);
@@ -46,30 +69,6 @@
     align-items: flex-end;
     margin-bottom: 3rem;
 }
-
-.btnContainer {
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  .acceptBtn, .rejectBtn {
-    padding: 0.4rem 0.75rem;
-    border: none;
-    border-radius: 2px;
-    cursor: pointer;
-    font-size: .8rem;
-    color: #fff;
-    margin-right: 1rem;
-  }
-
-  .acceptBtn {
-    background-color: var(--primary-color); 
-  }
-  
-  .rejectBtn {
-    background-color: #ff0000; 
-  }
-
 
 .editButton, .deleteButton {
     border: none;
