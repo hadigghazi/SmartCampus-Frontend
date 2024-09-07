@@ -9,6 +9,7 @@ import defaultProfile from '../../../assets/images/profileImage.jpg';
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const ApplicationDetailsAdmins: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -116,7 +117,7 @@ const ApplicationDetailsAdmins: React.FC = () => {
     }
   };
 
-  if (userLoading || departmentsLoading) return <p>Loading...</p>;
+  if (userLoading || departmentsLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (userError || departmentsError) return <p>Something went wrong!</p>;
 
   return (

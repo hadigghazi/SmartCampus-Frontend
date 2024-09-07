@@ -2,11 +2,12 @@ import React from 'react';
 import EventItem from '../EventItem/EventItem';
 import styles from './EventList.module.css';
 import { useGetImportantDatesQuery } from '../../features/api/importantDatesApi';
+import Spinner from '../Spinner/Spinner';
 
 const EventList: React.FC = () => {
   const { data: importantDates, isLoading, error } = useGetImportantDatesQuery();
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Spinner />;
   if (error) return <p>Error loading events</p>;
 
   const sortedDates = importantDates?.slice().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());

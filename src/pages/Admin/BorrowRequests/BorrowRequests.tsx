@@ -8,6 +8,7 @@ import styles from '../Courses/Courses.module.css';
 import { useGetBorrowRequestsQuery } from '../../../features/api/borrowRequestsApi';
 import { useGetLibraryBooksQuery } from '../../../features/api/libraryBooksApi';
 import { useGetCampusesQuery } from '../../../features/api/campusesApi';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const BorrowRequests: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -21,7 +22,7 @@ const BorrowRequests: React.FC = () => {
   const { data: campuses, isLoading: campusesLoading, error: campusesError } = useGetCampusesQuery();
 
 
-  if (borrowRequestsLoading || booksLoading || campusesLoading) return <p>Loading...</p>;
+  if (borrowRequestsLoading || booksLoading || campusesLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (borrowRequestsError || booksError || campusesError) return <p>Something went wrong!</p>;
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);

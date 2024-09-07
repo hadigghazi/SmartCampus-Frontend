@@ -5,6 +5,7 @@ import { useGetAllSubmissionsQuery } from '../../../features/api/submissionsApi'
 import styles from './AssignmentDetails.module.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import InstructorLayout from '../InstructorLayout';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
@@ -14,7 +15,7 @@ const AssignmentDetails: React.FC = () => {
   const { data: submissions, isLoading: isSubmissionsLoading } = useGetAllSubmissionsQuery(Number(assignmentId));
 
   if (isAssignmentLoading || isSubmissionsLoading) {
-    return <p>Loading...</p>;
+    return <InstructorLayout><Spinner /></InstructorLayout>;
   }
 
   if (!assignment) {

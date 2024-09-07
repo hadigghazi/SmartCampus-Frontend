@@ -9,6 +9,7 @@ import Pagination from '../../../components/Pagination/Pagination';
 import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
 import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 import { toast } from 'react-toastify';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const Semesters: React.FC = () => {
   const { data: semesters, isLoading, error, refetch } = useGetSemestersQuery();
@@ -29,7 +30,7 @@ const Semesters: React.FC = () => {
     is_current: false,
   });
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (error) return <p>Something went wrong!</p>;
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);

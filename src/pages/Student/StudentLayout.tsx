@@ -7,6 +7,7 @@ import Navbar from './StudentNav';
 import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import styles from '../../pages/Admin/AdminLayout.module.css';
 import { faRobot } from '@fortawesome/free-solid-svg-icons';
+import Spinner from '../../components/Spinner/Spinner';
 
 interface StudentLayoutProps {
   children: React.ReactNode;
@@ -19,7 +20,7 @@ const StudentLayout: React.FC<StudentLayoutProps> = ({ children }) => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   if (!isAuthenticated) {

@@ -10,6 +10,7 @@ import Footer from '../../components/Footer/Footer';
 import DeanCard from '../../components/DeanCard/DeanCard';
 import profileImage from '../../assets/images/profileImage.jpg';
 import FacultyAccordion from '../../components/FacultyAccordion/FacultyAccordion';
+import Spinner from '../../components/Spinner/Spinner';
 
 const CampusDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,7 +18,7 @@ const CampusDetails: React.FC = () => {
   const { data: deans, isLoading: deansLoading, error: deansError } = useGetDeansByCampusQuery(Number(id));
   const { data: faculties, isLoading: facultiesLoading, error: facultiesError } = useGetFacultiesByCampusQuery(Number(id));
 
-  if (campusLoading || deansLoading || facultiesLoading) return <p>Loading...</p>;
+  if (campusLoading || deansLoading || facultiesLoading) return <Spinner />;
   if (campusError || !campus) return <p>Error loading campus details</p>;
   if (deansError) return <p>Error loading deans</p>;
   if (facultiesError) return <p>Error loading faculties</p>;

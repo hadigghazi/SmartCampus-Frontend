@@ -3,12 +3,13 @@ import { useParams } from 'react-router-dom';
 import styles from '../CourseDetails/CourseDetails.module.css';
 import { useGetCenterByIdQuery } from '../../../features/api/centersApi';
 import AdminLayout from '../AdminLayout';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const CenterDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { data: center, error, isLoading } = useGetCenterByIdQuery(Number(id));
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (error) return <div>Error loading center details</div>;
   if (!center) return <div>Center not found</div>;
 

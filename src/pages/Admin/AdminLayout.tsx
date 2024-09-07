@@ -6,6 +6,7 @@ import { useGetUserQuery } from '../../features/api/authApi';
 import BurgerMenu from '../../components/BurgerMenu/BurgerMenu';
 import styles from './AdminLayout.module.css';
 import { useGetAdminByUserIdQuery } from '../../features/api/adminsApi';
+import Spinner from '../../components/Spinner/Spinner';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -23,7 +24,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, requiredAdminType }
   });
 
   if (userLoading || adminLoading) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   if (!isAuthenticated) {

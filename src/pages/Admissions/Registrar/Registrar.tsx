@@ -2,11 +2,12 @@ import React from 'react';
 import AdmissionsLayout from '../AdmissionsLayout';
 import styles from './Registrar.module.css';
 import { useGetImportantDatesQuery } from '../../../features/api/importantDatesApi'; 
+import Spinner from '../../../components/Spinner/Spinner';
 
 const Registrar: React.FC = () => {
   const { data: events, isLoading, error } = useGetImportantDatesQuery(); 
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Spinner />;
   if (error) return <p>Error loading events</p>;
 
   return (

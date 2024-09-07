@@ -7,6 +7,7 @@ import { useGetStudentsWithUserDetailsQuery } from '../../../features/api/studen
 import AdminLayout from '../AdminLayout';
 import Table from '../../../components/Table/Table';
 import styles from '../CourseDetails/CourseDetails.module.css';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const BookDetails: React.FC = () => {
   const { id: bookId } = useParams<{ id: string }>();
@@ -79,7 +80,7 @@ const BookDetails: React.FC = () => {
     { header: 'Status', accessor: 'status' },
   ];
 
-  if (bookLoading || campusLoading || borrowRequestsLoading || studentsLoading) return <p>Loading...</p>;
+  if (bookLoading || campusLoading || borrowRequestsLoading || studentsLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (bookError || campusError || borrowRequestsError || studentsError) return <p>Something went wrong!</p>;
 
   return (

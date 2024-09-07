@@ -11,6 +11,7 @@ import Table from '../../../components/Table/Table';
 import styles from './Applications.module.css';
 import { toast } from 'react-toastify';
 import { User } from '../../../features/api/types';
+import Spinner from '../../../components/Spinner/Spinner';
 
 interface ApplicationsProps {
   role: string;
@@ -38,7 +39,7 @@ const Applications: React.FC<ApplicationsProps> = ({ role }) => {
     }
   }, [initialUsers]);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (error) return <p>Something went wrong!</p>;
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);

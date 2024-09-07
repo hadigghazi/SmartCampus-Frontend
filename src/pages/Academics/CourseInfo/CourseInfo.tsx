@@ -3,12 +3,13 @@ import { useParams } from 'react-router-dom';
 import { useGetCourseByIdQuery } from '../../../features/api/coursesApi';
 import styles from './CourseInfo.module.css';
 import AcademicsLayout from '../AcademicsLayout';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const CourseInfo: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { data: course, error, isLoading } = useGetCourseByIdQuery(Number(id));
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Spinner />;
   if (error) return <p>Error loading course details</p>;
   if (!course) return <p>Course not found</p>;
 

@@ -11,6 +11,7 @@ import Table from '../../../components/Table/Table';
 import styles from './StudentDetails.module.css';
 import defaultProfile from '../../../assets/images/profileImage.jpg';
 import { useGetFinancialAidsScholarshipsByStudentQuery, useCreateFinancialAidScholarshipMutation } from '../../../features/api/financialAidApi';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const StudentDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -42,7 +43,7 @@ const StudentDetails: React.FC = () => {
     description: ''
   });
 
-  if (studentLoading || userLoading || registrationsLoading || semestersLoading || !currentSemester) return <p>Loading...</p>;
+  if (studentLoading || userLoading || registrationsLoading || semestersLoading || !currentSemester) return <AdminLayout><Spinner /></AdminLayout>;
   if (studentError || userError || registrationsError || semestersError) return <p>Error loading data.</p>;
 
   const handleSemesterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

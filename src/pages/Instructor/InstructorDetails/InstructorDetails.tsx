@@ -7,6 +7,7 @@ import Table from '../../../components/Table/Table';
 import styles from '../../Student/StudentDetails/StudentDetails.module.css'; 
 import defaultProfile from '../../../assets/images/profileImage.jpg';
 import InstructorLayout from '../InstructorLayout';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const InstructorDetails: React.FC = () => {
   const auth = useSelector((state: any) => state.auth);
@@ -20,7 +21,7 @@ const InstructorDetails: React.FC = () => {
 
   const { data: department, isLoading: departmentLoading, error: departmentError } = useGetDepartmentByIdQuery(instructor?.department_id || -1);
 
-  if (instructorLoading || userLoading || coursesLoading || departmentLoading) return <p>Loading...</p>;
+  if (instructorLoading || userLoading || coursesLoading || departmentLoading) return <InstructorLayout><Spinner /></InstructorLayout>;
   if (instructorError || userError || coursesError || departmentError) return <p>User is deleted from the system!</p>;
 
   const columns = [

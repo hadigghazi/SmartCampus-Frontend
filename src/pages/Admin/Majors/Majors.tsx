@@ -16,6 +16,7 @@ import Pagination from '../../../components/Pagination/Pagination';
 import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
 import { toast } from 'react-toastify';
 import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const Majors: React.FC = () => {
   const { data: majors, isLoading, error, refetch } = useGetMajorsQuery();
@@ -48,7 +49,7 @@ const Majors: React.FC = () => {
     }
   }, [selectedFacultyFilter]);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (error) return <p>Something went wrong!</p>;
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);

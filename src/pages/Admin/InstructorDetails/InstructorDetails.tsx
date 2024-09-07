@@ -6,6 +6,7 @@ import AdminLayout from '../AdminLayout';
 import Table from '../../../components/Table/Table'; 
 import styles from './InstructorDetails.module.css'; 
 import defaultProfile from '../../../assets/images/profileImage.jpg';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const InstructorDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,7 +17,7 @@ const InstructorDetails: React.FC = () => {
   const { data: user, isLoading: userLoading, error: userError } = useGetUserByIdQuery(userId || -1);
   const { data: courses, isLoading: coursesLoading, error: coursesError } = useGetCoursesAssignedToInstructorQuery(instructorId);
 
-  if (instructorLoading || userLoading || coursesLoading) return <p>Loading...</p>;
+  if (instructorLoading || userLoading || coursesLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (instructorError || userError || coursesError) return <p>User is deleted from the system!</p>;
 
   const columns = [

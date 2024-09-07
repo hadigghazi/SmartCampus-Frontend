@@ -5,6 +5,7 @@ import { RootState } from '../../store';
 import { useGetUserQuery } from '../../features/api/authApi';
 import Navbar from './InstructorNav';
 import styles from '../../pages/Admin/AdminLayout.module.css';
+import Spinner from '../../components/Spinner/Spinner';
 
 interface StudentLayoutProps {
   children: React.ReactNode;
@@ -17,7 +18,7 @@ const InstructorLayout: React.FC<StudentLayoutProps> = ({ children }) => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   if (!isAuthenticated) {

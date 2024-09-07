@@ -5,11 +5,12 @@ import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import CampusCard from '../../components/CampusCard/CampusCard';
 import { useGetCampusesQuery } from '../../features/api/campusesApi';
+import Spinner from '../../components/Spinner/Spinner';
 
 const Campuses: React.FC = () => {
   const { data: campuses, error, isLoading } = useGetCampusesQuery();
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Spinner />;
   if (error) return <p>Error loading campuses</p>;
 
   return (

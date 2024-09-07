@@ -6,6 +6,7 @@ import { useGetRegistrationsByStudentQuery } from '../../../features/api/registr
 import Table from '../../../components/Table/Table';
 import styles from './AcademicHistory.module.css';
 import StudentLayout from '../StudentLayout';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const AcademicHistory: React.FC = () => {
   const { data: user } = useGetUserQuery();
@@ -45,6 +46,8 @@ const AcademicHistory: React.FC = () => {
     return { totalCourses, requiredCredits, earnedCredits, averageGrade };
   };
 
+  if (isLoading) return <StudentLayout><Spinner /></StudentLayout>
+
   return (
     <StudentLayout>
     <div className={styles.container}>
@@ -62,9 +65,7 @@ const AcademicHistory: React.FC = () => {
         return (
           <div key={semester.id} className={styles.semesterSection}>
             <h3 className={styles.headingSecondary}>- {semester.name}</h3>
-            {isLoading ? (
-              <p>Loading courses...</p>
-            ) : (
+            {(
               filteredRegistrations.length > 0 ? (
                 <div className={styles.tableWrapper}>
                   <Table columns={registrationColumns} data={filteredRegistrations} />

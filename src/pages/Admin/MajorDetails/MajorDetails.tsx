@@ -9,6 +9,7 @@ import SearchInput from '../../../components/SearchInput/SearchInput';
 import Pagination from '../../../components/Pagination/Pagination';
 import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import styles from '../CourseDetails/CourseDetails.module.css';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const MajorDetails: React.FC = () => {
   const { id: majorId } = useParams<{ id: string }>();
@@ -66,7 +67,7 @@ const MajorDetails: React.FC = () => {
     },
   ];
 
-  if (majorLoading || coursesLoading || facultyLoading) return <p>Loading...</p>;
+  if (majorLoading || coursesLoading || facultyLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (majorError || coursesError || facultyError) return <p>Something went wrong!</p>;
 
   return (

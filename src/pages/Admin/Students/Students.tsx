@@ -11,6 +11,7 @@ import Pagination from '../../../components/Pagination/Pagination';
 import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
 import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 import { toast } from 'react-toastify';
+import Spinner from '../../../components/Spinner/Spinner';
 
 type Student = {
   id: number;
@@ -84,7 +85,7 @@ const Students: React.FC = () => {
     }
   }, [selectedStudent]);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (error) {
     console.error('Error fetching students:', error);
     return <p>Something went wrong!</p>;

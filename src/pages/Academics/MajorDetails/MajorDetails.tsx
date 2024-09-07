@@ -4,13 +4,14 @@ import { useGetMajorByIdQuery } from '../../../features/api/majorsApi';
 import { useGetCoursesByMajorQuery } from '../../../features/api/coursesApi';
 import styles from './MajorDetails.module.css';
 import AcademicsLayout from '../AcademicsLayout';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const MajorDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { data: major, error: majorError, isLoading: majorLoading } = useGetMajorByIdQuery(parseInt(id as string));
   const { data: courses, error: coursesError, isLoading: coursesLoading } = useGetCoursesByMajorQuery(parseInt(id as string));
 
-  if (majorLoading || coursesLoading) return <p>Loading...</p>;
+  if (majorLoading || coursesLoading) return <Spinner />;
   if (majorError) return <p>Error loading major details</p>;
   if (coursesError) return <p>Error loading courses</p>;
   if (!major) return <p>Major not found</p>;

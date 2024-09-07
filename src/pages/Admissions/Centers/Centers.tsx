@@ -4,6 +4,7 @@ import styles from './Centers.module.css';
 import { useNavigate } from 'react-router-dom';
 import StudentImage from '../../../assets/images/student.png';
 import { useGetCentersQuery } from '../../../features/api/centersApi';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const Centers: React.FC = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const Centers: React.FC = () => {
     navigate(`/admissions/centers/${id}`);
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Spinner />;
   if (error) return <p>Error loading centers</p>;
 
   return (

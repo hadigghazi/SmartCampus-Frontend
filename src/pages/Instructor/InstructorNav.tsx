@@ -4,6 +4,7 @@ import { useGetUserQuery } from '../../features/api/authApi';
 import NavbarLogo from '../../assets/images/logo.png';
 import defaultProfile from '../../assets/images/profileImage.jpg';
 import styles from '../../components/Navbar/Navbar.module.css';
+import Spinner from '../../components/Spinner/Spinner';
 
 const Navbar: React.FC = () => {
   const { data: user, isLoading } = useGetUserQuery();
@@ -13,7 +14,7 @@ const Navbar: React.FC = () => {
     setMenuOpen(!menuOpen);
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Spinner />;
 
   return (
     <nav className={`${styles.nav} ${styles.spnav}`}>

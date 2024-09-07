@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useGetMajorsByFacultyAndCampusQuery } from '../../features/api/campusesApi';
 import styles from './FacultyAccordion.module.css';
 import { Link } from 'react-router-dom';
+import Spinner from '../Spinner/Spinner';
 
 type Major = {
   major_id: number;
@@ -31,7 +32,7 @@ const FacultyAccordion: React.FC<FacultyAccordionProps> = ({ facultyId, facultyN
       {isOpen && (
         <div className={styles.accordionContent}>
           {isLoading ? (
-            <p>Loading majors...</p>
+            <Spinner />
           ) : error ? (
             <p>Error loading majors</p>
           ) : majors && majors.length > 0 ? (

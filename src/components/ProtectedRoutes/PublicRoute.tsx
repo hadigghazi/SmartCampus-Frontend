@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { RootState } from '../../store';
 import { useGetUserQuery } from '../../features/api/authApi';
+import Spinner from '../Spinner/Spinner';
 interface PublicRouteProps {
   children: React.ReactNode;
 }
@@ -15,7 +16,7 @@ const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   if (isAuthenticated && user) {

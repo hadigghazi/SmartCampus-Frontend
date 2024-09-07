@@ -14,6 +14,7 @@ import Pagination from '../../../components/Pagination/Pagination';
 import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import styles from '../CourseDetails/CourseDetails.module.css';
 import { Faculty } from '../../../features/api/types';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const CampusDetails: React.FC = () => {
   const { id: campusId } = useParams<{ id: string }>();
@@ -115,7 +116,7 @@ const CampusDetails: React.FC = () => {
     faculty => !faculties.some(f => f?.id === faculty?.id)
   );
 
-  if (campusLoading || facultiesLoading) return <p>Loading...</p>;
+  if (campusLoading || facultiesLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (campusError || facultiesError) return <p>Something went wrong!</p>;
 
   return (

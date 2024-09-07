@@ -11,6 +11,7 @@ import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationD
 import { toast } from 'react-toastify';
 import { LibraryBook, Campus } from '../../../features/api/types';
 import { useGetCampusesQuery } from '../../../features/api/campusesApi';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const LibraryBooks: React.FC = () => {
   const { data: books, isLoading, error } = useGetLibraryBooksQuery();
@@ -36,7 +37,7 @@ const LibraryBooks: React.FC = () => {
 
   const navigate = useNavigate();
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (error) return <p>Something went wrong!</p>;
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);

@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import 'react-toastify/dist/ReactToastify.css';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import AdminLayout from '../AdminLayout';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const PaymentSettings: React.FC = () => {
   const { data: paymentSettings, isLoading, isError, refetch } = useGetPaymentSettingsQuery();
@@ -90,7 +91,7 @@ const PaymentSettings: React.FC = () => {
     <div className={styles.container}>
       <h1 className={styles.headingPrimary}>Manage Payment Settings</h1>
 
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <Spinner />}
       {isError && <p>Error loading payment settings.</p>}
       {paymentSettings && (
         <Table columns={columns} data={data} />

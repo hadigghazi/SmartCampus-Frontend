@@ -12,6 +12,7 @@ import { useGetExamDetailsQuery } from '../../../features/api/examsApi';
 import styles from './StudentDashboard.module.css';
 import StudentLayout from '../StudentLayout';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const Dashboard: React.FC = () => {
   const { data: user } = useGetUserQuery();
@@ -77,7 +78,7 @@ const Dashboard: React.FC = () => {
       <div className={styles.dashboardContainer}>
         <div className={styles.profileSection}>
           <h2 className={styles.headingSecondary}>Profile</h2>
-          {user && student ? <ProfileCard user={user} student={student} /> : <p>Loading profile...</p>}
+          {user && student ? <ProfileCard user={user} student={student} /> : <Spinner />}
         </div>
         <div className={styles.announcementsSection}>
           <h2 className={styles.headingSecondary}>Announcements</h2>
@@ -94,7 +95,7 @@ const Dashboard: React.FC = () => {
                 )}
               </>
             ) : (
-              <p>Loading announcements...</p>
+              <Spinner />
             )}
           </div>
         </div>
@@ -105,7 +106,7 @@ const Dashboard: React.FC = () => {
         {filteredRegistrations ? (
           <Table columns={registrationColumns} data={filteredRegistrations} />
         ) : (
-          <p>Loading registrations...</p>
+          <Spinner />
         )}
         <button
             className={styles.registerButton}
@@ -118,7 +119,7 @@ const Dashboard: React.FC = () => {
         {exams ? (
           <Table columns={examColumns} data={exams} />
         ) : (
-          <p>Loading exam details...</p>
+          <Spinner />
         )}
       </div>
     </StudentLayout>

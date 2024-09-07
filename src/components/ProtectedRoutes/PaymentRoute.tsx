@@ -1,11 +1,12 @@
 import { Navigate } from 'react-router-dom';
 import { useCheckFeesPaidQuery } from '../../features/api/feesPaymentsApi'
+import Spinner from '../Spinner/Spinner';
 
 const ProtectedRoute = ({ children }) => {
   const { data, error, isLoading } = useCheckFeesPaidQuery();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   if (error || !data) {

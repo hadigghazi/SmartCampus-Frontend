@@ -2,11 +2,12 @@ import AcademicsLayout from "../AcademicsLayout";
 import styles from './Faculties.module.css';
 import FacultiesCard from '../../../components/FacultiesCard/FacultiesCard';
 import { useGetFacultiesQuery } from '../../../features/api/facultiesApi';
+import Spinner from "../../../components/Spinner/Spinner";
 
 const Faculties = () => {
   const { data: faculties, error, isLoading } = useGetFacultiesQuery();
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Spinner />;
   if (error) return <p>Error loading faculties</p>;
 
   return (

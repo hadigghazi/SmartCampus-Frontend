@@ -7,13 +7,14 @@ import styles from './FacultyDetails.module.css';
 import AcademicsLayout from '../AcademicsLayout';
 import MajorCard from '../../../components/MajorCard/MajorCard';
 import { Major } from '../../../features/api/types';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const FacultyDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { data: faculty, isLoading: facultyLoading, error: facultyError } = useGetFacultyByIdQuery(Number(id));
   const { data: majors, isLoading: majorsLoading, error: majorsError } = useGetMajorsByFacultyQuery(Number(id));
 
-  if (facultyLoading || majorsLoading) return <p>Loading...</p>;
+  if (facultyLoading || majorsLoading) return <Spinner />;
   if (facultyError || majorsError || !faculty) return <p>Error loading faculty details or majors</p>;
 
   return (

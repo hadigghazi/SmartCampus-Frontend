@@ -11,6 +11,7 @@ import { useGetCoursesAssignedToInstructorQuery } from '../../../features/api/co
 import { useGetExamInstructorDetailsQuery } from '../../../features/api/examsApi'; 
 import styles from './InstructorDashboard.module.css';
 import InstructorLayout from '../InstructorLayout';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const InstructorDashboard: React.FC = () => {
   const { data: user } = useGetUserQuery();
@@ -74,7 +75,7 @@ const InstructorDashboard: React.FC = () => {
       <div className={styles.dashboardContainer}>
         <div className={styles.profileSection}>
           <h2 className={styles.headingSecondary}>Profile</h2>
-          {user && instructor ? <ProfileCard user={user} student={instructor} /> : <p>Loading profile...</p>}
+          {user && instructor ? <ProfileCard user={user} student={instructor} /> : <Spinner />}
         </div>
         <div className={styles.announcementsSection}>
           <h2 className={styles.headingSecondary}>Announcements</h2>
@@ -91,7 +92,7 @@ const InstructorDashboard: React.FC = () => {
                 )}
               </>
             ) : (
-              <p>Loading announcements...</p>
+              <Spinner />
             )}
           </div>
         </div>
@@ -102,14 +103,14 @@ const InstructorDashboard: React.FC = () => {
         {filteredCoursesAssigned ? (
           <Table columns={courseColumns} data={filteredCoursesAssigned} />
         ) : (
-          <p>Loading assigned courses...</p>
+          <Spinner />
         )}
 
         <h2 className={styles.headingPrimary}>Exams</h2>
         {exams ? (
           <Table columns={examColumns} data={exams} />
         ) : (
-          <p>Loading exam details...</p>
+          <Spinner />
         )}
       </div>
     </InstructorLayout>

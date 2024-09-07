@@ -3,6 +3,7 @@ import styles from './FacultiesSection.module.css';
 import ArrowButton from '../ArrowButton/ArrowButton';
 import FacultiesCard from '../FacultiesCard/FacultiesCard';
 import { useGetFacultiesQuery } from '../../features/api/facultiesApi';
+import Spinner from '../Spinner/Spinner';
 
 const FacultiesSection: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -21,7 +22,7 @@ const FacultiesSection: React.FC = () => {
 
   const { data: faculties, error, isLoading } = useGetFacultiesQuery();
 
-  if (isLoading) return <p>Loading...</p>; 
+  if (isLoading) return <Spinner />; 
   if (error) return <p>Error loading faculties</p>;
 
   return (

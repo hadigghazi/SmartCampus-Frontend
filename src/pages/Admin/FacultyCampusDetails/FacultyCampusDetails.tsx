@@ -17,6 +17,7 @@ import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import DeanCard from '../../../components/DeanCard/DeanCard'; 
 import styles from '../CourseDetails/CourseDetails.module.css';
 import profilePicture from "../../../assets/images/profileImage.jpg";
+import Spinner from '../../../components/Spinner/Spinner';
 
 const FacultyCampusDetails: React.FC = () => {
   const { campusId, id: facultyId } = useParams<{ campusId: string, id: string }>();
@@ -169,7 +170,7 @@ const FacultyCampusDetails: React.FC = () => {
     },
   ];
 
-  if (facultyLoading || majorsLoading || deanLoading) return <p>Loading...</p>;
+  if (facultyLoading || majorsLoading || deanLoading) return <AdminLayout><Spinner></Spinner></AdminLayout>;
   if (facultyError || majorsError) return <p>Something went wrong!</p>;
 
   return (

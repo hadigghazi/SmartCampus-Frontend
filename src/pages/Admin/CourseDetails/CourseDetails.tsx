@@ -18,6 +18,7 @@ import Table from '../../../components/Table/Table'; // Import the Table compone
 import { useAddCoursePrerequisiteMutation, useDeleteCoursePrerequisiteMutation, useGetCoursePrerequisitesQuery } from '../../../features/api/coursePrerequisitesApi';
 import { CourseOption } from '../../../features/api/types';
 import { useGetCoursesByFacultyQuery } from '../../../features/api/coursesApi'; 
+import Spinner from '../../../components/Spinner/Spinner';
 
 const CourseDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -150,7 +151,7 @@ const CourseDetails: React.FC = () => {
     }
   };
 
-  if (courseLoading || optionsLoading || prerequisitesLoading) return <div>Loading...</div>;
+  if (courseLoading || optionsLoading || prerequisitesLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (courseError) return <div>Error loading course details</div>;
   if (!course) return <div>Course not found</div>;
 

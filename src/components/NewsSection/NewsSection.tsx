@@ -3,6 +3,7 @@ import NewsCard from '../NewsCard/NewsCard';
 import styles from './NewsSection.module.css';
 import ArrowButton from '../ArrowButton/ArrowButton';
 import { useGetNewsQuery } from '../../features/api/newsApi';
+import Spinner from '../Spinner/Spinner';
 
 const NewsSection: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -21,7 +22,7 @@ const NewsSection: React.FC = () => {
     }
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Spinner />;
   if (error) return <p>Error loading news</p>;
 
   return (

@@ -3,12 +3,13 @@ import AdmissionsLayout from '../AdmissionsLayout';
 import styles from './CenterPage.module.css';
 import { useParams } from 'react-router-dom';
 import { useGetCenterByIdQuery } from '../../../features/api/centersApi';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const CenterPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { data: center, error, isLoading } = useGetCenterByIdQuery(Number(id));
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Spinner />;
   if (error || !center) return <p>Error loading center details</p>;
 
   return (

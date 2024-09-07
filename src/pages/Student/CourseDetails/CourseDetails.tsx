@@ -119,7 +119,7 @@ const StudentCourseDetailsPage: React.FC = () => {
     <StudentLayout>
       <div className={styles.container}>
         {isCourseLoading ? (
-          <p>Loading course details...</p>
+          <Spinner />
         ) : (
           <>
             <h1 className={styles.headingPrimary}>{courseDetails?.course_name} ({courseDetails?.course_code})</h1>
