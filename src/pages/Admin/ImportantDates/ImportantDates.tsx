@@ -12,9 +12,12 @@ import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import AdminLayout from '../AdminLayout';
 import styles from '../Courses/Courses.module.css';
 import { ImportantDate } from '../../../features/api/types';
+import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
+import { toast } from 'react-toastify';
 
 const ImportantDatesPage: React.FC = () => {
-  const { data: importantDatesList = [] } = useGetImportantDatesQuery();
+  const { data: importantDatesList = [], refetch } = useGetImportantDatesQuery();
   const [createImportantDate] = useCreateImportantDateMutation();
   const [updateImportantDate] = useUpdateImportantDateMutation();
   const [deleteImportantDate] = useDeleteImportantDateMutation();
@@ -64,11 +67,16 @@ const ImportantDatesPage: React.FC = () => {
   };
 
   const handleDeleteDate = async (id: number) => {
-    try {
-      await deleteImportantDate(id).unwrap();
-      console.log('Date deleted successfully');
-    } catch (error) {
-      console.error('Failed to delete date:', error);
+    const isConfirmed = await ConfirmationDialog('Are you sure?', 'You won’t be able to revert this!');
+    refetch();
+    if (isConfirmed) {
+      try {
+        await deleteImportantDate(id).unwrap();
+        toast.success('Date deleted successfully');
+      } catch (error) {
+        console.error('Failed to delete date:', error);
+        toast.error('Failed to delete date');
+      }
     }
   };
 
@@ -82,14 +90,16 @@ const ImportantDatesPage: React.FC = () => {
 
       if (editingDate) {
         await updateImportantDate({ id: editingDate.id, ...datePayload }).unwrap();
-        console.log('Date updated successfully');
+        toast.success('Date updated successfully');
       } else {
         await createImportantDate(datePayload).unwrap();
-        console.log('Date created successfully');
+        toast.success('Date created successfully');
       }
       setShowModal(false);
+      refetch();
     } catch (error) {
       console.error('Failed to save date:', error);
+      toast.error('Failed to save date');
     }
   };
 
@@ -103,7 +113,7 @@ const ImportantDatesPage: React.FC = () => {
 
   const handleEntriesPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPageSize(Number(e.target.value));
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -134,7 +144,7 @@ const ImportantDatesPage: React.FC = () => {
 
   const actions = (date: ImportantDate) => (
     <div className={styles.actions}>
-      <button onClick={() => handleEditDate(date)}>Edit</button>
+      <button style={{ marginRight: '1rem' }} onClick={() => handleEditDate(date)}>Edit</button>
       <button onClick={() => handleDeleteDate(date.id)}>Delete</button>
     </div>
   );
@@ -148,7 +158,6 @@ const ImportantDatesPage: React.FC = () => {
           <button onClick={handleAddDate} className={styles.addButton}>Add Date</button>
         </div>
         <EntriesPerPage value={pageSize} onChange={handleEntriesPerPageChange} />
-        <div className={styles.wrapper}>
           <Table
             columns={columns}
             data={paginatedDates}
@@ -159,11 +168,10 @@ const ImportantDatesPage: React.FC = () => {
             totalPages={totalPages}
             onPageChange={handlePageChange}
           />
-        </div>
         {showModal && (
           <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
-              <h2>{editingDate ? 'Edit Date' : 'Add Date'}</h2>
+              <h2 className={styles.headingSecondary}>{editingDate ? 'Edit Date' : 'Add Date'}</h2>
               <form className={styles.form}>
                 <label>
                   Title:
@@ -204,20 +212,25 @@ const ImportantDatesPage: React.FC = () => {
                   />
                 </label>
                 <label>
-                  Type:
-                  <input
-                    type="text"
-                    name="type"
-                    value={formValues.type}
-                    onChange={handleChange}
-                    required
-                  />
+                 Type:
+                       <select
+                           name="type"
+                           value={formValues.type}
+                           onChange={handleChange}
+                            required
+                            >
+                      <option value="">Select Type</option>
+                        <option value="Deadline">Deadline</option>
+                          <option value="Event">Event</option>
+                            <option value="Other">Other</option>
+                              <option value="Holiday">Holiday</option>
+                        </select>
                 </label>
-                <div>
-                  <button type="button" className={styles.addButton} onClick={handleSaveDate}>
+                <div className={styles.btnContainer}>
+                  <button type="button" className={styles.acceptBtn} onClick={handleSaveDate}>
                     Save
                   </button>
-                  <button type="button" className={styles.addButton} onClick={() => setShowModal(false)}>
+                  <button type="button" className={styles.rejectBtn} onClick={() => setShowModal(false)}>
                     Cancel
                   </button>
                 </div>
@@ -225,6 +238,7 @@ const ImportantDatesPage: React.FC = () => {
             </div>
           </div>
         )}
+        <ToastNotifications />
       </div>
     </AdminLayout>
   );
