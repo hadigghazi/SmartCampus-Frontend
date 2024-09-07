@@ -19,6 +19,9 @@ import { useAddCoursePrerequisiteMutation, useDeleteCoursePrerequisiteMutation, 
 import { CourseOption } from '../../../features/api/types';
 import { useGetCoursesByFacultyQuery } from '../../../features/api/coursesApi'; 
 import Spinner from '../../../components/Spinner/Spinner';
+import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
+import { toast } from 'react-toastify';
 
 const CourseDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -81,25 +84,28 @@ const CourseDetails: React.FC = () => {
 
     try {
       await addCourseOption(newOptionData).unwrap();
-      console.log('Course option added successfully');
+      toast.success('Course option added successfully');
       handleCloseModal();
       refetchCourse();
       refetchCourseOptions();
       refetchPrerequisites();
     } catch (error) {
-      console.error('Failed to add course option:', error);
+      toast.error('Failed to add course option');
     }
   };
 
   const handleDelete = async (optionId: number) => {
+    const isConfirmed = await ConfirmationDialog('Are you sure?', 'You won’t be able to revert this!');
+    if (isConfirmed) {
     try {
       await deleteCourseOption(optionId).unwrap();
-      console.log('Course option deleted successfully');
+      toast.success('Course option deleted successfully');
       refetchCourse();
       refetchCourseOptions();
     } catch (error) {
-      console.error('Failed to delete course option:', error);
+      toast.error('Failed to delete course option');
     }
+  }
   };
 
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -117,14 +123,17 @@ const CourseDetails: React.FC = () => {
   };
 
   const handleDeletePrerequisite = async (prerequisiteId: number) => {
+    const isConfirmed = await ConfirmationDialog('Are you sure?', 'You won’t be able to revert this!');
+    if (isConfirmed) {
     try {
       await deleteCoursePrerequisite(prerequisiteId).unwrap();
-      console.log('Course prerequisite deleted successfully');
+      toast.success('Course prerequisite deleted successfully');
       refetchCourse();
       refetchPrerequisites();
     } catch (error) {
-      console.error('Failed to delete course prerequisite:', error);
+      toast.error('Failed to delete course prerequisite');
     }
+  }
   };
 
   const handleEditSubmit = async (e: React.FormEvent) => {
@@ -133,12 +142,12 @@ const CourseDetails: React.FC = () => {
     if (selectedOption) {
       try {
         await updateCourseOption(selectedOption).unwrap();
-        console.log('Course option updated successfully');
+        toast.success('Course option updated successfully');
         handleCloseEditModal();
         refetchCourse();
         refetchCourseOptions();
       } catch (error) {
-        console.error('Failed to update course option:', error);
+        toast.error('Failed to update course option');
       }
     }
   };
@@ -152,11 +161,11 @@ const CourseDetails: React.FC = () => {
           course_id: Number(id),
           prerequisite_course_id: selectedPrerequisiteCourseId,
         }).unwrap();
-        console.log('Course prerequisite added successfully');
+        toast.success('Course prerequisite added successfully');
         handleCloseAddPrerequisiteModal();
         refetchPrerequisites();
       } catch (error) {
-        console.error('Failed to add course prerequisite:', error);
+        toast.error('Failed to add course prerequisite');
       }
     }
   };
@@ -486,6 +495,7 @@ const CourseDetails: React.FC = () => {
           </div>
         </div>
       )}
+      <ToastNotifications />
       </div>
     </AdminLayout>
   );
