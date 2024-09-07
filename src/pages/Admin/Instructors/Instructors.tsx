@@ -6,7 +6,7 @@ import {
 } from '../../../features/api/instructorsApi';
 import { useGetDepartmentsQuery } from '../../../features/api/departmentsApi';
 import { useNavigate } from 'react-router-dom';
-import styles from './Instructors.module.css';
+import styles from '../Courses/Courses.module.css';
 import AdminLayout from '../AdminLayout';
 import Table from '../../../components/Table/Table';
 import SearchInput from '../../../components/SearchInput/SearchInput';
@@ -30,11 +30,10 @@ type Instructor = {
 };
 
 const Instructors: React.FC = () => {
-  const { data: instructorsData, isLoading, error } = useGetInstructorsWithUserDetailsQuery({});
+  const { data: instructorsData, isLoading, error, refetch } = useGetInstructorsWithUserDetailsQuery({});
   const { data: departments } = useGetDepartmentsQuery({});
   const [deleteInstructor] = useDeleteInstructorMutation();
   const [updateInstructor] = useUpdateInstructorMutation();
-  const [instructors, setInstructors] = useState<Instructor[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
@@ -42,12 +41,6 @@ const Instructors: React.FC = () => {
   const [selectedInstructor, setSelectedInstructor] = useState<Instructor | null>(null);
   const [editedInstructor, setEditedInstructor] = useState({ department_id: 0, specialization: '' });
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (instructorsData) {
-      setInstructors(instructorsData);
-    }
-  }, [instructorsData]);
 
   useEffect(() => {
     if (selectedInstructor) {
@@ -66,11 +59,11 @@ const Instructors: React.FC = () => {
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
 
-  const filteredInstructors = instructors.filter((instructor) => {
+  const filteredInstructors = instructorsData?.filter((instructor: Instructor) => {
     const fullName = `${instructor.user.first_name} ${instructor.user.middle_name || ''} ${instructor.user.last_name}`.toLowerCase();
     const instructorId = instructor.id.toString();
     return searchTerms.every(term => fullName.includes(term) || instructorId.includes(term));
-  });
+  }) || [];
 
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
@@ -87,7 +80,7 @@ const Instructors: React.FC = () => {
       const isConfirmed = await ConfirmationDialog('Are you sure?', 'You are about to delete this instructor!');
       if (isConfirmed) {
         await deleteInstructor(instructorId).unwrap();
-        setInstructors(instructors.filter(instructor => instructor.id !== instructorId));
+        refetch(); 
         toast.success('Instructor deleted successfully!');
       }
     } catch (err) {
@@ -111,14 +104,7 @@ const Instructors: React.FC = () => {
         };
   
         await updateInstructor(updatedData).unwrap();
-  
-        setInstructors(
-          instructors.map((instructor) =>
-            instructor.id === selectedInstructor.id
-              ? { ...instructor, ...editedInstructor }
-              : instructor
-          )
-        );
+        refetch(); 
         setIsEditModalOpen(false);
         toast.success('Instructor updated successfully!');
       } catch (err) {
@@ -162,7 +148,7 @@ const Instructors: React.FC = () => {
       {isEditModalOpen && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
-            <h2 className={styles.headingPrimary}>Edit Instructor</h2>
+            <h2 className={styles.headingSecondary}>Edit Instructor</h2>
             <form className={styles.form}>
               <div className={styles.formGroup}>
                 <label>Department</label>
@@ -186,7 +172,7 @@ const Instructors: React.FC = () => {
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setEditedInstructor({ ...editedInstructor, specialization: e.target.value })}
                 />
               </div>
-              <div className={styles.modalActions}>
+              <div className={styles.btnContainer} style={{marginTop: "1rem"}}>
                 <button type="button" onClick={handleSaveEdit} className={styles.acceptBtn}>Save</button>
                 <button type="button" onClick={() => setIsEditModalOpen(false)} className={styles.rejectBtn}>Cancel</button>
               </div>
