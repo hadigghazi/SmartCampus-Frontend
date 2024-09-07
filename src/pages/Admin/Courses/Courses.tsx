@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useGetCoursesQuery, useDeleteCourseMutation, useAddCourseMutation } from '../../../features/api/coursesApi';
+import React, { useState } from 'react';
+import { useGetCoursesQuery, useDeleteCourseMutation, useAddCourseMutation, useUpdateCourseMutation } from '../../../features/api/coursesApi';
 import { useGetFacultiesQuery } from '../../../features/api/facultiesApi';
-import { useGetMajorsByFacultyQuery } from '../../../features/api/majorsApi';
+import { useGetMajorsQuery } from '../../../features/api/majorsApi'; // Adjust import
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../AdminLayout';
 import styles from './Courses.module.css';
@@ -17,44 +17,30 @@ import Spinner from '../../../components/Spinner/Spinner';
 const Courses: React.FC = () => {
   const { data: courses, isLoading, error, refetch } = useGetCoursesQuery();
   const { data: faculties } = useGetFacultiesQuery();
-  
+  const { data: majors } = useGetMajorsQuery(); // Fetch all majors
+
   const [selectedFacultyFilter, setSelectedFacultyFilter] = useState<number | 'all'>('all');
   const [selectedMajorFilter, setSelectedMajorFilter] = useState<number | 'all'>('all');
-  
-  const [selectedFacultyModal, setSelectedFacultyModal] = useState<number | 'all'>('all');
-  const [selectedMajorModal, setSelectedMajorModal] = useState<number | 'all'>('all');
-  
-  const { data: majorsFilter, refetch: refetchMajorsFilter } = useGetMajorsByFacultyQuery(selectedFacultyFilter !== 'all' ? selectedFacultyFilter : undefined);
-  const { data: majorsModal, refetch: refetchMajorsModal } = useGetMajorsByFacultyQuery(selectedFacultyModal !== 'all' ? selectedFacultyModal : undefined);
-  
+
   const [deleteCourse] = useDeleteCourseMutation();
   const [addCourse] = useAddCourseMutation();
+  const [updateCourse] = useUpdateCourseMutation();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
   const [showModal, setShowModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [courseIdToEdit, setCourseIdToEdit] = useState<number | null>(null);
   const [courseData, setCourseData] = useState({
     code: '',
     name: '',
     description: '',
     credits: 0,
-    faculty_id: selectedFacultyModal === 'all' ? undefined : selectedFacultyModal,
-    major_id: selectedMajorModal === 'all' ? undefined : selectedMajorModal,
+    faculty_id: 'all',
+    major_id: 'all',
   });
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (selectedFacultyFilter !== 'all') {
-      refetchMajorsFilter();
-    }
-  }, [selectedFacultyFilter, refetchMajorsFilter]);
-
-  useEffect(() => {
-    if (selectedFacultyModal !== 'all') {
-      refetchMajorsModal();
-    }
-  }, [selectedFacultyModal, refetchMajorsModal]);
 
   if (isLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (error) return <p>Something went wrong!</p>;
@@ -102,6 +88,32 @@ const Courses: React.FC = () => {
   };
 
   const handleAddCourseClick = () => {
+    setIsEditing(false);
+    setCourseIdToEdit(null);
+    setCourseData({
+      code: '',
+      name: '',
+      description: '',
+      credits: 0,
+      faculty_id: 'all',
+      major_id: 'all',
+    });
+    setShowModal(true);
+  };
+
+  const handleEditCourseClick = (course) => {
+    setIsEditing(true);
+    setCourseIdToEdit(course.id);
+    setCourseData({
+      code: course.code,
+      name: course.name,
+      description: course.description || '',
+      credits: course.credits,
+      faculty_id: course.faculty_id || 'all',
+      major_id: course.major_id || 'all',
+    });
+    setSelectedFacultyModal(course.faculty_id || 'all');
+    setSelectedMajorModal(course.major_id || 'all');
     setShowModal(true);
   };
 
@@ -112,8 +124,8 @@ const Courses: React.FC = () => {
       name: '',
       description: '',
       credits: 0,
-      faculty_id: selectedFacultyModal === 'all' ? undefined : selectedFacultyModal,
-      major_id: selectedMajorModal === 'all' ? undefined : selectedMajorModal,
+      faculty_id: 'all',
+      major_id: 'all',
     });
   };
 
@@ -127,14 +139,21 @@ const Courses: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     try {
-      await addCourse(courseData).unwrap();
-      toast.success('Course added successfully!');
+      if (isEditing && courseIdToEdit) {
+        await updateCourse({ id: courseIdToEdit, ...courseData }).unwrap();
+        toast.success('Course updated successfully!');
+      } else {
+        await addCourse(courseData).unwrap();
+        toast.success('Course added successfully!');
+      }
+      
       handleCloseModal();
       refetch();
     } catch (err) {
-      console.error('Error adding course:', err);
-      toast.error('Failed to add course.');
+      console.error('Error saving course:', err);
+      toast.error('Failed to save course.');
     }
   };
 
@@ -149,7 +168,7 @@ const Courses: React.FC = () => {
             className={styles.selectField}
             onChange={(e) => {
               setSelectedFacultyFilter(e.target.value === 'all' ? 'all' : Number(e.target.value));
-              setSelectedMajorFilter('all');
+              setSelectedMajorFilter('all'); // Reset major filter
             }}
           >
             <option value="all">All Faculties</option>
@@ -163,11 +182,10 @@ const Courses: React.FC = () => {
             value={selectedMajorFilter}
             className={styles.selectField}
             onChange={(e) => setSelectedMajorFilter(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-            disabled={selectedFacultyFilter === 'all'}
           >
             <option value="all">All Majors</option>
-            {majorsFilter?.length > 0 ? (
-              majorsFilter.map((major) => (
+            {majors?.length > 0 ? (
+              majors.map((major) => (
                 <option key={major.id} value={major.id}>
                   {major.name}
                 </option>
@@ -189,112 +207,73 @@ const Courses: React.FC = () => {
           actions={(course) => (
             <>
               <button onClick={() => handleViewCourse(course.id)}>View</button>
+              <button onClick={() => handleEditCourseClick(course)}>Edit</button>
               <button onClick={() => handleDeleteCourse(course.id)}>Delete</button>
             </>
           )}
         />
-        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
-      </div>
-
-      {showModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
-            <h2 className={styles.headingSecondary}>Add New Course</h2>
-            <form onSubmit={handleSubmit} className={styles.form}>
-              <label>
-                Course Code:
-                <input
-                  type="text"
-                  name="code"
-                  value={courseData.code}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-              <label>
-                Course Name:
-                <input
-                  type="text"
-                  name="name"
-                  value={courseData.name}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-              <label>
-                Description:
-                <input
-                  type="text"
-                  name="description"
-                  value={courseData.description}
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                Credits:
-                <input
-                  type="number"
-                  name="credits"
-                  value={courseData.credits}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-              <label>
-                Faculty:
-                <select
-                  name="faculty_id"
-                  value={courseData.faculty_id || 'all'}
-                  onChange={(e) => {
-                    const value = e.target.value === 'all' ? 'all' : Number(e.target.value);
-                    setSelectedFacultyModal(value);
-                    setCourseData(prevState => ({
-                      ...prevState,
-                      faculty_id: value === 'all' ? undefined : value,
-                      major_id: 'all'  
-                    }));
-                  }}
-                >
-                  <option value="all">Select Faculty</option>
-                  {faculties?.map((faculty) => (
-                    <option key={faculty.id} value={faculty.id}>
-                      {faculty.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                Major:
-                <select
-                  name="major_id"
-                  value={courseData.major_id || 'all'}
-                  onChange={(e) => setCourseData(prevState => ({
-                    ...prevState,
-                    major_id: e.target.value === 'all' ? undefined : Number(e.target.value),
-                  }))}
-                  disabled={selectedFacultyModal === 'all'}
-                >
-                  <option value="all">Select Major</option>
-                  {majorsModal?.length > 0 ? (
-                    majorsModal.map((major) => (
-                      <option key={major.id} value={major.id}>
-                        {major.name}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+        {showModal && (
+          <div className={styles.modalOverlay}>
+            <div className={styles.modalContent}>
+              <h2 className={styles.headingSecondary}>{isEditing ? 'Edit Course' : 'Add Course'}</h2>
+              <form className={styles.form} onSubmit={handleSubmit}>
+                <label>
+                  Code:
+                  <input type="text" name="code" value={courseData.code} onChange={handleChange} required />
+                </label>
+                <label>
+                  Name:
+                  <input type="text" name="name" value={courseData.name} onChange={handleChange} required />
+                </label>
+                <label>
+                  Description:
+                  <input type="text" name="description" value={courseData.description} onChange={handleChange} />
+                </label>
+                <label>
+                  Credits:
+                  <input type="number" name="credits" value={courseData.credits} onChange={handleChange} required />
+                </label>
+                <label>
+                  Faculty:
+                  <select name="faculty_id" value={courseData.faculty_id} onChange={handleChange}>
+                    <option value="all">All Faculties</option>
+                    {faculties?.map((faculty) => (
+                      <option key={faculty.id} value={faculty.id}>
+                        {faculty.name}
                       </option>
-                    ))
-                  ) : (
-                    <option value="">No majors available</option>
-                  )}
-                </select>
-              </label>
-              <div className={styles.btnContainer}>
-              <button type="submit" className={styles.acceptBtn}>Add Course</button>
-              <button type="button" onClick={handleCloseModal} className={styles.rejectBtn}>Cancel</button>
-              </div>
-            </form>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Major:
+                  <select name="major_id" value={courseData.major_id} onChange={handleChange}>
+                    <option value="all">All Majors</option>
+                    {majors?.length > 0 ? (
+                      majors.map((major) => (
+                        <option key={major.id} value={major.id}>
+                          {major.name}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">No majors available</option>
+                    )}
+                  </select>
+                </label>
+                <div className={styles.btnContainer}>
+                <button type="submit" className={styles.acceptBtn}>{isEditing ? 'Update' : 'Add'} Course</button>
+                <button className={styles.rejectBtn} onClick={handleCloseModal}>Cancel</button>
+                </div>
+                </form>
+            </div>
           </div>
-        </div>
-      )}
-      <ToastNotifications />
+        )}
+        <ToastNotifications />
+      </div>
     </AdminLayout>
   );
 };
