@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useGetExamsDetailsQuery, useDeleteExamMutation, useCreateExamMutation, useUpdateExamMutation } from '../../../features/api/examsApi';
-import { useGetCoursesQuery } from '../../../features/api/coursesApi';
+import { useGetCoursesByFacultyQuery, useGetCourseOptionsQuery } from '../../../features/api/coursesApi';
 import { useGetCampusesQuery } from '../../../features/api/campusesApi';
 import { useGetBlocksByCampusQuery } from '../../../features/api/blocksApi';
 import { useGetRoomsByBlockQuery } from '../../../features/api/roomsApi';
@@ -14,6 +14,7 @@ import SearchInput from '../../../components/SearchInput/SearchInput';
 import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 import { toast } from 'react-toastify';
 import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
+import { useGetFacultiesQuery } from '../../../features/api/facultiesApi';
 
 const Exams: React.FC = () => {
   const [entriesPerPage, setEntriesPerPage] = useState<number>(10);
@@ -21,7 +22,9 @@ const Exams: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showModal, setShowModal] = useState<boolean>(false);
   const [examData, setExamData] = useState<any>({
+    faculty_id: '',
     course_id: '',
+    course_instructor_id: '',
     date: '',
     time: '',
     duration: 0,
@@ -31,15 +34,18 @@ const Exams: React.FC = () => {
   });
   const [selectedExam, setSelectedExam] = useState<any>(null);
 
-  const { data: exams = [], isLoading, isError, error } = useGetExamsDetailsQuery();
-  const { data: courses } = useGetCoursesQuery();
+  const { data: exams = [], isLoading, isError, error, refetch } = useGetExamsDetailsQuery();
+  const { data: faculties } = useGetFacultiesQuery();
   const { data: campuses } = useGetCampusesQuery();
   const { data: blocks, refetch: refetchBlocks } = useGetBlocksByCampusQuery(examData.campus_id);
   const { data: rooms, refetch: refetchRooms } = useGetRoomsByBlockQuery(examData.block_id);
 
   const [deleteExam] = useDeleteExamMutation();
   const [createExam] = useCreateExamMutation();
-  const [updateExam] = useUpdateExamMutation(); // Added
+  const [updateExam] = useUpdateExamMutation(); 
+
+  const { data: coursesByFaculty, refetch: refetchCourses } = useGetCoursesByFacultyQuery(examData.faculty_id);
+  const { data: courseOptions, refetch: refetchCourseOptions } = useGetCourseOptionsQuery(examData.course_id);
 
   useEffect(() => {
     if (examData.campus_id) refetchBlocks();
@@ -48,6 +54,14 @@ const Exams: React.FC = () => {
   useEffect(() => {
     if (examData.block_id) refetchRooms();
   }, [examData.block_id, refetchRooms]);
+
+  useEffect(() => {
+    if (examData.faculty_id) refetchCourses();
+  }, [examData.faculty_id, refetchCourses]);
+
+  useEffect(() => {
+    if (examData.course_id) refetchCourseOptions();
+  }, [examData.course_id, refetchCourseOptions]);
 
   const handleEntriesPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setEntriesPerPage(Number(e.target.value));
@@ -64,14 +78,27 @@ const Exams: React.FC = () => {
   };
 
   const handleAddExamClick = () => {
-    setSelectedExam(null); // Reset selected exam for adding new exam
+    setSelectedExam(null); 
+    setExamData({
+      faculty_id: '',
+      course_id: '',
+      course_instructor_id: '',
+      date: '',
+      time: '',
+      duration: 0,
+      campus_id: '',
+      block_id: '',
+      room_id: '',
+    });
     setShowModal(true);
   };
 
   const handleEditExamClick = (exam: any) => {
-    setSelectedExam(exam); // Set selected exam for editing
+    setSelectedExam(exam); 
     setExamData({
+      faculty_id: exam.faculty_id,
       course_id: exam.course_id,
+      course_instructor_id: exam.course_instructor_id,
       date: exam.date,
       time: exam.time,
       duration: exam.duration,
@@ -85,7 +112,9 @@ const Exams: React.FC = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setExamData({
+      faculty_id: '',
       course_id: '',
+      course_instructor_id: '',
       date: '',
       time: '',
       duration: 0,
@@ -103,20 +132,14 @@ const Exams: React.FC = () => {
     }));
   };
 
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
-    // Log the exam data before sending
-    console.log("Submitting exam data:", examData);
-  
-    // Ensure time is in H:i:s format
+      
     const [hours, minutes] = examData.time.split(':');
-    const timeWithSeconds = `${hours}:${minutes}:00`; // Assuming seconds should be 00 if not provided
+    const timeWithSeconds = `${hours}:${minutes}:00`;
     
-    // Prepare the payload with IDs converted to integers and time in H:i:s format
     const payload = {
-      course_id: parseInt(examData.course_id, 10),
+      course_instructor_id: parseInt(examData.course_instructor_id, 10),
       date: examData.date,
       time: timeWithSeconds,
       duration: parseInt(examData.duration, 10),
@@ -126,22 +149,18 @@ const Exams: React.FC = () => {
   
     try {
       if (selectedExam) {
-        // Edit existing exam
-        console.log("Updating exam with payload:", { id: selectedExam.id, ...payload });
         await updateExam({ id: selectedExam.id, ...payload }).unwrap();
         toast.success('Exam updated successfully!');
+        refetch();
       } else {
-        // Create new exam
-        console.log("Creating new exam with payload:", payload);
         await createExam(payload).unwrap();
         toast.success('Exam created successfully!');
       }
       handleCloseModal();
-    } catch (error) {
-      // Log the full error details
+      refetch();
+      } catch (error) {
       console.error("Error saving exam:", error);
   
-      // Handle parsing errors
       if (error.status === 'PARSING_ERROR') {
         toast.error('Error parsing response');
       } else {
@@ -150,13 +169,13 @@ const Exams: React.FC = () => {
     }
   };
   
-  
   const handleDeleteExam = async (examId: number) => {
     const isConfirmed = await ConfirmationDialog('Are you sure?', 'You won’t be able to revert this!');
     if (isConfirmed) {
       try {
         await deleteExam(examId).unwrap();
         toast.success('Exam deleted successfully!');
+        refetch();
       } catch (err) {
         console.error('Error deleting exam:', err);
         toast.error('Failed to delete exam.');
@@ -177,7 +196,6 @@ const Exams: React.FC = () => {
   const paginatedExams = filteredExams.slice((currentPage - 1) * entriesPerPage, currentPage * entriesPerPage);
 
   const columns = [
-    { header: 'Course', accessor: (exam: any) => exam.course_name || 'Unknown Course' },
     { header: 'Date', accessor: (exam: any) => new Date(exam.date).toLocaleDateString() },
     { header: 'Time', accessor: (exam: any) => new Date(`1970-01-01T${exam.time}`).toLocaleTimeString() },
     { header: 'Duration', accessor: (exam: any) => `${exam.duration} mins` },
@@ -186,7 +204,7 @@ const Exams: React.FC = () => {
       header: 'Actions', 
       accessor: (exam: any) => (
         <div>
-          <button onClick={() => handleEditExamClick(exam)}>Edit</button>
+          <button style={{marginRight: ".5rem"}} onClick={() => handleEditExamClick(exam)}>Edit</button>
           <button onClick={() => handleDeleteExam(exam.id)}>Delete</button>
         </div>
       )
@@ -203,129 +221,96 @@ const Exams: React.FC = () => {
         <ToastNotifications />
         <h1 className={styles.headingPrimary}>Exams</h1>
         <div className={styles.filters}>
-          <SearchInput value={searchTerm} onChange={handleSearchChange} />
-          <EntriesPerPage value={entriesPerPage} onChange={handleEntriesPerPageChange} />
-          <button onClick={handleAddExamClick} className={styles.addButton}>Add Exam</button>
+          <SearchInput value={searchTerm} onChange={handleSearchChange} placeholder="Search exams" />
+          <button className={styles.addButton} onClick={handleAddExamClick}>Add Exam</button>
         </div>
-        {isLoading ? <p>Loading...</p> : isError ? <p>Error loading exams: {errorMessage}</p> : (
-          <>
-            <Table columns={columns} data={paginatedExams} />
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
-          </>
+        <EntriesPerPage value={entriesPerPage} onChange={handleEntriesPerPageChange} />
+        <Table columns={columns} data={paginatedExams} isLoading={isLoading} errorMessage={errorMessage} />
+        <Pagination 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+          onPageChange={handlePageChange} 
+        />
+        {showModal && (
+          <div className={styles.modalOverlay}>
+            <div className={styles.modalContent}>
+              <h2 className={styles.headingSecondary}>{selectedExam ? 'Edit Exam' : 'Add Exam'}</h2>
+              <form className={styles.form} onSubmit={handleSubmit}>
+                <label>
+                  Faculty
+                  <select name="faculty_id" value={examData.faculty_id} onChange={handleChange}>
+                    <option value="">Select Faculty</option>
+                    {faculties?.map((faculty: any) => (
+                      <option key={faculty.id} value={faculty.id}>{faculty.name}</option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Course
+                  <select name="course_id" value={examData.course_id} onChange={handleChange}>
+                    <option value="">Select Course</option>
+                    {coursesByFaculty?.map((course: any) => (
+                      <option key={course.id} value={course.id}>{course.name}</option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Instructor
+                  <select name="course_instructor_id" value={examData.course_instructor_id} onChange={handleChange}>
+                    <option value="">Select Instructor</option>
+                    {courseOptions?.map((option: any) => (
+                      <option key={option.id} value={option.id}>{option.instructor_name}</option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Date
+                  <input type="date" name="date" value={examData.date} onChange={handleChange} />
+                </label>
+                <label>
+                  Time
+                  <input type="time" name="time" value={examData.time} onChange={handleChange} />
+                </label>
+                <label>
+                  Duration (minutes)
+                  <input type="number" name="duration" value={examData.duration} onChange={handleChange} />
+                </label>
+                <label>
+                  Campus
+                  <select name="campus_id" value={examData.campus_id} onChange={handleChange}>
+                    <option value="">Select Campus</option>
+                    {campuses?.map((campus: any) => (
+                      <option key={campus.id} value={campus.id}>{campus.name}</option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Block
+                  <select name="block_id" value={examData.block_id} onChange={handleChange}>
+                    <option value="">Select Block</option>
+                    {blocks?.map((block: any) => (
+                      <option key={block.id} value={block.id}>{block.name}</option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Room
+                  <select name="room_id" value={examData.room_id} onChange={handleChange}>
+                    <option value="">Select Room</option>
+                    {rooms?.map((room: any) => (
+                      <option key={room.id} value={room.id}>{room.number}</option>
+                    ))}
+                  </select>
+                </label>
+                <div  className={styles.btnContainer}>
+                <button className={styles.acceptBtn} type="submit">{selectedExam ? 'Update Exam' : 'Add Exam'}</button>
+                <button className={styles.rejectBtn} type="button" onClick={handleCloseModal}>Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
         )}
       </div>
-
-      {showModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
-            <h2 className={styles.headingSecondary}>{selectedExam ? 'Edit Exam' : 'Add New Exam'}</h2>
-            <form onSubmit={handleSubmit} className={styles.form}>
-              <label>
-                Course:
-                <select
-                  name="course_id"
-                  value={examData.course_id}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select Course</option>
-                  {courses?.map((course) => (
-                    <option key={course.id} value={course.id}>
-                      {course.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                Date:
-                <input
-                  type="date"
-                  name="date"
-                  value={examData.date}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-              <label>
-                Time:
-                <input
-                  type="time"
-                  name="time"
-                  value={examData.time}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-              <label>
-                Duration (minutes):
-                <input
-                  type="number"
-                  name="duration"
-                  value={examData.duration}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-              <label>
-                Campus:
-                <select
-                  name="campus_id"
-                  value={examData.campus_id}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select Campus</option>
-                  {campuses?.map((campus) => (
-                    <option key={campus.id} value={campus.id}>
-                      {campus.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                Block:
-                <select
-                  name="block_id"
-                  value={examData.block_id}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select Block</option>
-                  {blocks?.map((block) => (
-                    <option key={block.id} value={block.id}>
-                      {block.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                Room:
-                <select
-                  name="room_id"
-                  value={examData.room_id}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select Room</option>
-                  {rooms?.map((room) => (
-                    <option key={room.id} value={room.id}>
-                      {room.number}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <div className={styles.modalActions}>
-                <button type="submit" className={styles.saveButton}>
-                  {selectedExam ? 'Update Exam' : 'Add Exam'}
-                </button>
-                <button type="button" onClick={handleCloseModal} className={styles.cancelButton}>
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </AdminLayout>
   );
 };

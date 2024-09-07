@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useGetSemestersQuery, useCreateSemesterMutation, useUpdateSemesterMutation, useDeleteSemesterMutation } from '../../../features/api/semestersApi';
-import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../AdminLayout';
 import styles from '../Courses/Courses.module.css'; 
 import Table from '../../../components/Table/Table';
@@ -30,13 +29,11 @@ const Semesters: React.FC = () => {
     is_current: false,
   });
 
-  const navigate = useNavigate();
-
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Something went wrong!</p>;
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
-  const filteredSemesters = semesters.filter((semester) => {
+  const filteredSemesters = semesters!.filter((semester) => {
     const semesterName = semester.name.toLowerCase();
     return searchTerms.every(term => semesterName.includes(term));
   });
@@ -52,7 +49,7 @@ const Semesters: React.FC = () => {
       try {
         await deleteSemester(semesterId).unwrap();
         toast.success('Semester deleted successfully!');
-        refetch();  // Fetch the latest data
+        refetch(); 
       } catch (err) {
         console.error('Error deleting semester:', err);
         toast.error('Failed to delete semester.');
@@ -91,7 +88,7 @@ const Semesters: React.FC = () => {
     setShowModal(false);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: any) => {
     const { name, value, type, checked } = e.target;
     setSemesterData(prevState => ({
       ...prevState,
@@ -109,7 +106,7 @@ const Semesters: React.FC = () => {
         await createSemester(semesterData).unwrap();
         toast.success('Semester added successfully!');
       }
-      refetch();  // Fetch the latest data after mutation
+      refetch(); 
       handleCloseModal();
     } catch (err) {
       console.error('Error saving semester:', err);
@@ -131,7 +128,7 @@ const Semesters: React.FC = () => {
             { header: 'Name', accessor: 'name' },
             { header: 'Start Date', accessor: 'start_date' },
             { header: 'End Date', accessor: 'end_date' },
-            { header: 'Current Semester', accessor: 'is_current', render: (value) => (value ? 'Yes' : 'No') },
+            { header: 'Current Semester', accessor: 'is_current', render: (value: any) => (value ? 'Yes' : 'No') },
           ]}
           data={currentEntries || []}
           actions={(semester) => (
