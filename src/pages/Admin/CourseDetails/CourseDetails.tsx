@@ -23,13 +23,13 @@ import Spinner from '../../../components/Spinner/Spinner';
 const CourseDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { data: course, error: courseError, isLoading: courseLoading } = useGetCourseByIdQuery(Number(id));
-  const { data: courseOptions, error: optionsError, isLoading: optionsLoading } = useGetCourseOptionsQuery(Number(id));
+  const { data: course, error: courseError, isLoading: courseLoading, refetch: refetchCourse } = useGetCourseByIdQuery(Number(id));
+  const { data: courseOptions, error: optionsError, isLoading: optionsLoading, refetch: refetchCourseOptions } = useGetCourseOptionsQuery(Number(id));
   const { data: instructors } = useGetInstructorsWithUserDetailsQuery();
   const { data: campuses } = useGetCampusesQuery();
   const { data: semesters } = useGetSemestersQuery();
   const { data: rooms } = useGetRoomsQuery();
-  const { data: prerequisites, error: prerequisitesError, isLoading: prerequisitesLoading } = useGetCoursePrerequisitesQuery(Number(id));
+  const { data: prerequisites, error: prerequisitesError, isLoading: prerequisitesLoading, refetch: refetchPrerequisites } = useGetCoursePrerequisitesQuery(Number(id));
   const { data: coursesInFaculty } = useGetCoursesByFacultyQuery(course?.faculty_id || 0); 
 
   const [showModal, setShowModal] = useState(false);
@@ -83,6 +83,9 @@ const CourseDetails: React.FC = () => {
       await addCourseOption(newOptionData).unwrap();
       console.log('Course option added successfully');
       handleCloseModal();
+      refetchCourse();
+      refetchCourseOptions();
+      refetchPrerequisites();
     } catch (error) {
       console.error('Failed to add course option:', error);
     }
@@ -92,6 +95,8 @@ const CourseDetails: React.FC = () => {
     try {
       await deleteCourseOption(optionId).unwrap();
       console.log('Course option deleted successfully');
+      refetchCourse();
+      refetchCourseOptions();
     } catch (error) {
       console.error('Failed to delete course option:', error);
     }
@@ -115,6 +120,8 @@ const CourseDetails: React.FC = () => {
     try {
       await deleteCoursePrerequisite(prerequisiteId).unwrap();
       console.log('Course prerequisite deleted successfully');
+      refetchCourse();
+      refetchPrerequisites();
     } catch (error) {
       console.error('Failed to delete course prerequisite:', error);
     }
@@ -128,6 +135,8 @@ const CourseDetails: React.FC = () => {
         await updateCourseOption(selectedOption).unwrap();
         console.log('Course option updated successfully');
         handleCloseEditModal();
+        refetchCourse();
+        refetchCourseOptions();
       } catch (error) {
         console.error('Failed to update course option:', error);
       }
@@ -145,6 +154,7 @@ const CourseDetails: React.FC = () => {
         }).unwrap();
         console.log('Course prerequisite added successfully');
         handleCloseAddPrerequisiteModal();
+        refetchPrerequisites();
       } catch (error) {
         console.error('Failed to add course prerequisite:', error);
       }
