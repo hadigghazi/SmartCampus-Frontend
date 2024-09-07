@@ -6,6 +6,7 @@ import { LoginRequest } from '../../features/api/types';
 import { useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
 import logo from '../../assets/images/NavBar_logo.png';
+import Navbar from '../../components/Navbar/Navbar';
 
 const Login: React.FC = () => {
   const [login] = useLoginMutation();
@@ -54,6 +55,7 @@ const Login: React.FC = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Navbar />
       <div className={styles.loginContainer}>
         <div className={styles.header}>
           <img src={logo} alt="SmartCampus Logo" className={styles.logo} />

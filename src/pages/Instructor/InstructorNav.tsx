@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
         <img src={NavbarLogo} alt="header_logo" className={styles.logo} />
       </Link>
       
-      <button className={styles.hamburger} onClick={toggleMenu}>
+      <button className={`${styles.hamburger} ${styles.sphamburger}`} onClick={toggleMenu}>
         {menuOpen ? '✕' : '☰'} 
       </button>
 
