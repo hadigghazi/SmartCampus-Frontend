@@ -15,9 +15,10 @@ import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import Pagination from '../../../components/Pagination/Pagination';
 import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
 import { toast } from 'react-toastify';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 
 const Majors: React.FC = () => {
-  const { data: majors, isLoading, error } = useGetMajorsQuery();
+  const { data: majors, isLoading, error, refetch } = useGetMajorsQuery();
   const { data: faculties } = useGetFacultiesQuery();
 
   const [deleteMajor] = useDeleteMajorMutation();
@@ -69,6 +70,7 @@ const Majors: React.FC = () => {
       try {
         await deleteMajor(majorId).unwrap();
         toast.success('Major deleted successfully!');
+        refetch();
       } catch (err) {
         console.error('Error deleting major:', err);
         toast.error('Failed to delete major.');
@@ -123,6 +125,7 @@ const Majors: React.FC = () => {
         toast.success('Major added successfully!');
       }
       handleCloseModal();
+      refetch();
     } catch (err) {
       console.error('Error submitting major:', err);
       toast.error('Failed to submit major.');
@@ -225,6 +228,7 @@ const Majors: React.FC = () => {
           </div>
         </div>
       )}
+      <ToastNotifications />
     </AdminLayout>
   );
 };
