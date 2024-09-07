@@ -61,6 +61,13 @@
     .headingPrimary {
       font-size: 1.75rem;
     }
+
+    .text {
+      font-size: 1rem;
+    }
+    .additionalText{
+      font-size: 1rem;
+    }
   
     .headingSecondary {
       font-size: 1rem;

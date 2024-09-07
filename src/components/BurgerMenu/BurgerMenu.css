@@ -1,6 +1,8 @@
 
 .accordion-item {
     margin-bottom: 10px;
+    font-family: 'Metrophobic', sans-serif;
+    color: white;
   }
   
   .accordion-title {
@@ -11,7 +13,7 @@
     border-radius: 5px;
     text-align: center;
     transition: background-color 0.3s ease;
-    color: var(--secondary-color);
+    color: white;
   }
   
   .accordion-title.active {
@@ -97,11 +99,11 @@
     align-items: center;
     padding: 0;
     margin-top: -50px;
-    margin-bottom: 0px;
+    margin-bottom: 3rem;
   }
   
   .menu-logo img {
-    max-width: 150px;
+    max-width: 100px;
     height: auto;
   }
 

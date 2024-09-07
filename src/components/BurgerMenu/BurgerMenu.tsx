@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { slide as Menu } from 'react-burger-menu';
 import './BurgerMenu.css';
-import logo from '../../assets/images/menu_logo.png';
+import logo from '../../assets/images/logo.png';
 
 const BurgerMenu: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -26,13 +26,15 @@ const BurgerMenu: React.FC = () => {
         </div>
         {activeIndex === 0 && (
           <div className="accordion-content">
-            <a href="#">Students</a>
-            <a href="#">Instructors</a>
-            <a href="#">Courses</a>
-            <a href="#">Faculties & Majors</a>
-            <a href="#">Academic Calendar</a>
-            <a href="#">Exams</a>
-            <a href="#">Semester</a>
+            <a href="/admin/students">Students</a>
+            <a href="/admin/instructors">Instructors</a>
+            <a href="/admin/admins">Staff</a>
+            <a href="/admin/courses">Courses</a>
+            <a href="/admin/faculties">Faculties</a>
+            <a href="/admin/majors">Majors</a>
+            <a href="/admin/calendar">Academic Calendar</a>
+            <a href="/admin/exams">Exams</a>
+            <a href="/admin/semesters">Semesters</a>
           </div>
         )}
       </div>
@@ -46,11 +48,15 @@ const BurgerMenu: React.FC = () => {
         </div>
         {activeIndex === 1 && (
           <div className="accordion-content">
-            <a href="#">Applications</a>
-            <a href="#">Facility</a>
-            <a href="#">Centers</a>
-            <a href="#">Campuses</a>
-            <a href="#">Departments</a>
+            <a href="/admin/applications/students">Students Applications</a>
+            <a href="/admin/applications/instructors">Instructors Applications</a>
+            <a href="/admin/applications/admins">Staff Applications</a>
+            <a href="/admin/payment-settings">Payment Settings</a>
+            <a href="/admin/rooms">Rooms</a>
+            <a href="/admin/blocks">Blocks</a>
+            <a href="/admin/centers">Centers</a>
+            <a href="/admin/campuses">Campuses</a>
+            <a href="/admin/departments">Departments</a>
             <a href="#">Dorms & Transportation</a>
           </div>
         )}
@@ -65,10 +71,10 @@ const BurgerMenu: React.FC = () => {
         </div>
         {activeIndex === 2 && (
           <div className="accordion-content">
-            <a href="#">Library</a>
-            <a href="#">Announcements</a>
+            <a href="/admin/library">Library</a>
+            <a href="/admin/announcements">Announcements</a>
             <a href="#">Chat</a>
-            <a href="#">News</a>
+            <a href="/admin/news">News</a>
           </div>
         )}
       </div>
