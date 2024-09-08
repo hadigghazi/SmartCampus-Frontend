@@ -1,53 +1,90 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   useGetDormRoomByIdQuery,
-  useGetDormRoomRegistrationsQuery,
-  useCreateDormRoomRegistrationMutation,
-  useDeleteDormRoomRegistrationMutation,
+  useGetDormRegistrationsForRoomQuery,
+  useCreateDormRegistrationMutation,
+  useDeleteDormRegistrationMutation,
+  useUpdateDormRegistrationMutation,
 } from '../../../features/api/dormsApi';
+
 import Table from '../../../components/Table/Table';
 import { DormRoomRegistration } from '../../../features/api/types';
 import { toast } from 'react-toastify';
 import AdminLayout from '../AdminLayout';
 import styles from '../CourseDetails/CourseDetails.module.css';
 import Spinner from '../../../components/Spinner/Spinner';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 
 const DormRoomDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dormRoomId = Number(id);
 
   const { data: dormRoom } = useGetDormRoomByIdQuery(dormRoomId);
-  const { data: roomRegistrations = [], refetch: refetchRegistrations } = useGetDormRoomRegistrationsQuery(dormRoomId);
-  const [createDormRoomRegistration] = useCreateDormRoomRegistrationMutation();
-  const [deleteDormRoomRegistration] = useDeleteDormRoomRegistrationMutation();
+  const { data: roomRegistrations = [], refetch: refetchRegistrations } = useGetDormRegistrationsForRoomQuery(dormRoomId);
+  const [createDormRoomRegistration] = useCreateDormRegistrationMutation();
+  const [deleteDormRoomRegistration] = useDeleteDormRegistrationMutation();
+  const [updateDormRoomRegistration] = useUpdateDormRegistrationMutation();
 
-  const [registrationFormValues, setRegistrationFormValues] = useState({
+  const [showModal, setShowModal] = useState(false);
+  const [editingRegistration, setEditingRegistration] = useState<DormRoomRegistration | null>(null);
+  const [formValues, setFormValues] = useState({
     student_id: '',
     start_date: '',
     end_date: '',
-    dorm_room_id: 0,
   });
 
-  const handleAddRegistration = async () => {
-    if (roomRegistrations.length >= dormRoom?.capacity) {
-      toast.error('Cannot add more registrations than room capacity');
-      return;
+  useEffect(() => {
+    if (editingRegistration) {
+      setFormValues({
+        student_id: editingRegistration.student_id.toString(),
+        start_date: editingRegistration.start_date,
+        end_date: editingRegistration.end_date,
+      });
+    } else {
+      setFormValues({
+        student_id: '',
+        start_date: '',
+        end_date: '',
+      });
     }
+  }, [editingRegistration]);
 
+  const handleAddRegistrationClick = () => {
+    setEditingRegistration(null);
+    setShowModal(true);
+  };
+
+  const handleEditRegistration = (registration: DormRoomRegistration) => {
+    setEditingRegistration(registration);
+    setShowModal(true);
+  };
+
+  const handleSaveRegistration = async () => {
     try {
       const registrationPayload: Partial<DormRoomRegistration> = {
-        student_id: Number(registrationFormValues.student_id),
+        student_id: Number(formValues.student_id),
         dorm_room_id: dormRoomId,
-        start_date: registrationFormValues.start_date,
-        end_date: registrationFormValues.end_date,
+        start_date: formValues.start_date,
+        end_date: formValues.end_date,
       };
 
-      await createDormRoomRegistration(registrationPayload).unwrap();
-      toast.success('Student registered successfully');
+      if (editingRegistration) {
+        await updateDormRoomRegistration({ id: editingRegistration.id, updates: registrationPayload }).unwrap();
+        toast.success('Registration updated successfully');
+      } else {
+        if (roomRegistrations.length + 1 > dormRoom?.capacity) {
+          toast.error('Cannot add more registrations than room capacity');
+          return;
+        }
+        await createDormRoomRegistration(registrationPayload).unwrap();
+        toast.success('Student registered successfully');
+      }
+
+      setShowModal(false);
       refetchRegistrations();
     } catch (error) {
-      toast.error('Failed to register student');
+      toast.error('Failed to save registration');
     }
   };
 
@@ -63,15 +100,13 @@ const DormRoomDetailsPage: React.FC = () => {
 
   const registrationColumns = [
     { header: 'Student ID', accessor: 'student_id' },
-    { header: 'Dorm Room ID', accessor: 'dorm_room_id' },
     { header: 'Start Date', accessor: 'start_date' },
     { header: 'End Date', accessor: 'end_date' },
-    { header: 'Status', accessor: 'status' },
   ];
 
   const registrationActions = (registration: DormRoomRegistration) => (
     <div className={styles.actions}>
-      <button onClick={() => console.log('Edit', registration.id)}>Edit</button>
+      <button onClick={() => handleEditRegistration(registration)}>Edit</button>
       <button onClick={() => handleDeleteRegistration(registration.id)}>Delete</button>
     </div>
   );
@@ -88,38 +123,59 @@ const DormRoomDetailsPage: React.FC = () => {
             <p><strong>Floor:</strong> {dormRoom.floor}</p>
             <p><strong>Description:</strong> {dormRoom.description}</p>
 
-            <div className={styles.registrationForm}>
-              <h2>Register a Student</h2>
-              <input
-                type="number"
-                placeholder="Student ID"
-                value={registrationFormValues.student_id}
-                onChange={(e) => setRegistrationFormValues({ ...registrationFormValues, student_id: e.target.value })}
-              />
-              <input
-                type="date"
-                placeholder="Start Date"
-                value={registrationFormValues.start_date}
-                onChange={(e) => setRegistrationFormValues({ ...registrationFormValues, start_date: e.target.value })}
-              />
-              <input
-                type="date"
-                placeholder="End Date"
-                value={registrationFormValues.end_date}
-                onChange={(e) => setRegistrationFormValues({ ...registrationFormValues, end_date: e.target.value })}
-              />
-              <button onClick={handleAddRegistration}>Register Student</button>
+            <div className={styles.header_container}>
+              <h2 className={styles.headingSecondary}>Registrations</h2>
+              <button className={styles.addButton} onClick={handleAddRegistrationClick}>Add Registration</button>
             </div>
 
-            <div className={styles.registrationTable}>
-              <h2>Registrations</h2>
-              <Table columns={registrationColumns} data={roomRegistrations} actions={registrationActions} />
-            </div>
+            <Table columns={registrationColumns} data={roomRegistrations} actions={registrationActions} />
+
+            {showModal && (
+              <div className={styles.modalOverlay}>
+                <div className={styles.modalContent}>
+                  <h2 className={styles.headingSecondary}>{editingRegistration ? 'Edit Registration' : 'Add Registration'}</h2>
+                  <form className={styles.form}>
+                    <label>
+                      Student ID:
+                      <input
+                        type="number"
+                        value={formValues.student_id}
+                        onChange={(e) => setFormValues({ ...formValues, student_id: e.target.value })}
+                        required
+                      />
+                    </label>
+                    <label>
+                      Start Date:
+                      <input
+                        type="date"
+                        value={formValues.start_date}
+                        onChange={(e) => setFormValues({ ...formValues, start_date: e.target.value })}
+                        required
+                      />
+                    </label>
+                    <label>
+                      End Date:
+                      <input
+                        type="date"
+                        value={formValues.end_date}
+                        onChange={(e) => setFormValues({ ...formValues, end_date: e.target.value })}
+                        required
+                      />
+                    </label>
+                    <div className={styles.btnContainer}>
+                      <button className={styles.rejectBtn} type="button" onClick={() => setShowModal(false)}>Cancel</button>
+                      <button className={styles.acceptBtn} type="button" onClick={handleSaveRegistration}>Save</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
           </>
         ) : (
           <Spinner />
         )}
       </div>
+      <ToastNotifications />
     </AdminLayout>
   );
 };
