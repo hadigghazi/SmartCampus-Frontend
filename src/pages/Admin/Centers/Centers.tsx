@@ -15,9 +15,10 @@ import Pagination from '../../../components/Pagination/Pagination';
 import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
 import { toast } from 'react-toastify';
 import Spinner from '../../../components/Spinner/Spinner';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 
 const Centers: React.FC = () => {
-  const { data: centers, isLoading, error } = useGetCentersQuery();
+  const { data: centers, isLoading, error,refetch } = useGetCentersQuery();
   const [deleteCenter] = useDeleteCenterMutation();
   const [addCenter] = useCreateCenterMutation();
   const [updateCenter] = useUpdateCenterMutation();
@@ -56,6 +57,7 @@ const Centers: React.FC = () => {
       try {
         await deleteCenter(centerId).unwrap();
         toast.success('Center deleted successfully!');
+        refetch();
       } catch (err) {
         console.error('Error deleting center:', err);
         toast.error('Failed to delete center.');
@@ -111,8 +113,8 @@ const Centers: React.FC = () => {
         toast.success('Center added successfully!');
       }
       handleCloseModal();
+      refetch();
     } catch (err) {
-      console.error('Error submitting center:', err);
       toast.error('Failed to submit center.');
     }
   };
@@ -193,13 +195,14 @@ const Centers: React.FC = () => {
                 />
               </label>
               <div className={styles.btnContainer}>
-                <button type="submit" className={styles.acceptBtn}>{centerData.id ? 'Edit Center' : 'Add Center'}</button>
                 <button type="button" onClick={handleCloseModal} className={styles.rejectBtn}>Cancel</button>
+                <button type="submit" className={styles.acceptBtn}>{centerData.id ? 'Edit Center' : 'Add Center'}</button>
               </div>
             </form>
           </div>
         </div>
       )}
+      <ToastNotifications />
     </AdminLayout>
   );
 };
