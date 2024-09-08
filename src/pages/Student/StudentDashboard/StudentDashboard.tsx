@@ -25,8 +25,9 @@ const Dashboard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const announcementsPerPage = 6;
   const filteredAnnouncements = announcements?.filter(
-    (announcement) => announcement.visibility === 'Students'
-  );
+    (announcement) => announcement.visibility === 'Students' || announcement.visibility === 'General'
+  )
+  .sort((a, b) => new Date(b.published_date).getTime() - new Date(a.published_date).getTime());
 
   const totalPages = announcements ? Math.ceil(announcements.length / announcementsPerPage) : 1;
 
