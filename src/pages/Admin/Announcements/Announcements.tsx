@@ -8,12 +8,15 @@ import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import styles from './Announcements.module.css'; 
 import { Announcement } from '../../../features/api/types';
 import AdminLayout from '../AdminLayout';
+import { toast } from 'react-toastify';
+import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 
 const visibilityOptions = ['General', 'Instructors', 'Students', 'Admins'];
 const categoryOptions = ['General', 'Urgent', 'Event'];
 
 const Announcements: React.FC = () => {
-  const { data: announcements = [] } = useGetAnnouncementsQuery();
+  const { data: announcements = [], refetch } = useGetAnnouncementsQuery();
   const { data: user } = useGetUserQuery();
   const [deleteAnnouncement] = useDeleteAnnouncementMutation();
   const [createAnnouncement] = useCreateAnnouncementMutation();
@@ -63,12 +66,16 @@ const Announcements: React.FC = () => {
   };
 
   const handleDeleteAnnouncement = async (id: number) => {
+    const isConfirmed = await ConfirmationDialog('Are you sure?', 'You won’t be able to revert this!');
+    if (isConfirmed) {
     try {
       await deleteAnnouncement(id).unwrap();
-      console.log('Announcement deleted successfully');
+      toast.success('Announcement deleted successfully');
+      refetch();
     } catch (error) {
-      console.error('Failed to delete announcement:', error);
+      toast.error('Failed to delete announcement');
     }
+  }
   };
 
   const handleSaveAnnouncement = async () => {
@@ -79,18 +86,19 @@ const Announcements: React.FC = () => {
           ...formValues,
           updated_at: new Date().toISOString(),
         }).unwrap();
-        console.log('Announcement updated successfully');
+        toast.success('Announcement updated successfully');
       } else {
         await createAnnouncement({
           ...formValues,
           author_id: user?.id || 0,
           published_date: new Date().toISOString().split('T')[0], 
         }).unwrap();
-        console.log('Announcement created successfully');
+        toast.success('Announcement created successfully');
       }
       setShowModal(false);
+      refetch();
     } catch (error) {
-      console.error('Failed to save announcement:', error);
+      toast.error('Failed to save announcement');
     }
   };
 
@@ -268,6 +276,7 @@ const Announcements: React.FC = () => {
           </div>
         </div>
       )}
+      <ToastNotifications />
     </div>
     </AdminLayout>
   );
