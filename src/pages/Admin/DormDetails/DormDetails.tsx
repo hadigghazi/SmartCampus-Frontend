@@ -5,15 +5,16 @@ import {
   useGetAllDormRoomsQuery,
   useDeleteDormRoomMutation,
   useUpdateDormRoomMutation,
-  useCreateDormRoomMutation
+  useCreateDormRoomMutation,
 } from '../../../features/api/dormsApi';
 import Table from '../../../components/Table/Table';
-import { Dorm, DormRoom } from '../../../features/api/types';
+import { Dorm, DormRoom, Campus } from '../../../features/api/types';
 import { toast } from 'react-toastify';
 import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
 import AdminLayout from '../AdminLayout';
-import styles from '../Courses/Courses.module.css';
+import styles from '../CourseDetails/CourseDetails.module.css';
+import { useGetCampusByIdQuery } from '../../../features/api/campusesApi';
 
 const DormDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,6 +22,7 @@ const DormDetailsPage: React.FC = () => {
 
   const { data: dorm, refetch: refetchDorm } = useGetDormByIdQuery(dormId);
   const { data: roomsList = [], refetch: refetchRooms } = useGetAllDormRoomsQuery(dormId);
+  const { data: campus } = useGetCampusByIdQuery(dorm?.campus_id || 0);
   const [deleteDormRoom] = useDeleteDormRoomMutation();
   const [updateDormRoom] = useUpdateDormRoomMutation();
   const [createDormRoom] = useCreateDormRoomMutation();
@@ -87,7 +89,7 @@ const DormDetailsPage: React.FC = () => {
         await updateDormRoom({ id: editingRoom.id, updates: roomPayload }).unwrap();
         toast.success('Room updated successfully');
       } else {
-        await createDormRoom(roomPayload).unwrap();
+        await createDormRoom({ ...roomPayload, dorm_id: dormId }).unwrap();
         toast.success('Room created successfully');
       }
       setShowRoomModal(false);
@@ -115,24 +117,28 @@ const DormDetailsPage: React.FC = () => {
   return (
     <AdminLayout requiredAdminType='Super Admin'>
       <div className={styles.container}>
-        <h1 className={styles.headingPrimary}>Dorm Details</h1>
         {dorm ? (
-          <div className={styles.dormDetails}>
-            <h2>{dorm.name}</h2>
-            <p><strong>Description:</strong> {dorm.description}</p>
-            <p><strong>Capacity:</strong> {dorm.capacity}</p>
-            <p><strong>Available Rooms:</strong> {dorm.available_rooms}</p>
-            <p><strong>Campus:</strong> {dorm.campus_name}</p>
+          <div className={styles.content}>
+            <h1 className={styles.headingPrimary}>{dorm.name}</h1>
+            <p className={styles.text}>Capacity: {dorm.capacity}</p>
+            <p className={styles.text}>Available Rooms: {dorm.available_rooms}</p>
+            <p className={styles.text}>Campus: {campus?.name || 'Loading...'}</p>
+            <p className={styles.text}>Description: {dorm.description}</p>
           </div>
         ) : (
           <p>Loading...</p>
         )}
+        <div className={styles.content}>
+            <div className={styles.header_container} style={{marginBottom: "0rem"}}>
         <h2 className={styles.headingSecondary}>Dorm Rooms</h2>
+        <button className={styles.addButton} onClick={() => setShowRoomModal(true)}>Add Room</button>
+        </div>
         <Table
           columns={columns}
           data={roomsList}
           actions={actions}
         />
+        </div>
         {showRoomModal && (
           <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>

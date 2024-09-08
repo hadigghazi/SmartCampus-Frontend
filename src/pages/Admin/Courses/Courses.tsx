@@ -168,7 +168,7 @@ const Courses: React.FC = () => {
             className={styles.selectField}
             onChange={(e) => {
               setSelectedFacultyFilter(e.target.value === 'all' ? 'all' : Number(e.target.value));
-              setSelectedMajorFilter('all'); // Reset major filter
+              setSelectedMajorFilter('all'); 
             }}
           >
             <option value="all">All Faculties</option>
