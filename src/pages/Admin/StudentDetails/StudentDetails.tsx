@@ -106,7 +106,7 @@ const StudentDetails: React.FC = () => {
       currency: 'USD',
       description: ''
     });
-    refetchPayments()
+    refetchPayments();
   };
 
   

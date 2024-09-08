@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { useGetLibraryBooksQuery, useDeleteLibraryBookMutation, useCreateLibraryBookMutation } from '../../../features/api/libraryBooksApi';
+import {
+  useGetLibraryBooksQuery,
+  useDeleteLibraryBookMutation,
+  useCreateLibraryBookMutation,
+  useUpdateLibraryBookMutation, 
+} from '../../../features/api/libraryBooksApi';
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../AdminLayout';
 import styles from '../Courses/Courses.module.css';
@@ -12,19 +17,22 @@ import { toast } from 'react-toastify';
 import { LibraryBook, Campus } from '../../../features/api/types';
 import { useGetCampusesQuery } from '../../../features/api/campusesApi';
 import Spinner from '../../../components/Spinner/Spinner';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 
 const LibraryBooks: React.FC = () => {
-  const { data: books, isLoading, error } = useGetLibraryBooksQuery();
+  const { data: books, isLoading, error, refetch } = useGetLibraryBooksQuery(); // Added refetch
   const { data: campuses } = useGetCampusesQuery();
   const [selectedCampus, setSelectedCampus] = useState<string | 'all'>('all');
   const [selectedAuthor, setSelectedAuthor] = useState<string | 'all'>('all');
   const [deleteBook] = useDeleteLibraryBookMutation();
   const [addBook] = useCreateLibraryBookMutation();
+  const [updateBook] = useUpdateLibraryBookMutation();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
   const [showModal, setShowModal] = useState(false);
-  const [bookData, setBookData] = useState<LibraryBook>({
+  const [isEditing, setIsEditing] = useState(false); 
+  const [bookData, setBookData] = useState<any>({
     isbn: '',
     title: '',
     author: '',
@@ -71,6 +79,7 @@ const LibraryBooks: React.FC = () => {
       try {
         await deleteBook(bookId).unwrap();
         toast.success('Book deleted successfully!');
+        refetch(); 
       } catch (err) {
         console.error('Error deleting book:', err);
         toast.error('Failed to delete book.');
@@ -96,6 +105,13 @@ const LibraryBooks: React.FC = () => {
   };
 
   const handleAddBookClick = () => {
+    setIsEditing(false); 
+    setShowModal(true);
+  };
+
+  const handleEditBookClick = (book: LibraryBook) => {
+    setBookData(book); 
+    setIsEditing(true);
     setShowModal(true);
   };
 
@@ -117,21 +133,36 @@ const LibraryBooks: React.FC = () => {
     const { name, value } = e.target;
     setBookData(prevState => ({
       ...prevState,
-      [name]: name === 'campus_id' ? Number(value) : value, // Ensure campus_id is a number
+      [name]: name === 'campus_id' ? Number(value) : value,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+  
+    const { title, author, isbn, copies, publication_year, campus_id, pages } = bookData;
+    
+    if (!title || !author || !isbn || !copies || !publication_year || !campus_id || !pages) {
+      toast.error('Please fill in all required fields.');
+      return;
+    }
+  
     try {
-      await addBook(bookData).unwrap();
-      toast.success('Book added successfully!');
+      if (isEditing) {
+        await updateBook({ book: bookData }).unwrap();  
+        toast.success('Book updated successfully!');
+      } else {
+        await addBook(bookData).unwrap();
+        toast.success('Book added successfully!');
+      }
+      refetch();
       handleCloseModal();
     } catch (err) {
-      console.error('Error adding book:', err);
-      toast.error('Failed to add book.');
+      console.error('Error submitting book:', err);
+      toast.error(`Failed to ${isEditing ? 'update' : 'add'} book.`);
     }
   };
+  
 
   return (
     <AdminLayout>
@@ -173,128 +204,133 @@ const LibraryBooks: React.FC = () => {
             { header: 'ISBN', accessor: 'isbn' as keyof LibraryBook },
             { header: 'Title', accessor: 'title' as keyof LibraryBook },
             { header: 'Author', accessor: 'author' as keyof LibraryBook },
-            { header: 'Campus', accessor: 'campus_name' as keyof LibraryBook }, // Display campus name
+            { header: 'Campus', accessor: 'campus_name' as keyof LibraryBook }, 
             { header: 'Number of Copies', accessor: 'copies' as keyof LibraryBook },
           ]}
           data={currentEntries || []}
           actions={(book) => (
             <>
-              <button onClick={() => handleViewBook(book.id)}>View</button>
-              <button onClick={() => handleDeleteBook(book.id)}>Delete</button>
+              <button className={styles.viewButton} onClick={() => handleViewBook(book.id)}>
+                View
+              </button>
+              <button className={styles.editButton} onClick={() => handleEditBookClick(book)}>
+                Edit
+              </button>
+              <button className={styles.deleteButton} onClick={() => handleDeleteBook(book.id)}>
+                Delete
+              </button>
             </>
           )}
         />
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-        {showModal && (
-  <div className={styles.modalOverlay}>
-    <div className={styles.modalContent} style={{width: '500px'}}>
-      <h2 className={styles.headingSecondary}>Add New Book</h2>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <label className={styles.formLabel}>
-          ISBN:
-          <input
-            type="text"
-            name="isbn"
-            value={bookData.isbn}
-            onChange={handleChange}
-            required
-            className={styles.formInput}
-          />
-        </label>
-        <label className={styles.formLabel}>
-          Title:
-          <input
-            type="text"
-            name="title"
-            value={bookData.title}
-            onChange={handleChange}
-            required
-            className={styles.formInput}
-          />
-        </label>
-        <label className={styles.formLabel}>
-          Author:
-          <input
-            type="text"
-            name="author"
-            value={bookData.author}
-            onChange={handleChange}
-            required
-            className={styles.formInput}
-          />
-        </label>
-        <label className={styles.formLabel}>
-          Publication Year:
-          <input
-            type="number"
-            name="publication_year"
-            value={bookData.publication_year}
-            onChange={handleChange}
-            required
-            className={styles.formInput}
-          />
-        </label>
-        <label className={styles.formLabel}>
-          Copies:
-          <input
-            type="number"
-            name="copies"
-            value={bookData.copies}
-            onChange={handleChange}
-            required
-            className={styles.formInput}
-          />
-        </label>
-        <label className={styles.formLabel}>
-          Pages:
-          <input
-            type="number"
-            name="pages"
-            value={bookData.pages}
-            onChange={handleChange}
-            required
-            className={styles.formInput}
-          />
-        </label>
-        <label className={styles.formLabel}>
-          Campus:
-          <select
-            name="campus_id"
-            value={bookData.campus_id || 'all'}
-            onChange={handleChange}
-            className={styles.formSelect}
-          >
-            {campuses?.map(campus => (
-              <option key={campus.id} value={campus.id}>
-                {campus.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className={styles.formLabel}>
-          Description:
-          <textarea
-            name="description"
-            value={bookData.description}
-            onChange={handleChange}
-            style={{marginLeft: '2rem', border:"1px solid"}}
-            className={styles.formTextArea}
-          />
-        </label>
-        <div className={styles.btnContainer}>
-          <button type="submit" className={styles.acceptBtn}>Add Book</button>
-          <button type="button" onClick={handleCloseModal} className={styles.rejectBtn}>Cancel</button>
-        </div>
-      </form>
-    </div>
-  </div>
-)}
-
+        <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
       </div>
+
+      {showModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContent}>
+            <h2 className={styles.headingSecondary}>{isEditing ? 'Edit Book' : 'Add Book'}</h2>
+            <form className={styles.form} onSubmit={handleSubmit}>
+              <label>
+                ISBN
+              <input
+                type="text"
+                name="isbn"
+                value={bookData.isbn}
+                onChange={handleChange}
+                placeholder="ISBN"
+                required
+              />
+              </label>
+              <label>
+                Title
+              <input
+                type="text"
+                name="title"
+                value={bookData.title}
+                onChange={handleChange}
+                placeholder="Title"
+                required
+              />
+              </label>
+              <label>
+                Author
+              <input
+                type="text"
+                name="author"
+                value={bookData.author}
+                onChange={handleChange}
+                placeholder="Author"
+                required
+              />
+              </label>
+              <label>
+                Description
+              <textarea
+                name="description"
+                value={bookData.description}
+                onChange={handleChange}
+                placeholder="Description"
+              />
+              </label>
+              <label>
+                Publication Year
+              <input
+                type="number"
+                name="publication_year"
+                value={bookData.publication_year}
+                onChange={handleChange}
+                placeholder="Publication Year"
+                required
+              />
+              </label>
+              <label>Copies
+              <input
+                type="number"
+                name="copies"
+                value={bookData.copies}
+                onChange={handleChange}
+                placeholder="Number of Copies"
+                required
+              />
+              </label>
+              <label>
+                Campus
+              <select
+                name="campus_id"
+                value={bookData.campus_id}
+                onChange={handleChange}
+                required
+              >
+                {campuses?.map((campus) => (
+                  <option key={campus.id} value={campus.id}>
+                    {campus.name}
+                  </option>
+                ))}
+              </select>
+              </label>
+              <label>
+                Pages
+              <input
+                type="number"
+                name="pages"
+                value={bookData.pages}
+                onChange={handleChange}
+                placeholder="Number of Pages"
+              />
+              </label>
+              <div className={styles.btnContainer} style={{marginTop: "1rem"}}>
+              <button className={styles.rejectBtn} onClick={handleCloseModal}>
+              Cancel
+            </button>
+              <button type="submit" className={styles.acceptBtn}>
+                {isEditing ? 'Update Book' : 'Add Book'}
+              </button>
+            </div>
+            </form>
+            </div>
+          </div>
+      )}
+      <ToastNotifications />
     </AdminLayout>
   );
 };

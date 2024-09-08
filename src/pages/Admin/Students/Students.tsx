@@ -273,8 +273,8 @@ const Students: React.FC = () => {
                 </select>
               </div>
               <div className={styles.btnContainer}>
-                <button className={styles.acceptBtn} onClick={() => setIsEditModalOpen(false)}>Cancel</button>
-                <button className={styles.rejectBtn} onClick={handleSaveEdit}>Save</button>
+                <button className={styles.rejectBtn} onClick={() => setIsEditModalOpen(false)}>Cancel</button>
+                <button className={styles.acceptBtn} onClick={handleSaveEdit}>Save</button>
               </div>
             </form>
           </div>

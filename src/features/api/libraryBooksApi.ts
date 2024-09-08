@@ -19,13 +19,14 @@ export const libraryBooksApi = createApi({
         body: newBook,
       }),
     }),
-    updateLibraryBook: builder.mutation<LibraryBook, { id: number; book: Partial<LibraryBook> }>({
-      query: ({ id, book }) => ({
-        url: `/library_books/${id}`,
+    updateLibraryBook: builder.mutation<LibraryBook, { book: LibraryBook }>({
+      query: ({ book }) => ({
+        url: `/library_books/${book.id}`,
         method: 'PUT',
         body: book,
       }),
     }),
+    
     deleteLibraryBook: builder.mutation<{ success: boolean; id: number }, number>({
       query: (id) => ({
         url: `/library_books/${id}`,

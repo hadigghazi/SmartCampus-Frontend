@@ -61,7 +61,6 @@ const Login: React.FC = () => {
           <img src={logo} alt="SmartCampus Logo" className={styles.logo} />
           <div className={styles.title}>SmartCampus</div>
         </div>
-        <div className={styles.loginTitle}>Login</div>
         <form onSubmit={handleSubmit}>
           <input
             className={styles.inputField}
