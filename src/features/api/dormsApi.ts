@@ -61,30 +61,41 @@ export const dormsApi = createApi({
           method: 'DELETE',
         }),
       }),
-      getDormRoomRegistrations: builder.query<DormRoomRegistration[], number>({
-        query: (dormRoomId) => `dorm-rooms/${dormRoomId}/registrations`,
+      getDormRegistrations: builder.query<DormRoomRegistration[], void>({
+        query: () => 'dorm_registrations',
       }),
-      createDormRoomRegistration: builder.mutation<void, Partial<DormRoomRegistration>>({
+  
+      getDormRegistrationsForRoom: builder.query<DormRoomRegistration[], number>({
+        query: (id) => `dorm_registrations_for_room/${id}`,
+      }),
+  
+      getDormRegistrationById: builder.query<DormRoomRegistration, number>({
+        query: (id) => `dorm_registrations/${id}`,
+      }),
+  
+      createDormRegistration: builder.mutation({
         query: (registration) => ({
-          url: 'dorm-room-registrations',
+          url: 'dorm_registrations',
           method: 'POST',
           body: registration,
         }),
       }),
-      updateDormRoomRegistration: builder.mutation<void, { id: number, updates: Partial<DormRoomRegistration> }>({
-        query: ({ id, updates }) => ({
-          url: `dorm-room-registrations/${id}`,
+  
+      updateDormRegistration: builder.mutation({
+        query: ({ id, registration }) => ({
+          url: `dorm_registrations/${id}`,
           method: 'PUT',
-          body: updates,
+          body: registration,
         }),
       }),
-      deleteDormRoomRegistration: builder.mutation<void, number>({
+  
+      deleteDormRegistration: builder.mutation<void, number>({
         query: (id) => ({
-          url: `dorm-room-registrations/${id}`,
+          url: `dorm_registrations/${id}`,
           method: 'DELETE',
         }),
       }),
-  }),
+    }),
 });
 
 export const {
@@ -99,8 +110,10 @@ export const {
   useDeleteDormRoomMutation,
   useGetDormRoomByIdQuery,
   useUpdateDormRoomMutation,
-  useGetDormRoomRegistrationsQuery,
-  useCreateDormRoomRegistrationMutation,
-  useUpdateDormRoomRegistrationMutation,
-  useDeleteDormRoomRegistrationMutation,
+  useGetDormRegistrationsQuery,
+  useGetDormRegistrationsForRoomQuery,
+  useGetDormRegistrationByIdQuery,
+  useCreateDormRegistrationMutation,
+  useUpdateDormRegistrationMutation,
+  useDeleteDormRegistrationMutation,
 } = dormsApi;

@@ -15,6 +15,7 @@ import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationD
 import AdminLayout from '../AdminLayout';
 import styles from '../CourseDetails/CourseDetails.module.css';
 import { useGetCampusByIdQuery } from '../../../features/api/campusesApi';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const DormDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -123,11 +124,11 @@ const DormDetailsPage: React.FC = () => {
             <h1 className={styles.headingPrimary}>{dorm.name}</h1>
             <p className={styles.text}>Capacity: {dorm.capacity}</p>
             <p className={styles.text}>Available Rooms: {dorm.available_rooms}</p>
-            <p className={styles.text}>Campus: {campus?.name || 'Loading...'}</p>
+            <p className={styles.text}>Campus: {campus?.name || ''}</p>
             <p className={styles.text}>Description: {dorm.description}</p>
           </div>
         ) : (
-          <p>Loading...</p>
+          <Spinner />
         )}
         <div className={styles.content}>
             <div className={styles.header_container} style={{marginBottom: "0rem"}}>
