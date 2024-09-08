@@ -167,7 +167,7 @@ const BlocksPage: React.FC = () => {
         {showModal && (
           <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
-              <h2>{editingBlock ? 'Edit Block' : 'Add Block'}</h2>
+              <h2 className={styles.headingSecondary}>{editingBlock ? 'Edit Block' : 'Add Block'}</h2>
               <form className={styles.form}>
                 <label>
                   Name:
@@ -204,9 +204,9 @@ const BlocksPage: React.FC = () => {
                     rows={4}
                   />
                 </label>
-                <div className={styles.modalActions}>
-                  <button type="button" onClick={handleSaveBlock}>Save</button>
-                  <button type="button" onClick={() => setShowModal(false)}>Cancel</button>
+                <div className={styles.btnContainer}>
+                <button className={styles.acceptBtn} type="button" onClick={() => setShowModal(false)}>Cancel</button>
+                  <button className={styles.rejectBtn} type="button" onClick={handleSaveBlock}>Save</button>
                 </div>
               </form>
             </div>

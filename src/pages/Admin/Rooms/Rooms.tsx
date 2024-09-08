@@ -15,9 +15,12 @@ import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import AdminLayout from '../AdminLayout';
 import styles from '../Courses/Courses.module.css';
 import { Room } from '../../../features/api/types';
+import { toast } from 'react-toastify';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
+import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
 
 const RoomsPage: React.FC = () => {
-  const { data: roomsList = [] } = useGetRoomsQuery();
+  const { data: roomsList = [], refetch } = useGetRoomsQuery();
   const { data: blocksList = [] } = useGetBlocksQuery(); 
   const [createRoom] = useCreateRoomMutation();
   const [updateRoom] = useUpdateRoomMutation();
@@ -65,12 +68,16 @@ const RoomsPage: React.FC = () => {
   };
 
   const handleDeleteRoom = async (id: number) => {
+    const isConfirmed = await ConfirmationDialog('Are you sure?', 'You won’t be able to revert this!');
+    if (isConfirmed) {
     try {
       await deleteRoom(id).unwrap();
-      console.log('Room deleted successfully');
+      toast.success('Room deleted successfully');
+      refetch();
     } catch (error) {
-      console.error('Failed to delete room:', error);
+      toast.error('Failed to delete room');
     }
+  }
   };
 
   const handleSaveRoom = async () => {
@@ -82,14 +89,15 @@ const RoomsPage: React.FC = () => {
 
       if (editingRoom) {
         await updateRoom({ id: editingRoom.id, ...roomPayload }).unwrap();
-        console.log('Room updated successfully');
+        toast.success('Room updated successfully');
       } else {
         await createRoom(roomPayload).unwrap();
-        console.log('Room created successfully');
+        toast.success('Room created successfully');
       }
       setShowModal(false);
+      refetch();
     } catch (error) {
-      console.error('Failed to save room:', error);
+      toast.error('Failed to save room');
     }
   };
 
@@ -139,21 +147,20 @@ const RoomsPage: React.FC = () => {
 
   const actions = (room: Room) => (
     <div className={styles.actions}>
-      <button onClick={() => handleEditRoom(room)}>Edit</button>
+      <button style={{marginRight: "1rem"}} onClick={() => handleEditRoom(room)}>Edit</button>
       <button onClick={() => handleDeleteRoom(room.id)}>Delete</button>
     </div>
   );
 
   return (
     <AdminLayout requiredAdminType='Super Admin'>
-      <div className={styles.content}>
+      <div className={styles.container}>
         <h1 className={styles.headingPrimary}>Rooms</h1>
         <div className={styles.filters}>
           <SearchInput value={searchText} onChange={handleSearch} />
           <button onClick={handleAddRoom} className={styles.addButton}>Add Room</button>
         </div>
         <EntriesPerPage value={pageSize} onChange={handleEntriesPerPageChange} />
-        <div className={styles.wrapper}>
           <Table
             columns={columns}
             data={paginatedRooms}
@@ -164,11 +171,10 @@ const RoomsPage: React.FC = () => {
             totalPages={totalPages}
             onPageChange={handlePageChange}
           />
-        </div>
         {showModal && (
           <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
-              <h2>{editingRoom ? 'Edit Room' : 'Add Room'}</h2>
+              <h2 className={styles.headingSecondary}>{editingRoom ? 'Edit Room' : 'Add Room'}</h2>
               <form className={styles.form}>
                 <label>
                   Number:
@@ -212,14 +218,15 @@ const RoomsPage: React.FC = () => {
                     rows={4}
                   />
                 </label>
-                <div className={styles.modalActions}>
-                  <button type="button" onClick={handleSaveRoom}>Save</button>
-                  <button type="button" onClick={() => setShowModal(false)}>Cancel</button>
+                <div className={styles.btnContainer}>
+                <button className={styles.rejectBtn} type="button" onClick={() => setShowModal(false)}>Cancel</button>
+                  <button className={styles.acceptBtn} type="button" onClick={handleSaveRoom}>Save</button>
                 </div>
               </form>
             </div>
           </div>
         )}
+        <ToastNotifications />
       </div>
     </AdminLayout>
   );
