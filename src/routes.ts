@@ -95,6 +95,7 @@ const AdminDetails = lazy(() => import('./pages/Admin/AdminDetails/AdminDetails'
 const AdminDashboard = lazy(() => import('./pages/Admin/AdminDashboard/AdminDashboard'));
 const AdminProfile = lazy(() => import('./pages/Admin/AdminProfile/AdminProfile'));
 const DormsAdmin = lazy(() => import('./pages/Admin/Dorms/Dorms'));
+const DormDetailsAdmin = lazy(() => import('./pages/Admin/DormDetails/DormDetails'));
 
 const Login = lazy(() => import('./pages/Login/Login')); 
 const Register = lazy(() => import('./pages/Register/Register')); 
@@ -345,6 +346,10 @@ const routes: CustomRouteProps[] = [
   {
     path: '/admin/dorms',
     component: DormsAdmin,
+  },
+  {
+    path: '/admin/dorms/:id',
+    component: DormDetailsAdmin,
   },
   {
     path: '/student-dashboard',

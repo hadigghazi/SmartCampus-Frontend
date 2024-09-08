@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import {
-  useGetDormQuery,
-  useGetDormRoomsQuery,
-  useDeleteRoomMutation,
-  useUpdateRoomMutation
+  useGetDormByIdQuery,
+  useGetAllDormRoomsQuery,
+  useDeleteDormRoomMutation,
+  useUpdateDormRoomMutation,
+  useCreateDormRoomMutation
 } from '../../../features/api/dormsApi';
 import Table from '../../../components/Table/Table';
-import { Dorm, Room } from '../../../features/api/types';
+import { Dorm, DormRoom } from '../../../features/api/types';
 import { toast } from 'react-toastify';
 import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
@@ -16,13 +17,16 @@ import styles from '../Courses/Courses.module.css';
 
 const DormDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { data: dorm, refetch: refetchDorm } = useGetDormQuery(Number(id));
-  const { data: roomsList = [], refetch: refetchRooms } = useGetDormRoomsQuery(Number(id));
-  const [deleteRoom] = useDeleteRoomMutation();
-  const [updateRoom] = useUpdateRoomMutation();
+  const dormId = Number(id);
+
+  const { data: dorm, refetch: refetchDorm } = useGetDormByIdQuery(dormId);
+  const { data: roomsList = [], refetch: refetchRooms } = useGetAllDormRoomsQuery(dormId);
+  const [deleteDormRoom] = useDeleteDormRoomMutation();
+  const [updateDormRoom] = useUpdateDormRoomMutation();
+  const [createDormRoom] = useCreateDormRoomMutation();
 
   const [showRoomModal, setShowRoomModal] = useState(false);
-  const [editingRoom, setEditingRoom] = useState<Room | null>(null);
+  const [editingRoom, setEditingRoom] = useState<DormRoom | null>(null);
   const [formValues, setFormValues] = useState({
     room_number: '',
     capacity: '',
@@ -35,8 +39,8 @@ const DormDetailsPage: React.FC = () => {
     if (editingRoom) {
       setFormValues({
         room_number: editingRoom.room_number,
-        capacity: editingRoom.capacity || '',
-        available_beds: editingRoom.available_beds || '',
+        capacity: editingRoom.capacity?.toString() || '',
+        available_beds: editingRoom.available_beds?.toString() || '',
         floor: editingRoom.floor || '',
         description: editingRoom.description || '',
       });
@@ -51,7 +55,7 @@ const DormDetailsPage: React.FC = () => {
     }
   }, [editingRoom]);
 
-  const handleEditRoom = (room: Room) => {
+  const handleEditRoom = (room: DormRoom) => {
     setEditingRoom(room);
     setShowRoomModal(true);
   };
@@ -60,7 +64,7 @@ const DormDetailsPage: React.FC = () => {
     const isConfirmed = await ConfirmationDialog('Are you sure?', 'You won’t be able to revert this!');
     if (isConfirmed) {
       try {
-        await deleteRoom(id).unwrap();
+        await deleteDormRoom(id).unwrap();
         toast.success('Room deleted successfully');
         refetchRooms();
       } catch (error) {
@@ -71,17 +75,20 @@ const DormDetailsPage: React.FC = () => {
 
   const handleSaveRoom = async () => {
     try {
-      const roomPayload = {
-        ...formValues,
+      const roomPayload: Partial<DormRoom> = {
+        room_number: formValues.room_number,
         capacity: formValues.capacity ? Number(formValues.capacity) : undefined,
         available_beds: formValues.available_beds ? Number(formValues.available_beds) : undefined,
+        floor: formValues.floor,
+        description: formValues.description,
       };
 
       if (editingRoom) {
-        await updateRoom({ id: editingRoom.id, ...roomPayload }).unwrap();
+        await updateDormRoom({ id: editingRoom.id, updates: roomPayload }).unwrap();
         toast.success('Room updated successfully');
       } else {
-        // Add your room creation logic here
+        await createDormRoom(roomPayload).unwrap();
+        toast.success('Room created successfully');
       }
       setShowRoomModal(false);
       refetchRooms();
@@ -98,7 +105,7 @@ const DormDetailsPage: React.FC = () => {
     { header: 'Description', accessor: 'description' },
   ];
 
-  const actions = (room: Room) => (
+  const actions = (room: DormRoom) => (
     <div className={styles.actions}>
       <button style={{ marginRight: '1rem' }} onClick={() => handleEditRoom(room)}>Edit</button>
       <button onClick={() => handleDeleteRoom(room.id)}>Delete</button>
