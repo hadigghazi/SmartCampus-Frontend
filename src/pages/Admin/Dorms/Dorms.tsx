@@ -18,6 +18,7 @@ import { Dorm } from '../../../features/api/types';
 import { toast } from 'react-toastify';
 import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
+import { useNavigate } from 'react-router-dom';
 
 const DormsPage: React.FC = () => {
   const { data: dormsList = [], refetch } = useGetDormsQuery();
@@ -25,6 +26,7 @@ const DormsPage: React.FC = () => {
   const [createDorm] = useCreateDormMutation();
   const [updateDorm] = useUpdateDormMutation();
   const [deleteDorm] = useDeleteDormMutation();
+  const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
   const [editingDorm, setEditingDorm] = useState<Dorm | null>(null);
@@ -159,6 +161,7 @@ const DormsPage: React.FC = () => {
 
   const actions = (dorm: Dorm) => (
     <div className={styles.actions}>
+      <button style={{ marginRight: '1rem' }} onClick={() => navigate(`/admin/dorms/${dorm.id}`)}>View</button>
       <button style={{ marginRight: '1rem' }} onClick={() => handleEditDorm(dorm)}>Edit</button>
       <button onClick={() => handleDeleteDorm(dorm.id)}>Delete</button>
     </div>
@@ -170,8 +173,8 @@ const DormsPage: React.FC = () => {
         <h1 className={styles.headingPrimary}>Dorms</h1>
         <div className={styles.filters}>
           <SearchInput value={searchText} onChange={handleSearch} />
-          <select value={campusFilter} onChange={handleCampusFilterChange} className={styles.filterSelect}>
-            <option value="">Filter by Campus</option>
+          <select value={campusFilter} onChange={handleCampusFilterChange} className={styles.selectField}>
+            <option value="">Campus</option>
             {campusesList.map(campus => (
               <option key={campus.id} value={campus.id}>{campus.name}</option>
             ))}
