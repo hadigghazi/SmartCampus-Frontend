@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQuery } from './baseQuery';
-import { Dorm, DormRoom } from './types'; 
+import { Dorm, DormRoom, DormRoomRegistration } from './types'; 
 
 export const dormsApi = createApi({
   reducerPath: 'dormsApi',
@@ -61,6 +61,29 @@ export const dormsApi = createApi({
           method: 'DELETE',
         }),
       }),
+      getDormRoomRegistrations: builder.query<DormRoomRegistration[], number>({
+        query: (dormRoomId) => `dorm-rooms/${dormRoomId}/registrations`,
+      }),
+      createDormRoomRegistration: builder.mutation<void, Partial<DormRoomRegistration>>({
+        query: (registration) => ({
+          url: 'dorm-room-registrations',
+          method: 'POST',
+          body: registration,
+        }),
+      }),
+      updateDormRoomRegistration: builder.mutation<void, { id: number, updates: Partial<DormRoomRegistration> }>({
+        query: ({ id, updates }) => ({
+          url: `dorm-room-registrations/${id}`,
+          method: 'PUT',
+          body: updates,
+        }),
+      }),
+      deleteDormRoomRegistration: builder.mutation<void, number>({
+        query: (id) => ({
+          url: `dorm-room-registrations/${id}`,
+          method: 'DELETE',
+        }),
+      }),
   }),
 });
 
@@ -75,5 +98,9 @@ export const {
   useCreateDormRoomMutation,
   useDeleteDormRoomMutation,
   useGetDormRoomByIdQuery,
-  useUpdateDormRoomMutation
+  useUpdateDormRoomMutation,
+  useGetDormRoomRegistrationsQuery,
+  useCreateDormRoomRegistrationMutation,
+  useUpdateDormRoomRegistrationMutation,
+  useDeleteDormRoomRegistrationMutation,
 } = dormsApi;

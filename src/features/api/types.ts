@@ -445,3 +445,15 @@ export type DormRoom = {
   updated_at: string; 
   deleted_at?: string; 
 };
+
+export type DormRoomRegistration = {
+  id: number;
+  student_id: number;
+  dorm_room_id: number;
+  start_date: string;
+  end_date: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string;
+}
+
