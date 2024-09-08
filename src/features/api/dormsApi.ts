@@ -35,6 +35,32 @@ export const dormsApi = createApi({
     getDormRoomsByDorm: builder.query<DormRoom[], number>({
       query: (dormId) => `dorms/${dormId}/rooms`,
     }),
+    getAllDormRooms: builder.query<DormRoom[], number>({
+        query: (dormId) => `dorm-rooms?dorm_id=${dormId}`,
+      }),
+      getDormRoomById: builder.query<DormRoom, number>({
+        query: (id) => `dorm-rooms/${id}`,
+      }),
+      createDormRoom: builder.mutation<DormRoom, Partial<DormRoom>>({
+        query: (newDormRoom) => ({
+          url: 'dorm-rooms',
+          method: 'POST',
+          body: newDormRoom,
+        }),
+      }),
+      updateDormRoom: builder.mutation<DormRoom, { id: number; updates: Partial<DormRoom> }>({
+        query: ({ id, updates }) => ({
+          url: `dorm-rooms/${id}`,
+          method: 'PUT',
+          body: updates,
+        }),
+      }),
+      deleteDormRoom: builder.mutation<void, number>({
+        query: (id) => ({
+          url: `dorm-rooms/${id}`,
+          method: 'DELETE',
+        }),
+      }),
   }),
 });
 
@@ -45,4 +71,9 @@ export const {
   useUpdateDormMutation,
   useDeleteDormMutation,
   useGetDormRoomsByDormQuery,
+  useGetAllDormRoomsQuery,
+  useCreateDormRoomMutation,
+  useDeleteDormRoomMutation,
+  useGetDormRoomByIdQuery,
+  useUpdateDormRoomMutation
 } = dormsApi;
