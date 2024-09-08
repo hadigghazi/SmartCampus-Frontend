@@ -13,9 +13,12 @@ import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import AdminLayout from '../AdminLayout';
 import styles from '../Courses/Courses.module.css';
 import { Block } from '../../../features/api/types';
+import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
+import { toast } from 'react-toastify';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 
 const BlocksPage: React.FC = () => {
-  const { data: blocksList = [] } = useGetBlocksQuery();
+  const { data: blocksList = [], refetch } = useGetBlocksQuery();
   const { data: campusesList = [] } = useGetCampusesQuery();
   const [createBlock] = useCreateBlockMutation();
   const [updateBlock] = useUpdateBlockMutation();
@@ -60,12 +63,16 @@ const BlocksPage: React.FC = () => {
   };
 
   const handleDeleteBlock = async (id: number) => {
+    const isConfirmed = await ConfirmationDialog('Are you sure?', 'You won’t be able to revert this!');
+    if (isConfirmed) {
     try {
       await deleteBlock(id).unwrap();
-      console.log('Block deleted successfully');
+      toast.success('Block deleted successfully');
+      refetch();
     } catch (error) {
-      console.error('Failed to delete block:', error);
+      toast.error('Failed to delete block');
     }
+  }
   };
 
   const handleSaveBlock = async () => {
@@ -76,14 +83,15 @@ const BlocksPage: React.FC = () => {
 
       if (editingBlock) {
         await updateBlock({ id: editingBlock.id, ...blockPayload }).unwrap();
-        console.log('Block updated successfully');
+        toast.success('Block updated successfully');
       } else {
         await createBlock(blockPayload).unwrap();
-        console.log('Block created successfully');
+        toast.success('Block created successfully');
       }
       setShowModal(false);
+      refetch();
     } catch (error) {
-      console.error('Failed to save block:', error);
+      toast.error('Failed to save block');
     }
   };
 
@@ -126,7 +134,7 @@ const BlocksPage: React.FC = () => {
 
   const columns = [
     { header: 'Name', accessor: 'name' },
-    { header: 'Campus Name', accessor: (block: Block) => getCampusNameById(block.campus_id) },
+    { header: 'Campus', accessor: (block: Block) => getCampusNameById(block.campus_id) },
     { header: 'Description', accessor: 'description' },
   ];
 
@@ -139,14 +147,13 @@ const BlocksPage: React.FC = () => {
 
   return (
     <AdminLayout requiredAdminType='Super Admin'>
-      <div className={styles.content}>
+      <div className={styles.container}>
         <h1 className={styles.headingPrimary}>Blocks</h1>
         <div className={styles.filters}>
           <SearchInput value={searchText} onChange={handleSearch} />
           <button onClick={handleAddBlock} className={styles.addButton}>Add Block</button>
         </div>
         <EntriesPerPage value={pageSize} onChange={handleEntriesPerPageChange} />
-        <div className={styles.wrapper}>
           <Table
             columns={columns}
             data={paginatedBlocks}
@@ -157,7 +164,6 @@ const BlocksPage: React.FC = () => {
             totalPages={totalPages}
             onPageChange={handlePageChange}
           />
-        </div>
         {showModal && (
           <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
@@ -206,6 +212,7 @@ const BlocksPage: React.FC = () => {
             </div>
           </div>
         )}
+        <ToastNotifications />
       </div>
     </AdminLayout>
   );
