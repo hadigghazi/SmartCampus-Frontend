@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQuery } from './baseQuery';
 
-export const api = createApi({
+export const busesApi = createApi({
   reducerPath: 'busesApi',
   baseQuery,
   endpoints: (builder) => ({
@@ -85,4 +85,4 @@ export const {
   useCreateBusRouteMutation,
   useUpdateBusRouteMutation,
   useDeleteBusRouteMutation,
-} = api;
+} = busesApi;
