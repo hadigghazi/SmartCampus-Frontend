@@ -106,7 +106,7 @@ const DormRoomDetailsPage: React.FC = () => {
 
   const registrationActions = (registration: DormRoomRegistration) => (
     <div className={styles.actions}>
-      <button onClick={() => handleEditRegistration(registration)}>Edit</button>
+      <button style={{marginRight: '1rem'}} onClick={() => handleEditRegistration(registration)}>Edit</button>
       <button onClick={() => handleDeleteRegistration(registration.id)}>Delete</button>
     </div>
   );
@@ -115,19 +115,18 @@ const DormRoomDetailsPage: React.FC = () => {
     <AdminLayout>
       <div className={styles.container}>
         {dormRoom ? (
-          <>
-            <h1>Dorm Room Details</h1>
-            <p><strong>Room Number:</strong> {dormRoom.room_number}</p>
-            <p><strong>Capacity:</strong> {dormRoom.capacity}</p>
-            <p><strong>Available Beds:</strong> {dormRoom.available_beds}</p>
-            <p><strong>Floor:</strong> {dormRoom.floor}</p>
-            <p><strong>Description:</strong> {dormRoom.description}</p>
-
-            <div className={styles.header_container}>
+          <div className={styles.content}>
+            <h1 className={styles.headingPrimary}>Dorm Room Details</h1>
+            <p className={styles.text}>Room Number: {dormRoom.room_number}</p>
+            <p className={styles.text}>Capacity: {dormRoom.capacity}</p>
+            <p className={styles.text}>Available Beds: {dormRoom.available_beds}</p>
+            <p className={styles.text}>Floor: {dormRoom.floor}</p>
+            <p className={styles.text}>Description: {dormRoom.description}</p>
+            
+            <div style={{marginTop: "5rem", marginBottom: "0rem"}} className={styles.header_container}>
               <h2 className={styles.headingSecondary}>Registrations</h2>
               <button className={styles.addButton} onClick={handleAddRegistrationClick}>Add Registration</button>
             </div>
-
             <Table columns={registrationColumns} data={roomRegistrations} actions={registrationActions} />
 
             {showModal && (
@@ -170,7 +169,7 @@ const DormRoomDetailsPage: React.FC = () => {
                 </div>
               </div>
             )}
-          </>
+         </div>
         ) : (
           <Spinner />
         )}
