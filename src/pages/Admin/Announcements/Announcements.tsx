@@ -5,7 +5,7 @@ import Table from '../../../components/Table/Table';
 import Pagination from '../../../components/Pagination/Pagination'; 
 import SearchInput from '../../../components/SearchInput/SearchInput'; 
 import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage'; 
-import styles from './Announcements.module.css'; 
+import styles from '../Courses/Courses.module.css'; 
 import { Announcement } from '../../../features/api/types';
 import AdminLayout from '../AdminLayout';
 import { toast } from 'react-toastify';
@@ -199,7 +199,6 @@ const Announcements: React.FC = () => {
         <button onClick={handleAddAnnouncement} className={styles.addButton}>Add Announcement</button>
       </div>
       <EntriesPerPage value={pageSize} onChange={handleEntriesPerPageChange} />
-      <div className={styles.wrapper}>
         <Table
           columns={columns}
           data={paginatedAnnouncements}
@@ -210,12 +209,11 @@ const Announcements: React.FC = () => {
           totalPages={totalPages}
           onPageChange={handlePageChange}
         />
-      </div>
       {showModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
-            <h2>{editingAnnouncement ? 'Edit Announcement' : 'Add Announcement'}</h2>
-            <form className={styles.form}>
+            <h2 className={styles.headingSecondary}>{editingAnnouncement ? 'Edit Announcement' : 'Add Announcement'}</h2>
+            <form className={styles.form} className={styles.form}>
               <label>
                 Title:
                 <input
@@ -265,12 +263,14 @@ const Announcements: React.FC = () => {
                 </select>
               </label>
               <div>
-                <button type="button" className={styles.addButton} onClick={handleSaveAnnouncement}>
-                  Save
-                </button>
-                <button type="button" className={styles.addButton} onClick={() => setShowModal(false)}>
+                <div className={styles.btnContainer}>
+                <button type="button" className={styles.rejectBtn} onClick={() => setShowModal(false)}>
                   Cancel
                 </button>
+                <button type="button" className={styles.acceptBtn} onClick={handleSaveAnnouncement}>
+                  Save
+                </button>
+                </div>
               </div>
             </form>
           </div>

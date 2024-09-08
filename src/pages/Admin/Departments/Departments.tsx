@@ -9,7 +9,7 @@ import Table from '../../../components/Table/Table';
 import Pagination from '../../../components/Pagination/Pagination';
 import SearchInput from '../../../components/SearchInput/SearchInput';
 import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
-import styles from '../Announcements/Announcements.module.css'; 
+import styles from '../Courses/Courses.module.css'; 
 import AdminLayout from '../AdminLayout';
 import { Department } from '../../../features/api/types';
 
@@ -140,14 +140,12 @@ const Departments: React.FC = () => {
           </button>
         </div>
         <EntriesPerPage value={pageSize} onChange={handleEntriesPerPageChange} />
-        <div className={styles.wrapper}>
           <Table columns={columns} data={paginatedDepartments} actions={actions} />
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}
           />
-        </div>
         {showModal && (
           <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
