@@ -9,9 +9,12 @@ import styles from '../Courses/Courses.module.css';
 import { News } from '../../../features/api/types';
 import AdminLayout from '../AdminLayout';
 import { useGetUserQuery } from '../../../features/api/authApi';
+import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
+import { toast } from 'react-toastify';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 
 const NewsPage: React.FC = () => {
-  const { data: newsList = [] } = useGetNewsQuery();
+  const { data: newsList = [], refetch } = useGetNewsQuery();
   const { data: users = [] } = useGetUsersQuery(); 
   const { data: user = [] } = useGetUserQuery(); 
   const [addNews] = useAddNewsMutation();
@@ -57,12 +60,16 @@ const NewsPage: React.FC = () => {
   };
 
   const handleDeleteNews = async (id: number) => {
+    const isConfirmed = await ConfirmationDialog('Are you sure?', 'You won’t be able to revert this!');
+    if (isConfirmed) {
     try {
       await deleteNews(id).unwrap();
-      console.log('News deleted successfully');
+      toast.success('News deleted successfully');
+      refetch();
     } catch (error) {
-      console.error('Failed to delete news:', error);
+      toast.error('Failed to delete news');
     }
+  }
   };
 
   const handleSaveNews = async () => {
@@ -75,14 +82,15 @@ const NewsPage: React.FC = () => {
 
       if (editingNews) {
         await updateNews({ id: editingNews.id, ...newsPayload }).unwrap();
-        console.log('News updated successfully');
+        toast.success('News updated successfully');
       } else {
         await addNews(newsPayload).unwrap();
-        console.log('News created successfully');
+        toast.success('News created successfully');
       }
       setShowModal(false);
+      refetch();
     } catch (error) {
-      console.error('Failed to save news:', error);
+      toast.error('Failed to save news');
     }
   };
 
@@ -125,6 +133,7 @@ const NewsPage: React.FC = () => {
 
   const columns = [
     { header: 'Title', accessor: 'title' },
+    { header: 'Content', accessor: 'content' },
     { header: 'Published Date', accessor: 'published_date' },
     { header: 'Category', accessor: 'category' },
     { header: 'Author', accessor: 'author_name' },
@@ -139,7 +148,6 @@ const NewsPage: React.FC = () => {
     <div className={styles.actions}>
       <button style={{marginRight: '1rem'}} onClick={() => handleEditNews(news)}>Edit</button>
       <button style={{marginRight: '1rem'}} onClick={() => handleDeleteNews(news.id)}>Delete</button>
-      <button onClick={() => window.location.href = `/news/${news.id}`}>View</button>
     </div>
   );
 
@@ -211,6 +219,7 @@ const NewsPage: React.FC = () => {
             </div>
           </div>
         )}
+        <ToastNotifications />
       </div>
     </AdminLayout>
   );
