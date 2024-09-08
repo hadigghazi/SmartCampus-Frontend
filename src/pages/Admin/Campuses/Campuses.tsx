@@ -15,14 +15,14 @@ import Pagination from '../../../components/Pagination/Pagination';
 import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
 import { toast } from 'react-toastify';
 import Spinner from '../../../components/Spinner/Spinner';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 
 const Campuses: React.FC = () => {
-  const { data: initialCampuses, isLoading, error } = useGetCampusesQuery();
+  const { data: campuses, isLoading, error, refetch } = useGetCampusesQuery();
   const [deleteCampus] = useDeleteCampusMutation();
   const [addCampus] = useCreateCampusMutation();
   const [updateCampus] = useUpdateCampusMutation();
 
-  const [campuses, setCampuses] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
@@ -35,12 +35,6 @@ const Campuses: React.FC = () => {
   });
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (initialCampuses) {
-      setCampuses(initialCampuses);
-    }
-  }, [initialCampuses]);
 
   if (isLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (error) return <p>Something went wrong!</p>;
@@ -61,10 +55,9 @@ const Campuses: React.FC = () => {
     if (isConfirmed) {
       try {
         await deleteCampus(campusId).unwrap();
-        setCampuses(campuses.filter(campus => campus.id !== campusId));
         toast.success('Campus deleted successfully!');
+        refetch();
       } catch (err) {
-        console.error('Error deleting campus:', err);
         toast.error('Failed to delete campus.');
       }
     }
@@ -111,16 +104,14 @@ const Campuses: React.FC = () => {
     try {
       if (campusData.id) {
         await updateCampus({ id: campusData.id, ...campusData }).unwrap();
-        setCampuses(campuses.map(campus => campus.id === campusData.id ? campusData : campus));
         toast.success('Campus updated successfully!');
       } else {
         const newCampus = await addCampus(campusData).unwrap();
-        setCampuses([...campuses, newCampus]);
         toast.success('Campus added successfully!');
       }
       handleCloseModal();
+      refetch();
     } catch (err) {
-      console.error('Error submitting campus:', err);
       toast.error('Failed to submit campus.');
     }
   };
@@ -146,7 +137,7 @@ const Campuses: React.FC = () => {
         <EntriesPerPage value={entriesPerPage} onChange={handleEntriesPerPageChange} />
         <Table
           columns={[
-            { header: 'Campus Name', accessor: 'name' },
+            { header: 'Name', accessor: 'name' },
             { header: 'Location', accessor: 'location' },
             { header: 'Description', accessor: 'description' },
           ]}
@@ -196,13 +187,14 @@ const Campuses: React.FC = () => {
                 />
               </label>
               <div className={styles.btnContainer}>
-                <button type="submit" className={styles.acceptBtn}>{campusData.id ? 'Update Campus' : 'Add Campus'}</button>
                 <button type="button" onClick={handleCloseModal} className={styles.rejectBtn}>Cancel</button>
+                <button type="submit" className={styles.acceptBtn}>{campusData.id ? 'Update Campus' : 'Add Campus'}</button>
               </div>
             </form>
           </div>
         </div>
       )}
+      <ToastNotifications />
     </AdminLayout>
   );
 };
