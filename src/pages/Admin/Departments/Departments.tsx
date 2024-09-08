@@ -12,9 +12,12 @@ import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import styles from '../Courses/Courses.module.css'; 
 import AdminLayout from '../AdminLayout';
 import { Department } from '../../../features/api/types';
+import { toast } from 'react-toastify';
+import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 
 const Departments: React.FC = () => {
-  const { data: departments = [] } = useGetDepartmentsQuery();
+  const { data: departments = [], refetch } = useGetDepartmentsQuery();
   const [deleteDepartment] = useDeleteDepartmentMutation();
   const [createDepartment] = useCreateDepartmentMutation();
   const [updateDepartment] = useUpdateDepartmentMutation();
@@ -55,12 +58,16 @@ const Departments: React.FC = () => {
   };
 
   const handleDeleteDepartment = async (id: number) => {
+    const isConfirmed = await ConfirmationDialog('Are you sure?', 'You won’t be able to revert this!');
+    if (isConfirmed) {
     try {
       await deleteDepartment(id).unwrap();
-      console.log('Department deleted successfully');
+      toast.success('Department deleted successfully');
+      refetch();
     } catch (error) {
-      console.error('Failed to delete department:', error);
+      toast.error('Failed to delete department');
     }
+  }
   };
 
   const handleSaveDepartment = async () => {
@@ -71,17 +78,18 @@ const Departments: React.FC = () => {
           ...formValues,
           updated_at: new Date().toISOString(),
         }).unwrap();
-        console.log('Department updated successfully');
+        toast.success('Department updated successfully');
       } else {
         await createDepartment({
           ...formValues,
           created_at: new Date().toISOString(),
         }).unwrap();
-        console.log('Department created successfully');
+        toast.success('Department created successfully');
       }
       setShowModal(false);
+      refetch();
     } catch (error) {
-      console.error('Failed to save department:', error);
+      toast.error('Failed to save department');
     }
   };
 
@@ -183,6 +191,7 @@ const Departments: React.FC = () => {
             </div>
           </div>
         )}
+        <ToastNotifications />
       </div>
     </AdminLayout>
   );
