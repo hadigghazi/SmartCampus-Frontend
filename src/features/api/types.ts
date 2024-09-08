@@ -420,3 +420,28 @@ export interface FinancialAidScholarship {
   deleted_at?: string | null;
 }
 
+export type Dorm = {
+  id: number;
+  name: string;
+  description: string;
+  capacity: number;
+  available_rooms: number;
+  campus_id: number;
+  address: string;
+  created_at: string; 
+  updated_at: string; 
+  deleted_at?: string; 
+};
+
+export type DormRoom = {
+  id: number;
+  dorm_id: number;
+  room_number: string;
+  capacity: number;
+  available_beds: number;
+  floor: string;
+  description: string;
+  created_at: string; 
+  updated_at: string; 
+  deleted_at?: string; 
+};
