@@ -137,8 +137,8 @@ const NewsPage: React.FC = () => {
 
   const actions = (news: News) => (
     <div className={styles.actions}>
-      <button onClick={() => handleEditNews(news)}>Edit</button>
-      <button onClick={() => handleDeleteNews(news.id)}>Delete</button>
+      <button style={{marginRight: '1rem'}} onClick={() => handleEditNews(news)}>Edit</button>
+      <button style={{marginRight: '1rem'}} onClick={() => handleDeleteNews(news.id)}>Delete</button>
       <button onClick={() => window.location.href = `/news/${news.id}`}>View</button>
     </div>
   );
@@ -152,7 +152,6 @@ const NewsPage: React.FC = () => {
           <button onClick={handleAddNews} className={styles.addButton}>Add News</button>
         </div>
         <EntriesPerPage value={pageSize} onChange={handleEntriesPerPageChange} />
-        <div className={styles.wrapper}>
           <Table
             columns={columns}
             data={data}
@@ -163,11 +162,10 @@ const NewsPage: React.FC = () => {
             totalPages={totalPages}
             onPageChange={handlePageChange}
           />
-        </div>
         {showModal && (
           <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
-              <h2>{editingNews ? 'Edit News' : 'Add News'}</h2>
+              <h2 className={styles.headingSecondary}>{editingNews ? 'Edit News' : 'Add News'}</h2>
               <form className={styles.form}>
                 <label>
                   Title:
@@ -189,7 +187,6 @@ const NewsPage: React.FC = () => {
                     required
                   />
                 </label>
-                {/* Removed Published Date field */}
                 <label>
                   Category:
                   <input
@@ -201,12 +198,14 @@ const NewsPage: React.FC = () => {
                   />
                 </label>
                 <div>
-                  <button type="button" className={styles.addButton} onClick={handleSaveNews}>
-                    Save
-                  </button>
-                  <button type="button" className={styles.addButton} onClick={() => setShowModal(false)}>
+                  <div className={styles.btnContainer}>
+                <button type="button" className={styles.rejectBtn} onClick={() => setShowModal(false)}>
                     Cancel
                   </button>
+                  <button type="button" className={styles.acceptBtn} onClick={handleSaveNews}>
+                    Save
+                  </button>
+                  </div>
                 </div>
               </form>
             </div>
