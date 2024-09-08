@@ -70,8 +70,16 @@ const DormRoomDetailsPage: React.FC = () => {
       };
 
       if (editingRegistration) {
-        await updateDormRoomRegistration({ id: editingRegistration.id, updates: registrationPayload }).unwrap();
-        toast.success('Registration updated successfully');
+        await updateDormRoomRegistration({
+            id: editingRegistration.id,
+            registration: {
+              student_id: Number(formValues.student_id),
+              dorm_room_id: dormRoomId,
+              start_date: formValues.start_date,
+              end_date: formValues.end_date,
+            },
+          }).unwrap();
+                  toast.success('Registration updated successfully');
       } else {
         if (roomRegistrations.length + 1 > dormRoom?.capacity) {
           toast.error('Cannot add more registrations than room capacity');
