@@ -15,6 +15,7 @@ import AdminLayout from '../AdminLayout';
 import styles from '../CourseDetails/CourseDetails.module.css';
 import Spinner from '../../../components/Spinner/Spinner';
 import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
+import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
 
 const DormRoomDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -97,6 +98,8 @@ const DormRoomDetailsPage: React.FC = () => {
   };
 
   const handleDeleteRegistration = async (id: number) => {
+    const isConfirmed = await ConfirmationDialog('Are you sure?', 'You won’t be able to revert this!');
+    if (isConfirmed) {
     try {
       await deleteDormRoomRegistration(id).unwrap();
       toast.success('Registration deleted successfully');
@@ -104,6 +107,7 @@ const DormRoomDetailsPage: React.FC = () => {
     } catch (error) {
       toast.error('Failed to delete registration');
     }
+}
   };
 
   const registrationColumns = [
