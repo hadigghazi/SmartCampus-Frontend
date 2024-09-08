@@ -101,10 +101,11 @@ const BorrowRequests: React.FC = () => {
             onChange={(e) => setSelectedStatus(e.target.value === 'all' ? 'all' : e.target.value)}
           >
             <option value="all">All Statuses</option>
-            <option value="Pending">Pending</option>
-            <option value="Approved">Approved</option>
+            <option value="Requested">Requested</option>
+            <option value="Borrowed">Borrowed</option>
             <option value="Rejected">Rejected</option>
             <option value="Returned">Returned</option>
+            <option value="Overdue">Overdue</option>
           </select>
         </div>
         <EntriesPerPage value={entriesPerPage} onChange={handleEntriesPerPageChange} />
