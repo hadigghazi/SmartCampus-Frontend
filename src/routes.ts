@@ -93,6 +93,7 @@ const InstructorDetails = lazy(() => import('./pages/Admin/InstructorDetails/Ins
 const Admins = lazy(() => import('./pages/Admin/Admins/Admins'));
 const AdminDetails = lazy(() => import('./pages/Admin/AdminDetails/AdminDetails'));
 const AdminDashboard = lazy(() => import('./pages/Admin/AdminDashboard/AdminDashboard'));
+const AdminProfile = lazy(() => import('./pages/Admin/AdminProfile/AdminProfile'));
 
 const Login = lazy(() => import('./pages/Login/Login')); 
 const Register = lazy(() => import('./pages/Register/Register')); 
@@ -199,6 +200,10 @@ const routes: CustomRouteProps[] = [
   {
     path: '/admin/dashboard',
     component: AdminDashboard,
+  },
+  {
+    path: '/admin/profile',
+    component: AdminProfile,
   },
   {
     path: '/admin/applications/students',
