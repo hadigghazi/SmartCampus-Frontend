@@ -18,43 +18,36 @@ import DeanCard from '../../../components/DeanCard/DeanCard';
 import styles from '../CourseDetails/CourseDetails.module.css';
 import profilePicture from "../../../assets/images/profileImage.jpg";
 import Spinner from '../../../components/Spinner/Spinner';
+import { toast } from 'react-toastify';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
+import { Major } from '../../../features/api/types';
+import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
 
 const FacultyCampusDetails: React.FC = () => {
   const { campusId, id: facultyId } = useParams<{ campusId: string, id: string }>();
   const [facultyCampusId, setFacultyCampusId] = useState<number | null>(null);
   const { data: faculty, isLoading: facultyLoading, error: facultyError } = useGetFacultyByIdQuery(Number(facultyId));
-  const { data: initialMajors, isLoading: majorsLoading, error: majorsError } = useGetMajorsByFacultyAndCampusQuery({
+  const { data: majors, isLoading: majorsLoading, error: majorsError, refetch: refetchMajors } = useGetMajorsByFacultyAndCampusQuery({
     facultyId: Number(facultyId),
     campusId: Number(campusId)
   });
-  const { data: availableMajors } = useGetMajorsByFacultyQuery(Number(facultyId));
+  const { data: availableMajors, refetch: refetchAvailableMajors } = useGetMajorsByFacultyQuery(Number(facultyId));
   const [attachMajorToFacultyCampus] = useAttachMajorToFacultyCampusMutation();
   const [detachMajorFromFacultyCampus] = useDetachMajorFromFacultyCampusMutation();
   const { data: facultyCampusData } = useGetFacultyCampusIdQuery({ facultyId: Number(facultyId), campusId: Number(campusId) });
 
-  const [majors, setMajors] = useState<Major[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedMajor, setSelectedMajor] = useState<number | ''>('');
 
-  const { data: dean, isLoading: deanLoading } = useGetDeanByFacultyAndCampusQuery({ facultyId: Number(facultyId), campusId: Number(campusId) });
+  const { data: dean, isLoading: deanLoading, refetch: refetchDeans } = useGetDeanByFacultyAndCampusQuery({ facultyId: Number(facultyId), campusId: Number(campusId) });
   const [updateDean] = useUpdateDeanMutation();
   const [createDean] = useCreateDeanMutation();
   const [isModalOpenDean, setModalOpenDean] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-
-  useEffect(() => {
-    if (initialMajors) {
-      const mappedMajors = initialMajors.map((major: any) => ({
-        id: major.major_id,
-        name: major.major_name,
-      }));
-      setMajors(mappedMajors);
-    }
-  }, [initialMajors]);
 
   useEffect(() => {
     if (facultyCampusData) {
@@ -74,8 +67,10 @@ const FacultyCampusDetails: React.FC = () => {
       try {
         await updateDean({ id: dean.id, name, role_description: description }).unwrap();
         setModalOpenDean(false);
+        toast.success("Dean updated successfully!");
+        refetchDeans();
       } catch (error) {
-        console.error("Failed to update dean:", error);
+        toast.error("Failed to update dean");
       }
     }
   };
@@ -84,17 +79,19 @@ const FacultyCampusDetails: React.FC = () => {
     try {
       await createDean({ name, role_description: description, faculty_id: Number(facultyId), campus_id: Number(campusId) }).unwrap();
       setModalOpenDean(false);
+      toast.success("Dean updated successfully!");
+      refetchDeans();
     } catch (error) {
-      console.error("Failed to create dean:", error);
+      toast.error("Failed to create dean");
     }
   };
 
 
   const getAvailableMajors = () => {
-    if (!availableMajors || !initialMajors) return [];
+    if (!availableMajors || !majors) return [];
 
-    const assignedMajorIds = initialMajors.map((major: any) => major.major_id);
-    return availableMajors.filter((major) => !assignedMajorIds.includes(major.id));
+    const assignedMajorIds = majors?.map((major: any) => major.major_id);
+    return availableMajors?.filter((major) => !assignedMajorIds.includes(major.id));
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,50 +118,55 @@ const FacultyCampusDetails: React.FC = () => {
 
         const major = availableMajors?.find(m => m.id === Number(selectedMajor));
         if (major) {
-          setMajors([...majors, major]);
         }
         setModalOpen(false);
         setSelectedMajor('');
+        toast.success(`Major attached successfully to faculty!`)
+        refetchMajors();
+        refetchAvailableMajors();
       } catch (error) {
-        console.error("Failed to attach major:", error);
-        alert(`Failed to attach major: ${error.message || "An unexpected error occurred"}`);
+        toast.error(`Failed to attach major to faculty`);
       }
     }
   };
 
   const handleDetachMajor = async (majorId: number) => {
+    const isConfirmed = await ConfirmationDialog('Are you sure?');
+    if (isConfirmed) {
     if (facultyCampusId !== null) {
       try {
         await detachMajorFromFacultyCampus({
           major_id: majorId,
           faculty_campus_id: facultyCampusId,
         }).unwrap();
-
-        setMajors(majors.filter(m => m.id !== majorId));
+        toast.success(`Major detached successfully!`)
+        refetchAvailableMajors();
+        refetchMajors();
       } catch (error) {
         console.error("Failed to detach major:", error);
-        alert(`Failed to detach major: ${error.message || "An unexpected error occurred"}`);
+        toast.error(`Failed to detach major from faculty`);
       }
     }
+  }
   };
 
-  const filteredMajors = majors.filter(major =>
-    major?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredMajors = majors?.filter(major =>
+    major?.major_name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const indexOfLastMajor = currentPage * entriesPerPage;
   const indexOfFirstMajor = indexOfLastMajor - entriesPerPage;
-  const currentMajors = filteredMajors.slice(indexOfFirstMajor, indexOfLastMajor);
-  const totalPages = Math.ceil(filteredMajors.length / entriesPerPage);
+  const currentMajors = filteredMajors?.slice(indexOfFirstMajor, indexOfLastMajor);
+  const totalPages = Math.ceil(filteredMajors?.length / entriesPerPage);
 
   const columns = [
-    { header: 'Major Name', accessor: 'name' as keyof Major },
+    { header: 'Major Name', accessor: 'major_name' as keyof Major },
     {
       header: 'Actions',
       accessor: (major: Major) => (
         <div style={{ display: 'flex', gap: '1rem' }}>
-          <Link to={`/admin/majors/${major.id}`}>View</Link>
-          <button onClick={() => handleDetachMajor(major.id)}>Remove</button>
+          <Link to={`/admin/majors/${major.major_id}`}>View</Link>
+          <button onClick={() => handleDetachMajor(major.major_id)}>Remove</button>
         </div>
       ),
     },
@@ -190,7 +192,7 @@ const FacultyCampusDetails: React.FC = () => {
             <SearchInput value={searchTerm} onChange={handleSearch} />
             <EntriesPerPage value={entriesPerPage} onChange={handleEntriesPerPageChange} />
           </div>
-          {currentMajors.length > 0 ? (
+          {currentMajors?.length > 0 ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
               <Table columns={columns} data={currentMajors} />
               <Pagination
@@ -239,8 +241,8 @@ const FacultyCampusDetails: React.FC = () => {
               ))}
             </select>
             <div className={styles.btnContainer} style={{marginTop: "2rem"}}>
-            <button onClick={handleAttachMajor} className={styles.acceptBtn}>Add</button>
             <button onClick={() => setModalOpen(false)} className={styles.rejectBtn}>Cancel</button>
+            <button onClick={handleAttachMajor} className={styles.acceptBtn}>Add</button>
             </div>
             </div>
           </div>
@@ -265,20 +267,21 @@ const FacultyCampusDetails: React.FC = () => {
                     className={styles.textarea}
                   />
                   <div className={styles.btnContainer}>
+                  <button onClick={() => setModalOpen(false)} className={styles.rejectBtn}>
+                      Cancel
+                    </button>
                     <button
                       onClick={dean ? handleEditDean : handleAddDean}
                       className={styles.acceptBtn}
                     >
                       {dean ? 'Update' : 'Add'}
                     </button>
-                    <button onClick={() => setModalOpen(false)} className={styles.rejectBtn}>
-                      Cancel
-                    </button>
                   </div>
                 </div>
               </div>
             </div>
           )}
+          <ToastNotifications />
     </AdminLayout>
   );
 };

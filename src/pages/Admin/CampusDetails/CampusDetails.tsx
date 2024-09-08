@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   useGetCampusByIdQuery, 
@@ -15,14 +15,16 @@ import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import styles from '../CourseDetails/CourseDetails.module.css';
 import { Faculty } from '../../../features/api/types';
 import Spinner from '../../../components/Spinner/Spinner';
+import { toast } from 'react-toastify';
+import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 
 const CampusDetails: React.FC = () => {
   const { id: campusId } = useParams<{ id: string }>();
-  const { data: campus, isLoading: campusLoading, error: campusError } = useGetCampusByIdQuery(Number(campusId));
-  const { data: initialFaculties, isLoading: facultiesLoading, error: facultiesError } = useGetFacultiesByCampusQuery(Number(campusId));
+  const { data: campus, isLoading: campusLoading, error: campusError, refetch: refetchCampuses } = useGetCampusByIdQuery(Number(campusId));
+  const { data: faculties, isLoading: facultiesLoading, error: facultiesError, refetch: refetchFaculties } = useGetFacultiesByCampusQuery(Number(campusId));
   const { data: allFaculties } = useGetFacultiesQuery(); 
 
-  const [faculties, setFaculties] = useState<Faculty[]>(initialFaculties || []);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
@@ -31,12 +33,6 @@ const CampusDetails: React.FC = () => {
 
   const [attachFacultyToCampus] = useAttachFacultyToCampusMutation();
   const [detachFacultyFromCampus] = useDetachFacultyFromCampusMutation();
-
-  useEffect(() => {
-    if (initialFaculties) {
-      setFaculties(initialFaculties);
-    }
-  }, [initialFaculties]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -68,35 +64,36 @@ const CampusDetails: React.FC = () => {
           campusId: Number(campusId),
           faculty_id: selectedFacultyId, 
         }).unwrap(); 
-
-        const faculty = allFaculties?.find(f => f.id === selectedFacultyId);
-        if (faculty) {
-          setFaculties([...faculties, faculty]);
-        }
         handleCloseModal();
+        toast.success("Faculty attached to campus successfully");
+        refetchFaculties();
       } catch (error) {
-        console.error("Failed to attach faculty:", error);
+        toast.error("Failed to attach faculty to campus");
       }
     }
   };  
 
   const handleDetachFaculty = async (facultyId: number) => {
+    const isConfirmed = await ConfirmationDialog('Are you sure?', '');
+    if (isConfirmed) {
     try {
       await detachFacultyFromCampus({ campusId: Number(campusId), facultyId }).unwrap();
-      setFaculties(faculties.filter(f => f.id !== facultyId));
+      toast.success("Faculty detached from campus successfully");
+      refetchFaculties();
     } catch (error) {
-      console.error("Failed to detach faculty:", error);
+      toast.error("Failed to detach faculty from campus");
     }
+  }
   };
 
-  const filteredFaculties = faculties.filter(faculty =>
+  const filteredFaculties = faculties?.filter(faculty =>
     faculty?.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const indexOfLastFaculty = currentPage * entriesPerPage;
   const indexOfFirstFaculty = indexOfLastFaculty - entriesPerPage;
-  const currentFaculties = filteredFaculties.slice(indexOfFirstFaculty, indexOfLastFaculty);
-  const totalPages = Math.ceil(filteredFaculties.length / entriesPerPage);
+  const currentFaculties = filteredFaculties?.slice(indexOfFirstFaculty, indexOfLastFaculty);
+  const totalPages = Math.ceil(filteredFaculties?.length / entriesPerPage);
 
   const columns = [
     { header: 'Faculty Name', accessor: 'name' as keyof Faculty },
@@ -167,12 +164,13 @@ const CampusDetails: React.FC = () => {
               ))}
             </select>
             <div className={styles.btnContainer}>
-            <button onClick={handleAttachFaculty} className={styles.acceptBtn}>Add</button>
             <button onClick={handleCloseModal} className={styles.rejectBtn}>Close</button>
+            <button onClick={handleAttachFaculty} className={styles.acceptBtn}>Add</button>
             </div>
           </div>
         </div>
       )}
+      <ToastNotifications />
     </AdminLayout>
   );
 };
