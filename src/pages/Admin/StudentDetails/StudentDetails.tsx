@@ -230,13 +230,9 @@ const StudentDetails: React.FC = () => {
                 <p><strong>Visa Status:</strong> {student.visa_status || 'N/A'}</p>
                 <p><strong>Native Language:</strong> {student.native_language}</p>
                 <p><strong>Secondary Language:</strong> {student.secondary_language}</p>
-                <p><strong>Current Semester ID:</strong> {student.current_semester_id || 'N/A'}</p>
                 <p><strong>Major:</strong> {getMajorName(student.major_id) || 'N/A'}</p> 
                 <p><strong>Additional Info:</strong> {student.additional_info || 'N/A'}</p>
-                <p><strong>Needs Transportation:</strong> {student.transportation ? 'Yes' : 'No'}</p>
-                <p><strong>Dorm Residency:</strong> {student.dorm_residency ? 'Yes' : 'No'}</p>
-                <p><strong>Emergency Contact ID:</strong> {student.emergency_contact_id || 'N/A'}</p>
-              </div>
+                </div>
             </div>
 
             <div className={styles.registrationsContainer} style={{ marginTop: '4rem' }}>

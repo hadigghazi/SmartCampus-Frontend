@@ -71,9 +71,6 @@ const Students: React.FC = () => {
         native_language: selectedStudent.native_language,
         secondary_language: selectedStudent.secondary_language,
         additional_info: selectedStudent.additional_info,
-        transportation: selectedStudent.transportation,
-        dorm_residency: selectedStudent.dorm_residency,
-        emergency_contact_id: selectedStudent.emergency_contact_id,
         major_id: selectedStudent.major_id,
       });
     }
@@ -223,36 +220,6 @@ const Students: React.FC = () => {
                   value={editedStudent.additional_info}
                   onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                     setEditedStudent({ ...editedStudent, additional_info: e.target.value })
-                  }
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label>Transportation</label>
-                <input
-                  type="number"
-                  value={editedStudent.transportation}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setEditedStudent({ ...editedStudent, transportation: Number(e.target.value) })
-                  }
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label>Dorm Residency</label>
-                <input
-                  type="number"
-                  value={editedStudent.dorm_residency}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setEditedStudent({ ...editedStudent, dorm_residency: Number(e.target.value) })
-                  }
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label>Emergency Contact ID</label>
-                <input
-                  type="number"
-                  value={editedStudent.emergency_contact_id}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setEditedStudent({ ...editedStudent, emergency_contact_id: Number(e.target.value) })
                   }
                 />
               </div>
