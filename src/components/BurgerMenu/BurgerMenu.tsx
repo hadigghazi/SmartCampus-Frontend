@@ -3,10 +3,12 @@ import { slide as Menu } from 'react-burger-menu';
 import './BurgerMenu.css';
 import logo from '../../assets/images/logo.png';
 import { Link } from 'react-router-dom';
+import defaultProfile from '../../assets/images/profileImage.jpg';
+import { useGetUserQuery } from '../../features/api/authApi';
 
 const BurgerMenu: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
+  const { data: user } = useGetUserQuery();
   const toggleAccordion = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
@@ -17,7 +19,22 @@ const BurgerMenu: React.FC = () => {
       <div className="menu-logo">
         <Link to='/'><img src={logo} alt="Menu Logo" /></Link>
       </div>
-
+      <div className='accordion-item'>
+      <div className="menu-logo">
+        <Link to='/admin/profile'>
+        <img
+              src={user?.profile_picture || defaultProfile}
+              alt="profile"
+              className='profile-image'
+            />
+        </Link>
+      </div>
+      </div>
+      <div className='accordion-item'>
+      <div className="accordion-title">
+        <Link to='/admin/dashboard'>Dashboard</Link>
+      </div>
+      </div>
       <div className="accordion-item">
         <div
           className={`accordion-title ${activeIndex === 0 ? 'active' : ''}`}

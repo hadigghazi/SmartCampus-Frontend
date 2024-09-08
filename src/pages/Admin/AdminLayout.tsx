@@ -36,7 +36,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, requiredAdminType }
   }
 
   if (requiredAdminType && admin?.admin_type !== requiredAdminType) {
-    return <Navigate to="/admin/applications/students" />;
+    return <Navigate to="/admin/dashboard" />;
   }
 
   return (

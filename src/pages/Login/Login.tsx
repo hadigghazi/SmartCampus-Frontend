@@ -35,7 +35,7 @@ const Login: React.FC = () => {
             navigate('/instructor-dashboard');
             break;
           case 'Admin':
-            navigate('/admin/applications/students');
+            navigate('/admin/dashboard');
             break;
           default:
             console.error('Unknown user role');

@@ -4,6 +4,15 @@
     font-family: 'Metrophobic', sans-serif;
     color: white;
   }
+
+  .profile-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-top: 3rem;
+    margin-bottom: -1rem;
+    object-fit: cover;
+  }
   
   .accordion-title {
     background-color: var(--primary-color);

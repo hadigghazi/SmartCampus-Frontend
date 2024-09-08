@@ -26,7 +26,7 @@ const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
       case 'Instructor':
         return <Navigate to="/instructor-dashboard" />;
       case 'Admin':
-        return <Navigate to="/admin/applications/students" />;
+        return <Navigate to="/admin/dashboard" />;
       default:
         return <Navigate to="/" />; 
     }
