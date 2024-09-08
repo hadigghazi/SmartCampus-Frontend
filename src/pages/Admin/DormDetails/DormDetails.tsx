@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   useGetDormByIdQuery,
   useGetAllDormRoomsQuery,
@@ -8,7 +8,7 @@ import {
   useCreateDormRoomMutation,
 } from '../../../features/api/dormsApi';
 import Table from '../../../components/Table/Table';
-import { Dorm, DormRoom, Campus } from '../../../features/api/types';
+import { DormRoom } from '../../../features/api/types';
 import { toast } from 'react-toastify';
 import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
@@ -19,8 +19,8 @@ import { useGetCampusByIdQuery } from '../../../features/api/campusesApi';
 const DormDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dormId = Number(id);
-
-  const { data: dorm, refetch: refetchDorm } = useGetDormByIdQuery(dormId);
+  const navigate = useNavigate();
+  const { data: dorm } = useGetDormByIdQuery(dormId);
   const { data: roomsList = [], refetch: refetchRooms } = useGetAllDormRoomsQuery(dormId);
   const { data: campus } = useGetCampusByIdQuery(dorm?.campus_id || 0);
   const [deleteDormRoom] = useDeleteDormRoomMutation();
@@ -109,6 +109,7 @@ const DormDetailsPage: React.FC = () => {
 
   const actions = (room: DormRoom) => (
     <div className={styles.actions}>
+      <button style={{ marginRight: '1rem' }} onClick={() => navigate(`/admin/dorm-rooms/${room.id}`)}>View</button>
       <button style={{ marginRight: '1rem' }} onClick={() => handleEditRoom(room)}>Edit</button>
       <button onClick={() => handleDeleteRoom(room.id)}>Delete</button>
     </div>
