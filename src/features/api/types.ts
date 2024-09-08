@@ -457,3 +457,12 @@ export type DormRoomRegistration = {
   deleted_at?: string;
 }
 
+export type BusRoute = {
+  id: number;
+  route_name: string;
+  description: string;
+  schedule: string;
+  capacity: number;
+  campus_id: number;
+};
+
