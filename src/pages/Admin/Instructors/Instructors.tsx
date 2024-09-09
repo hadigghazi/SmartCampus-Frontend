@@ -22,6 +22,7 @@ type Instructor = {
   user_id: number;
   specialization: string;
   department_id: number;
+  salary: number;
   user: {
     first_name: string;
     middle_name: string;
@@ -39,14 +40,15 @@ const Instructors: React.FC = () => {
   const [entriesPerPage, setEntriesPerPage] = useState(20);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedInstructor, setSelectedInstructor] = useState<Instructor | null>(null);
-  const [editedInstructor, setEditedInstructor] = useState({ department_id: 0, specialization: '' });
+  const [editedInstructor, setEditedInstructor] = useState({ department_id: 0, specialization: '', salary: 0 }); 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (selectedInstructor) {
       setEditedInstructor({
         department_id: selectedInstructor.department_id,
-        specialization: selectedInstructor.specialization
+        specialization: selectedInstructor.specialization,
+        salary: selectedInstructor.salary 
       });
     }
   }, [selectedInstructor]);
@@ -101,6 +103,7 @@ const Instructors: React.FC = () => {
           id: selectedInstructor.id,
           department_id: editedInstructor.department_id,
           specialization: editedInstructor.specialization,
+          salary: editedInstructor.salary
         };
   
         await updateInstructor(updatedData).unwrap();
@@ -127,7 +130,8 @@ const Instructors: React.FC = () => {
           columns={[
             { header: 'ID', accessor: 'id' },
             { header: 'Full Name', accessor: (instructor) => `${instructor.user.first_name} ${instructor.user.middle_name || ''} ${instructor.user.last_name}` },
-            { header: 'Specialization', accessor: 'specialization' }
+            { header: 'Specialization', accessor: 'specialization' },
+            { header: 'Salary', accessor: 'salary' } 
           ]}
           data={currentEntries || []}
           actions={(instructor) => (
@@ -172,7 +176,15 @@ const Instructors: React.FC = () => {
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setEditedInstructor({ ...editedInstructor, specialization: e.target.value })}
                 />
               </div>
-              <div className={styles.btnContainer} style={{marginTop: "1rem"}}>
+              <div className={styles.formGroup}>
+                <label>Salary</label>
+                <input
+                  type="number"
+                  value={editedInstructor.salary}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setEditedInstructor({ ...editedInstructor, salary: Number(e.target.value) })}
+                />
+              </div>
+              <div className={styles.btnContainer} style={{ marginTop: "1rem" }}>
                 <button type="button" onClick={handleSaveEdit} className={styles.acceptBtn}>Save</button>
                 <button type="button" onClick={() => setIsEditModalOpen(false)} className={styles.rejectBtn}>Cancel</button>
               </div>

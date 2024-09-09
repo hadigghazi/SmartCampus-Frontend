@@ -7,6 +7,7 @@ import Table from '../../../components/Table/Table';
 import styles from './InstructorDetails.module.css'; 
 import defaultProfile from '../../../assets/images/profileImage.jpg';
 import Spinner from '../../../components/Spinner/Spinner';
+import { useGetDepartmentByIdQuery } from '../../../features/api/departmentsApi';
 
 const InstructorDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,7 +17,7 @@ const InstructorDetails: React.FC = () => {
   const userId = instructor?.user_id;
   const { data: user, isLoading: userLoading, error: userError } = useGetUserByIdQuery(userId || -1);
   const { data: courses, isLoading: coursesLoading, error: coursesError } = useGetCoursesAssignedToInstructorQuery(instructorId);
-
+  const { data: department } = useGetDepartmentByIdQuery(instructor?.department_id);
   if (instructorLoading || userLoading || coursesLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (instructorError || userError || coursesError) return <p>User is deleted from the system!</p>;
 
@@ -56,11 +57,9 @@ const InstructorDetails: React.FC = () => {
             <div className={styles.instructorCard}>
               <h2 className={styles.headingSecondary}>More Details</h2>
               <div className={styles.instructorInfo}>
-                <p><strong>Department ID:</strong> {instructor.department_id}</p>
+                <p><strong>Department:</strong> {department?.name}</p>
                 <p><strong>Specialization:</strong> {instructor.specialization}</p>
-                <p><strong>Created At:</strong> {instructor.created_at ? new Date(instructor.created_at).toLocaleDateString() : 'N/A'}</p>
-                <p><strong>Updated At:</strong> {instructor.updated_at ? new Date(instructor.updated_at).toLocaleDateString() : 'N/A'}</p>
-                <p><strong>Deleted At:</strong> {instructor.deleted_at ? new Date(instructor.deleted_at).toLocaleDateString() : 'N/A'}</p>
+                <p><strong>Salary:</strong> {instructor.salary}</p>
               </div>
             </div>
           </div>
