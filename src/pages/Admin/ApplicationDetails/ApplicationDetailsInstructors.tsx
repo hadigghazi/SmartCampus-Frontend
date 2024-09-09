@@ -15,8 +15,8 @@ const ApplicationDetailsInstructors: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const userId = parseInt(id!, 10);
 
-  const { data: user, isLoading: userLoading, error: userError } = useGetUserByIdQuery(userId);
-  const { data: instructor } = useGetInstructorByUserIdQuery(userId);
+  const { data: user, isLoading: userLoading, error: userError, refetch: refetchUser } = useGetUserByIdQuery(userId);
+  const { data: instructor, refetch: refetchInstructor } = useGetInstructorByUserIdQuery(userId);
   const [updateUserStatus] = useUpdateUserMutation();
   const [createInstructor] = useAddInstructorMutation();
   const { data: departments, isLoading: departmentsLoading, error: departmentsError } = useGetDepartmentsQuery();
@@ -87,6 +87,8 @@ const ApplicationDetailsInstructors: React.FC = () => {
         await updateUserStatus({ id: userId, status: 'Approved' }).unwrap();
         toast.success('Application accepted successfully!');
       }
+      refetchInstructor();
+      refetchUser();
     } catch (err) {
       console.error('Error accepting application:', err);
       toast.error('Failed to accept application.');
@@ -111,6 +113,8 @@ const ApplicationDetailsInstructors: React.FC = () => {
         await updateUserStatus({ id: userId, status: 'Rejected' }).unwrap();
         toast.success('Application rejected successfully!');
       }
+      refetchInstructor();
+      refetchUser();
     } catch (err) {
       console.error('Error rejecting application:', err);
       toast.error('Failed to reject application.');
@@ -184,8 +188,8 @@ const ApplicationDetailsInstructors: React.FC = () => {
 
                 </form>
                 <div className={styles.buttons}>
+                <button onClick={handleReject} className={styles.rejectBtn}>Reject Application</button>
                   <button onClick={handleAccept} className={styles.acceptBtn}>Accept Application</button>
-                  <button onClick={handleReject} className={styles.rejectBtn}>Reject Application</button>
                 </div>
               </div>
             )}
