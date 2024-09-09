@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetUserByIdQuery, useUpdateUserMutation } from '../../../features/api/usersApi';
 import { useCreateStudentMutation, useGetStudentByUserIdQuery } from '../../../features/api/studentsApi';
-import { useGetMajorsQuery } from '../../../features/api/majorsApi'; // Import the useGetMajorsQuery hook
+import { useGetMajorsQuery } from '../../../features/api/majorsApi'; 
 import AdminLayout from '../AdminLayout';
 import styles from './ApplicationDetails.module.css'; 
 import defaultProfile from '../../../assets/images/profileImage.jpg';
@@ -15,9 +15,9 @@ const ApplicationDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const userId = parseInt(id!, 10);
 
-  const { data: user, isLoading, error } = useGetUserByIdQuery(userId);
-  const { data: student } = useGetStudentByUserIdQuery(userId);
-  const { data: majors } = useGetMajorsQuery(); // Fetch majors
+  const { data: user, isLoading, error, refetch: refetchUser } = useGetUserByIdQuery(userId);
+  const { data: student, refetch: refetchStudent } = useGetStudentByUserIdQuery(userId);
+  const { data: majors } = useGetMajorsQuery(); 
   const [updateUserStatus] = useUpdateUserMutation();
   const [createStudent] = useCreateStudentMutation();
 
@@ -30,11 +30,8 @@ const ApplicationDetails: React.FC = () => {
     visa_status: '', 
     native_language: '',
     secondary_language: '',
-    current_semester_id: null,
     additional_info: '', 
-    transportation: false,
-    dorm_residency: false,
-    major_id: null,  // Add major_id to the state
+    major_id: null, 
     created_at: '', 
     updated_at: '', 
     deleted_at: '', 
@@ -47,9 +44,8 @@ const ApplicationDetails: React.FC = () => {
         user_id: userId,
         passport_number: student.passport_number || '', 
         visa_status: student.visa_status || '', 
-        current_semester_id: student.current_semester_id || null, 
         additional_info: student.additional_info || '', 
-        major_id: student.major_id || null, // Set major_id from student data
+        major_id: student.major_id || null,
         created_at: student.created_at || '', 
         updated_at: student.updated_at || '', 
         deleted_at: student.deleted_at || '', 
@@ -66,7 +62,7 @@ const ApplicationDetails: React.FC = () => {
         ? checked 
         : value === '' 
           ? null 
-          : name === 'current_semester_id' || name === 'major_id'
+          : name === 'major_id'
             ? parseInt(value, 10) 
             : value,
     }));
@@ -82,7 +78,6 @@ const ApplicationDetails: React.FC = () => {
         additional_info: formData.additional_info || null,
         major_id: formData.major_id || null, 
       };
-      console.log('Form Data:', cleanFormData);
 
       const result = await Swal.fire({
         title: 'Are you sure?',
@@ -103,6 +98,8 @@ const ApplicationDetails: React.FC = () => {
         await updateUserStatus({ id: userId, status: 'Approved' }).unwrap();
         toast.success('Application accepted successfully!');
       }
+      refetchStudent();
+      refetchUser();
     } catch (err) {
       console.error('Error accepting application:', err);
       toast.error('Failed to accept application.');
@@ -127,6 +124,8 @@ const ApplicationDetails: React.FC = () => {
         await updateUserStatus({ id: userId, status: 'Rejected' }).unwrap();
         toast.success('Application rejected successfully!');
       }
+      refetchStudent();
+      refetchUser();
     } catch (err) {
       console.error('Error rejecting application:', err);
       toast.error('Failed to reject application.');
@@ -138,7 +137,7 @@ const ApplicationDetails: React.FC = () => {
 
   return (
     <AdminLayout>
-      <div className={styles.container}>
+      <div className={styles.applicationDetailsContainer}>
         <h1 className={styles.headingPrimary}>Application Details</h1>
         {user ? (
           <div className={styles.detailsWrapper}>
@@ -264,37 +263,12 @@ const ApplicationDetails: React.FC = () => {
                       rows={4}
                     />
                   </div>
-
-                  <div className={styles.formGroup}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="transportation"
-                        checked={formData.transportation}
-                        onChange={handleInputChange}
-                      />
-                      Need Transportation?
-                    </label>
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="dorm_residency"
-                        checked={formData.dorm_residency}
-                        onChange={handleInputChange}
-                      />
-                      Require Dorm Residency?
-                    </label>
-                  </div>
-
-                  <div className={styles.formActions}>
-                    <button type="button" className={styles.acceptButton} onClick={handleAccept}>
-                      Accept
-                    </button>
-                    <button type="button" className={styles.rejectButton} onClick={handleReject}>
+                  <div className={styles.btnContainer}>
+                    <button type="button" className={styles.rejectBtn} onClick={handleReject}>
                       Reject
+                    </button>
+                    <button type="button" className={styles.acceptBtn} onClick={handleAccept}>
+                      Accept
                     </button>
                   </div>
                 </form>

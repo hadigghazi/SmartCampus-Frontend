@@ -8,7 +8,7 @@ import SearchInput from '../../../components/SearchInput/SearchInput';
 import EntriesPerPage from '../../../components/EntriesPerPage/EntriesPerPage';
 import Pagination from '../../../components/Pagination/Pagination';
 import Table from '../../../components/Table/Table';
-import styles from './Applications.module.css';
+import styles from '../Courses/Courses.module.css';
 import { toast } from 'react-toastify';
 import { User } from '../../../features/api/types';
 import Spinner from '../../../components/Spinner/Spinner';
@@ -18,10 +18,9 @@ interface ApplicationsProps {
 }
 
 const Applications: React.FC<ApplicationsProps> = ({ role }) => {
-  const { data: initialUsers, isLoading, error } = useGetUsersQuery();
+  const { data: users, isLoading, error, refetch } = useGetUsersQuery();
   const [deleteUser] = useDeleteUserMutation();
   const [updateUser] = useUpdateUserMutation();
-  const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [startDate, setStartDate] = useState<string | undefined>(undefined);
@@ -33,17 +32,11 @@ const Applications: React.FC<ApplicationsProps> = ({ role }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (initialUsers) {
-      setUsers(initialUsers);
-    }
-  }, [initialUsers]);
-
   if (isLoading) return <AdminLayout><Spinner /></AdminLayout>;
 
   const searchTerms = searchTerm.toLowerCase().trim().split(/\s+/);
 
-  const filteredUsers = users.filter((user) => {
+  const filteredUsers = users?.filter((user) => {
     const fullName = `${user.first_name} ${user.middle_name} ${user.last_name}`.toLowerCase();
     const userIdString = user.id.toString();
 
@@ -59,7 +52,7 @@ const Applications: React.FC<ApplicationsProps> = ({ role }) => {
     return matchesSearchTerm && matchesRole && matchesStatus && matchesDateRange;
   });
 
-  const sortedUsers = filteredUsers.sort((a, b) => {
+  const sortedUsers = filteredUsers?.sort((a, b) => {
     const dateA = new Date(a.created_at!);
     const dateB = new Date(b.created_at!);
     return sortOrder === 'newest' ? dateB.getTime() - dateA.getTime() : dateA.getTime() - dateB.getTime();
@@ -84,8 +77,8 @@ const Applications: React.FC<ApplicationsProps> = ({ role }) => {
     if (isConfirmed) {
       try {
         await deleteUser(userId).unwrap();
-        setUsers(users.filter(user => user.id !== userId));
         toast.success('User deleted successfully!');
+        refetch();
       } catch (err) {
         console.error('Error deleting user:', err);
         toast.error('Failed to delete user.');
@@ -97,9 +90,9 @@ const Applications: React.FC<ApplicationsProps> = ({ role }) => {
     if (selectedUser) {
       try {
         await updateUser(selectedUser).unwrap();
-        setUsers(users.map(user => user.id === selectedUser.id ? selectedUser : user));
         toast.success('User updated successfully!');
         setIsModalOpen(false);
+        refetch();
       } catch (err) {
         console.error('Error updating user:', err);
         toast.error('Failed to update user.');
@@ -293,11 +286,11 @@ const Applications: React.FC<ApplicationsProps> = ({ role }) => {
                 placeholder="Profile Picture URL"
               />
               <div className={styles.btnContainer}>
-              <button type="button" onClick={handleEditUser} className={styles.acceptBtn}>
-                Save
-              </button>
               <button type="button" onClick={handleModalClose} className={styles.rejectBtn}>
                 Cancel
+              </button>
+              <button type="button" onClick={handleEditUser} className={styles.acceptBtn}>
+                Save
               </button>
               </div>
             </form>
