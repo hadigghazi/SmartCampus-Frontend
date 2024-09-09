@@ -75,7 +75,8 @@ const BurgerMenu: React.FC = () => {
             <a href="/admin/centers">Centers</a>
             <a href="/admin/campuses">Campuses</a>
             <a href="/admin/departments">Departments</a>
-            <a href="#">Dorms & Transportation</a>
+            <a href="/admin/dorms">Dorms</a>
+            <a href="/admin/buses">Transportation</a>
           </div>
         )}
       </div>
