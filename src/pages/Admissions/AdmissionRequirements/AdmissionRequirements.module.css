@@ -43,11 +43,20 @@
   
   @media (max-width: 768px) {
     .headingPrimary {
-      font-size: 1.75rem;
+      font-size: 1rem;
     }
   
     .headingSecondary {
-      font-size: 1rem;
+      font-size: .8rem;
+    }
+    .text {
+      font-size: .8rem;
+    }
+    .container {
+      margin-top: -13rem;
+    }
+    .headingSecondary {
+      margin-top: 1rem;
     }
   }
   

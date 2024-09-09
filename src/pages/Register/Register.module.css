@@ -98,5 +98,10 @@
 
   .registerContainer {
     padding: 30px 20px;
+    margin-top: -12rem;
+  }
+
+  .title {
+    font-size: 16px;
   }
 }
