@@ -1,13 +1,15 @@
 import { useParams } from 'react-router-dom';
 import { useGetInstructorByIdQuery } from '../../../features/api/instructorsApi';
 import { useGetUserByIdQuery } from '../../../features/api/usersApi';
-import { useGetCoursesAssignedToInstructorQuery } from '../../../features/api/coursesApi'; // Import the query
+import { useGetCoursesAssignedToInstructorQuery } from '../../../features/api/coursesApi';
 import AdminLayout from '../AdminLayout';
 import Table from '../../../components/Table/Table'; 
 import styles from './InstructorDetails.module.css'; 
 import defaultProfile from '../../../assets/images/profileImage.jpg';
 import Spinner from '../../../components/Spinner/Spinner';
 import { useGetDepartmentByIdQuery } from '../../../features/api/departmentsApi';
+import { useAddSalaryPaymentMutation, useDeleteSalaryPaymentMutation, useGetSalaryPaymentsQuery } from '../../../features/api/salaryPaymentsApi'; // Import delete mutation
+import { useState } from 'react';
 
 const InstructorDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,8 +20,47 @@ const InstructorDetails: React.FC = () => {
   const { data: user, isLoading: userLoading, error: userError } = useGetUserByIdQuery(userId || -1);
   const { data: courses, isLoading: coursesLoading, error: coursesError } = useGetCoursesAssignedToInstructorQuery(instructorId);
   const { data: department } = useGetDepartmentByIdQuery(instructor?.department_id);
-  if (instructorLoading || userLoading || coursesLoading) return <AdminLayout><Spinner /></AdminLayout>;
+  const { data: salaryPayments, isLoading: salaryPaymentsLoading } = useGetSalaryPaymentsQuery();
+  const [addSalaryPayment] = useAddSalaryPaymentMutation();
+  const [deleteSalaryPayment] = useDeleteSalaryPaymentMutation(); // Initialize delete mutation
+
+  const [paymentData, setPaymentData] = useState({
+    amount: '',
+    payment_date: '',
+  });
+
+  if (instructorLoading || userLoading || coursesLoading || salaryPaymentsLoading) return <AdminLayout><Spinner /></AdminLayout>;
   if (instructorError || userError || coursesError) return <p>User is deleted from the system!</p>;
+
+  const handlePaymentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPaymentData({ ...paymentData, [e.target.name]: e.target.value });
+  };
+
+  const handlePaymentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (userId) {
+      await addSalaryPayment({
+        amount: parseFloat(paymentData.amount),
+        payment_date: paymentData.payment_date,
+        recipient_id: userId,
+        recipient_type: 'Instructor',
+      });
+    }
+  };
+
+  const handleDeletePayment = async (paymentId: number) => {
+    if (window.confirm("Are you sure you want to delete this payment?")) {
+      await deleteSalaryPayment(paymentId);
+    }
+  };
+
+  const salaryColumns = [
+    { header: 'Amount', accessor: 'amount' },
+    { header: 'Payment Date', accessor: 'payment_date' },
+    { header: 'Created At', accessor: 'created_at' },
+  ];
+
+  const filteredSalaryPayments = salaryPayments?.filter(payment => payment.recipient_id === userId);
 
   const columns = [
     { header: 'Course Code', accessor: 'course_code' },
@@ -29,6 +70,12 @@ const InstructorDetails: React.FC = () => {
     { header: 'Room', accessor: 'room' },
     { header: 'Schedule', accessor: 'schedule' },
   ];
+
+  const actions = (date: any) => (
+    <div className={styles.actions}>
+      <button onClick={() => handleDeletePayment(date.id)}>Delete</button>
+    </div>
+  );
 
   return (
     <AdminLayout>
@@ -74,6 +121,41 @@ const InstructorDetails: React.FC = () => {
           ) : (
             <p>No courses assigned to this instructor.</p>
           )}
+        </div>
+        <div className={styles.salaryPaymentsSection} style={{ marginTop: '4rem' }}>
+          <h2 className={styles.headingSecondary}>Salary Payments</h2>
+          {filteredSalaryPayments && filteredSalaryPayments.length > 0 ? (
+            <Table columns={salaryColumns} data={filteredSalaryPayments} actions={actions} />
+          ) : (
+            <p>No salary payments available for this instructor.</p>
+          )}
+
+          <div className={styles.paymentForm}>
+            <h3>Add New Payment</h3>
+            <form onSubmit={handlePaymentSubmit}>
+              <div>
+                <label>Amount:</label>
+                <input
+                  type="number"
+                  name="amount"
+                  value={paymentData.amount}
+                  onChange={handlePaymentChange}
+                  required
+                />
+              </div>
+              <div>
+                <label>Payment Date:</label>
+                <input
+                  type="date"
+                  name="payment_date"
+                  value={paymentData.payment_date}
+                  onChange={handlePaymentChange}
+                  required
+                />
+              </div>
+              <button type="submit">Add Payment</button>
+            </form>
+          </div>
         </div>
       </div>
     </AdminLayout>

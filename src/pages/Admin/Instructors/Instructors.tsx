@@ -185,8 +185,8 @@ const Instructors: React.FC = () => {
                 />
               </div>
               <div className={styles.btnContainer} style={{ marginTop: "1rem" }}>
+              <button type="button" onClick={() => setIsEditModalOpen(false)} className={styles.rejectBtn}>Cancel</button>
                 <button type="button" onClick={handleSaveEdit} className={styles.acceptBtn}>Save</button>
-                <button type="button" onClick={() => setIsEditModalOpen(false)} className={styles.rejectBtn}>Cancel</button>
               </div>
             </form>
           </div>
