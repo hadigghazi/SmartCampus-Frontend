@@ -9,10 +9,12 @@ import { useAppSelector } from '../../hooks';
 
 const Navbar: React.FC = () => {
   const dispatch = useDispatch();
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-  const [logoutMutation] = useLogoutMutation();
   const navigate = useNavigate();
+  const [logoutMutation] = useLogoutMutation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const userStatus = useAppSelector((state) => state.auth.user?.status);
 
   const handleLogout = async () => {
     try {
@@ -34,7 +36,7 @@ const Navbar: React.FC = () => {
         <img src={NavbarLogo} alt="header_logo" className={styles.logo} />
       </Link>
       <button className={`${styles.hamburger} ${isMenuOpen ? styles.open : ''}`} onClick={toggleMenu}>
-        {isMenuOpen ? '✕' : '☰'} {/* Hamburger icon changes to X when menu is open */}
+        {isMenuOpen ? '✕' : '☰'} 
       </button>
       <ul className={`${styles.menu} ${isMenuOpen ? styles.open : styles.closed}`}>
         <li className={styles.menuItem}>
@@ -48,9 +50,11 @@ const Navbar: React.FC = () => {
         </li>
         {isAuthenticated ? (
           <>
-            <li className={styles.menuItem}>
-              <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
-            </li>
+            {userStatus === 'Approved' && (
+              <li className={styles.menuItem}>
+                <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
+              </li>
+            )}
             <li className={styles.menuItem}>
               <Link to="/login">Portal</Link>
             </li>
