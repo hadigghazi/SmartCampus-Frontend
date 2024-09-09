@@ -20,6 +20,8 @@ const Transportation = lazy(() => import('./pages/Admissions/Transportation/Tran
 const Centers = lazy(() => import('./pages/Admissions/Centers/Centers'));
 const CenterPage = lazy(() => import('./pages/Admissions/CenterPage/CenterPage')); 
 const NewsDetailPage = lazy(() => import('./pages/NewsDetailPage/NewsDetailPage'));
+const AcademicRegister = lazy(() => import('./pages/Register/AcademicRegister'));
+const NonAcademicRegister = lazy(() => import('./pages/Register/NonAcademicRegister'));
 
 const Faculties = lazy(() => import('./pages/Academics/Faculties/Faculties'));
 const Majors = lazy(() => import('./pages/Academics/Majors/Majors'));
@@ -117,6 +119,14 @@ const routes: CustomRouteProps[] = [
   {
     path: '/admissions/apply',
     component: Register,
+  },
+  {
+    path: '/admissions/academic-careers',
+    component: AcademicRegister,
+  },
+  {
+    path: '/admissions/non-academic-careers',
+    component: NonAcademicRegister,
   },
   {
     path: '/admissions/fees',
