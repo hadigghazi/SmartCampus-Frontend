@@ -25,8 +25,8 @@ const Register: React.FC = () => {
     gender: 'Male',
     marital_status: 'Single',
     profile_picture: '',
-    address: '', // New field
-    emergency_contact_number: '' // New field
+    address: '', 
+    emergency_contact_number: '' 
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -206,26 +206,26 @@ const Register: React.FC = () => {
               />
             </div>
             <div className={styles.formGroup}>
-              <input
-                className={styles.inputField}
-                type="text"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                placeholder="Address"
-              />
-              <input
-                className={styles.inputField}
-                type="text"
-                name="emergency_contact_number"
-                value={formData.emergency_contact_number}
-                onChange={handleChange}
-                placeholder="Emergency Contact Number"
-              />
-            </div>
+    <input
+        className={styles.inputField}
+        type="text"
+        name="address"
+        value={formData.address || ''} 
+        onChange={handleChange}
+        placeholder="Address"
+    />
+    <input
+        className={styles.inputField}
+        type="text"
+        name="emergency_contact_number"
+        value={formData.emergency_contact_number || ''} 
+        onChange={handleChange}
+        placeholder="Emergency Contact Number"
+    />
             <button className={styles.submitButton} type="submit">
               Submit
             </button>
+           </div>
           </form>
         </div>
       </div>
