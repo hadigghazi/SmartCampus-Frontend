@@ -126,7 +126,7 @@ const ApplicationDetailsInstructors: React.FC = () => {
 
   return (
     <AdminLayout>
-      <div className={styles.container}>
+      <div className={styles.applicationDetailsContainer}>
         <h1 className={styles.headingPrimary}>Application Details</h1>
         {user ? (
           <div className={styles.detailsWrapper}>
