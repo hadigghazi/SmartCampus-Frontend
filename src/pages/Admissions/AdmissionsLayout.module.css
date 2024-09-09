@@ -95,7 +95,6 @@
       background-color: var(--secondary-color);
       padding: 1rem;
       box-shadow: none;
-      margin-top: 1rem;
     }
     
     .admissionsTitle {
@@ -168,3 +167,61 @@
     }
   }
   
+  @media (max-width: 768px) {
+
+    .layout {
+      margin-top: 0px;
+    }
+  
+    .header {
+      text-align: left;
+    }
+  
+    .headerImage {
+      height: auto;
+      margin-top: 2rem;
+    }
+  
+    .pageTitle {
+      position: static;
+      margin: 2rem 0;
+      font-size: 2rem;
+    }
+  
+    .nav {
+      position: static;
+      background-color: var(--secondary-color);
+      padding: 1rem;
+      box-shadow: none;
+      margin-top: 6rem; 
+    }
+  
+    .admissionsTitle {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+      text-align: left;
+    }
+  
+    .nav ul {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .nav li {
+      margin-bottom: 0.5rem;
+    }
+  
+    .nav a {
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .nav {
+      margin-top: 3rem;
+    }
+    .headerImage {
+      margin-top: 2rem;
+    }
+  }

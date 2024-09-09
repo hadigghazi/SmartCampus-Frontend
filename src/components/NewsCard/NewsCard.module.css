@@ -32,5 +32,10 @@
 @media (max-width: 480px) {
     .card{
         width: 220px;
+        height: 300px;
+        font-size: .8rem;
+    }
+    .image {
+      height: 150px;
     }
 }

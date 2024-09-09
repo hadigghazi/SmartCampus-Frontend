@@ -78,10 +78,11 @@
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
+    margin-top: 4rem;
   }
 
   .headingPrimary {
-    font-size: 1.75rem; 
+    font-size: 1.55rem; 
   }
 
   .headingSecondary {
