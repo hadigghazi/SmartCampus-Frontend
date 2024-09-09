@@ -4,7 +4,7 @@ import styles from './AdmissionRequirements.module.css';
 
 const AdmissionRequirements: React.FC = () => {
   return (
-    <AdmissionsLayout title="Admission Requirements">
+    <AdmissionsLayout title="Requirements">
       <div className={styles.container}>
       <h2 className={styles.headingSecondary}>- Requirements</h2>
       <h1 className={styles.headingPrimary}>Undergraduate Programs</h1>

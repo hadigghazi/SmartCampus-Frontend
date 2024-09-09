@@ -38,7 +38,6 @@
   
   .list {
     list-style-type: disc;
-    margin-left: 2rem;
   }
   
   @media (max-width: 768px) {
@@ -49,7 +48,7 @@
     .headingSecondary {
       font-size: .8rem;
     }
-    .text {
+    .text, .list {
       font-size: .8rem;
     }
     .container {

@@ -4,7 +4,7 @@ import styles from './FinancialAidAndScholarships.module.css';
 
 const FinancialAidAndScholarships: React.FC = () => {
   return (
-    <AdmissionsLayout title="Financial Aid And Scholarships">
+    <AdmissionsLayout title="Scholarships">
     <div className={styles.container}>
       <h2 className={styles.headingSecondary}>- Apply For</h2>
       <h1 className={styles.headingPrimary}>Financial Aid Or Scholarship</h1>

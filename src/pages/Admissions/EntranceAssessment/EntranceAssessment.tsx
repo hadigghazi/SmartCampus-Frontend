@@ -4,7 +4,7 @@ import styles from './EntranceAssessment.module.css';
 
 const EntranceAssessment: React.FC = () => {
   return (
-    <AdmissionsLayout title="Entrance Assessment">
+    <AdmissionsLayout title="Assessment">
     <div className={styles.container}>
     <h2 className={styles.headingSecondary}>- How To Get Accepted?</h2>
       <h1 className={styles.headingPrimary}>Undergraduate Programs</h1>
