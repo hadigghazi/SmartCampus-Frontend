@@ -18,6 +18,7 @@ type Admin = {
   user_id: number;
   department_id: number;
   admin_type: 'Super Admin' | 'Admin';
+  salary: number; 
   user: {
     first_name: string;
     middle_name: string;
@@ -36,15 +37,16 @@ const Admins: React.FC = () => {
     const [entriesPerPage, setEntriesPerPage] = useState(20);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
-    const [editedAdmin, setEditedAdmin] = useState({ department_id: 0, admin_type: 'Admin' });
-    
+    const [editedAdmin, setEditedAdmin] = useState({ department_id: 0, admin_type: 'Admin', salary: 0 }); 
+
     const navigate = useNavigate();
 
     useEffect(() => {
         if (selectedAdmin) {
             setEditedAdmin({
                 department_id: selectedAdmin.department_id,
-                admin_type: selectedAdmin.admin_type
+                admin_type: selectedAdmin.admin_type,
+                salary: selectedAdmin.salary, 
             });
         }
     }, [selectedAdmin]);
@@ -99,6 +101,7 @@ const Admins: React.FC = () => {
                     id: selectedAdmin.id,
                     department_id: editedAdmin.department_id,
                     admin_type: editedAdmin.admin_type,
+                    salary: editedAdmin.salary,
                 };
 
                 await updateAdmin(updatedData).unwrap();
@@ -125,7 +128,8 @@ const Admins: React.FC = () => {
                     columns={[
                         { header: 'ID', accessor: 'id' },
                         { header: 'Full Name', accessor: (admin: Admin) => `${admin?.user?.first_name} ${admin?.user?.middle_name} ${admin?.user?.last_name}` },
-                        { header: 'Admin Type', accessor: 'admin_type' }
+                        { header: 'Admin Type', accessor: 'admin_type' },
+                        { header: 'Salary', accessor: 'salary' } 
                     ]}
                     data={currentEntries || []}
                     actions={(admin: Admin) => (
@@ -171,9 +175,17 @@ const Admins: React.FC = () => {
                                     <option value="Super Admin">Super Admin</option>
                                 </select>
                             </div>
+                            <div className={styles.formGroup}>
+                                <label>Salary</label>
+                                <input
+                                    type="number"
+                                    value={editedAdmin.salary}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => setEditedAdmin({ ...editedAdmin, salary: Number(e.target.value) })}
+                                />
+                            </div>
                             <div className={styles.btnContainer} style={{ marginTop: '1rem' }}>
-                                <button type="button" onClick={handleSaveEdit} className={styles.acceptBtn}>Save</button>
                                 <button type="button" onClick={() => setIsEditModalOpen(false)} className={styles.rejectBtn}>Cancel</button>
+                                <button type="button" onClick={handleSaveEdit} className={styles.acceptBtn}>Save</button>
                             </div>
                         </form>
                     </div>
