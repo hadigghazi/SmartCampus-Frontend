@@ -4,12 +4,15 @@ import { useGetUserByIdQuery } from '../../../features/api/usersApi';
 import { useGetCoursesAssignedToInstructorQuery } from '../../../features/api/coursesApi';
 import AdminLayout from '../AdminLayout';
 import Table from '../../../components/Table/Table'; 
-import styles from './InstructorDetails.module.css'; 
+import styles from '../StudentDetails/StudentDetails.module.css'
 import defaultProfile from '../../../assets/images/profileImage.jpg';
 import Spinner from '../../../components/Spinner/Spinner';
 import { useGetDepartmentByIdQuery } from '../../../features/api/departmentsApi';
-import { useAddSalaryPaymentMutation, useDeleteSalaryPaymentMutation, useGetSalaryPaymentsQuery } from '../../../features/api/salaryPaymentsApi'; // Import delete mutation
+import { useAddSalaryPaymentMutation, useDeleteSalaryPaymentMutation, useGetSalaryPaymentsQuery } from '../../../features/api/salaryPaymentsApi'; 
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
+import { toASCII } from 'punycode';
 
 const InstructorDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -20,9 +23,9 @@ const InstructorDetails: React.FC = () => {
   const { data: user, isLoading: userLoading, error: userError } = useGetUserByIdQuery(userId || -1);
   const { data: courses, isLoading: coursesLoading, error: coursesError } = useGetCoursesAssignedToInstructorQuery(instructorId);
   const { data: department } = useGetDepartmentByIdQuery(instructor?.department_id);
-  const { data: salaryPayments, isLoading: salaryPaymentsLoading } = useGetSalaryPaymentsQuery();
+  const { data: salaryPayments, isLoading: salaryPaymentsLoading, refetch: refetchPayments } = useGetSalaryPaymentsQuery();
   const [addSalaryPayment] = useAddSalaryPaymentMutation();
-  const [deleteSalaryPayment] = useDeleteSalaryPaymentMutation(); // Initialize delete mutation
+  const [deleteSalaryPayment] = useDeleteSalaryPaymentMutation();
 
   const [paymentData, setPaymentData] = useState({
     amount: '',
@@ -45,19 +48,23 @@ const InstructorDetails: React.FC = () => {
         recipient_id: userId,
         recipient_type: 'Instructor',
       });
+      refetchPayments();
+      toast.success('Payment Added Successfully!')
     }
   };
 
   const handleDeletePayment = async (paymentId: number) => {
-    if (window.confirm("Are you sure you want to delete this payment?")) {
+    const isConfirmed = await ConfirmationDialog('Are you sure?', 'You are about to delete this!');
+    if (isConfirmed) {
       await deleteSalaryPayment(paymentId);
     }
+    toast.success('Payment Deleted Successfully!');
+    refetchPayments();
   };
 
   const salaryColumns = [
     { header: 'Amount', accessor: 'amount' },
     { header: 'Payment Date', accessor: 'payment_date' },
-    { header: 'Created At', accessor: 'created_at' },
   ];
 
   const filteredSalaryPayments = salaryPayments?.filter(payment => payment.recipient_id === userId);
@@ -79,7 +86,7 @@ const InstructorDetails: React.FC = () => {
 
   return (
     <AdminLayout>
-      <div className={styles.instructorDetailsContainer}>
+      <div className={styles.studentDetailsContainer}>
         <h1 className={styles.headingPrimary}>Instructor Details</h1>
         {user && instructor ? (
           <div className={styles.detailsWrapper}>
@@ -130,11 +137,11 @@ const InstructorDetails: React.FC = () => {
             <p>No salary payments available for this instructor.</p>
           )}
 
-          <div className={styles.paymentForm}>
-            <h3>Add New Payment</h3>
-            <form onSubmit={handlePaymentSubmit}>
+          <div className={styles.paymentForm} style={{marginTop: "5rem"}}>
+            <h3 className={styles.headingSecondary}>Add New Payment</h3>
+            <form className={styles.uploadForm} onSubmit={handlePaymentSubmit}>
               <div>
-                <label>Amount:</label>
+                <label style={{marginRight: "2rem"}}>Amount:
                 <input
                   type="number"
                   name="amount"
@@ -142,9 +149,8 @@ const InstructorDetails: React.FC = () => {
                   onChange={handlePaymentChange}
                   required
                 />
-              </div>
-              <div>
-                <label>Payment Date:</label>
+                </label>
+                <label style={{marginRight: "2rem"}}>Payment Date:
                 <input
                   type="date"
                   name="payment_date"
@@ -152,8 +158,9 @@ const InstructorDetails: React.FC = () => {
                   onChange={handlePaymentChange}
                   required
                 />
+                </label>
+              <button className={styles.submitButton} type="submit">Add Payment</button>
               </div>
-              <button type="submit">Add Payment</button>
             </form>
           </div>
         </div>
