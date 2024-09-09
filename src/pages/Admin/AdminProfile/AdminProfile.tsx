@@ -38,6 +38,8 @@ const AdminDetails: React.FC = () => {
                 <p><strong>Country of Birth:</strong> {user.country_of_birth}</p>
                 <p><strong>Gender:</strong> {user.gender}</p>
                 <p><strong>Marital Status:</strong> {user.marital_status}</p>
+                <p><strong>Address:</strong> {user.address}</p>
+                <p><strong>Emergency Contact Number:</strong> {user.emergency_contact_number}</p>
               </div>
             </div>
             <div className={styles.instructorCard}>
@@ -45,6 +47,7 @@ const AdminDetails: React.FC = () => {
               <div className={styles.instructorInfo}>
                 <p><strong>Admin Type:</strong> {admin.admin_type}</p>
                 <p><strong>Department:</strong> {department.name}</p> 
+                <p><strong>Salary:</strong> {admin.salary}</p> 
               </div>
             </div>
           </div>
