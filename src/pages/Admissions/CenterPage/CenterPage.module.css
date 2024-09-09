@@ -48,3 +48,17 @@
     margin-bottom: 0.75rem;
   }
   
+@media (max-width: 468px) {
+  .headingPrimary {
+    font-size: 1.45rem;
+  }
+  .headingSecondary {
+    font-size: 1rem;
+  }
+  .text {
+    font-size: 1rem;
+  }
+  .container {
+    margin-top: -13rem;
+  }
+}
