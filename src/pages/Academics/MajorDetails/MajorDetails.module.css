@@ -65,11 +65,17 @@
   
   @media (max-width: 768px) {
     .headingPrimary {
-      font-size: 1.75rem;
+      font-size: 1.45rem;
     }
   
     .headingSecondary {
       font-size: 1rem;
+    }
+    .text {
+      font-size: 1rem;
+    }
+    .container {
+      margin-top: -10rem;
     }
   }
   

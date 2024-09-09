@@ -46,15 +46,23 @@
   
   @media (max-width: 768px) {
     .headingPrimary {
-      font-size: 1.75rem;
+      font-size: 1.45rem;
     }
   
     .headingSecondary {
-      font-size: 1rem;
+      font-size: .8rem;
     }
 
     .majorsContainer {
       justify-content: center;
+    }
+
+    .container {
+      margin-top: -10rem;
+    }
+
+    .text{
+      font-size: 1rem;
     }
   }
   

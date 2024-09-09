@@ -43,6 +43,7 @@
     .card {
       width: 220px;
       height: 300px;
+      margin: 0 auto;
     }
     .facultyName {
       font-size: 1.3rem;
