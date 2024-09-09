@@ -18,7 +18,6 @@ const Registrar: React.FC = () => {
 
         {events && (
           <>
-            <h2 className={styles.text}>Events</h2>
             <table className={styles.table}>
               <thead>
                 <tr>

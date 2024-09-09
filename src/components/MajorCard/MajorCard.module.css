@@ -35,6 +35,7 @@
     letter-spacing: .1rem;
     position: absolute;
     bottom: 50px;
+    max-width: 80%;
     text-align: center;
   }
   

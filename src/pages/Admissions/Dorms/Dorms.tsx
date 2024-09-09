@@ -24,7 +24,7 @@ const Centers: React.FC = () => {
 
       <h2 className={styles.headingSecondary}>Application Process</h2>
       <ol className={styles.list}>
-        <li>Submit an Application: Complete the dormitory application form available on our website <a href="/dormitory-application" className={styles.text}>here</a> or at the Admissions Office.</li>
+        <li>Submit an Application: Complete the dormitory application form available on our website or at the Admissions Office.</li>
         <li>Application Deadlines: Ensure that your application is submitted by the deadlines specified for each semester. Late applications may be subject to availability.</li>
         <li>Payment: Pay the initial deposit as outlined in the registration fees schedule. The deposit secures your room and is non-refundable.</li>
         <li>Confirmation: After processing your application and payment, you will receive a confirmation of your room assignment.</li>

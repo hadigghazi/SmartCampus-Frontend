@@ -30,9 +30,9 @@
   .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 4rem;
-    width: 100%;
-    margin-top: 2rem;
+    gap: 5rem;
+    width: 90%;
+    margin: 1rem auto;
   }
   
   .gridItem {
