@@ -479,3 +479,14 @@ export type BusRegistration = {
   updated_at?: string;
   deleted_at?: string;
 };
+
+export type SalaryPayment = {
+  id: number;
+  amount: number;
+  payment_date: string;
+  recipient_id: number;
+  recipient_type: 'Instructor' | 'Admin';
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
+}
