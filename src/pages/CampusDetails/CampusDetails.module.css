@@ -106,7 +106,7 @@
       }
     
       .headingSecondary {
-        font-size: 1rem;
+        font-size: .8rem;
       }
     
   }
@@ -124,6 +124,7 @@
     
     .headerImage {
       height: auto;
+      margin-top: 3rem;
     }
     
     .pageTitle {
@@ -131,7 +132,11 @@
     }
 
     .headingPrimary {
-        font-size: 1.75rem;
+        font-size: 1.45rem;
+      }
+
+      .text {
+        font-size: 1rem;
       }
     
       .headingSecondary {

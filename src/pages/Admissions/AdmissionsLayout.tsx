@@ -62,14 +62,6 @@ const AdmissionsLayout: React.FC<AdmissionsLayoutProps> = ({ title, children }) 
             </li>
             <li>
               <NavLink
-                to="/admissions/registrar"
-                className={({ isActive }) => (isActive ? styles.active : '')}
-              >
-                Registrar
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
                 to="/admissions/dorms"
                 className={({ isActive }) => (isActive ? styles.active : '')}
               >

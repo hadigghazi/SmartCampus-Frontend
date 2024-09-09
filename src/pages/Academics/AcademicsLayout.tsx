@@ -18,7 +18,7 @@ const AcademicsLayout: React.FC<AcademicsLayoutProps> = ({ title, children }) =>
         <img src={headerImage} alt="Academics Header" className={styles.headerImage} />
         <h1 className={styles.pageTitle}>{title}</h1>
         <nav className={styles.nav}>
-          <h2 className={styles.admissionsTitle}>- Admissions</h2>
+          <h2 className={styles.admissionsTitle}>- Academics</h2>
           <ul>
             <li>
               <NavLink

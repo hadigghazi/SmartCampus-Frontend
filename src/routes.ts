@@ -14,7 +14,6 @@ const AdmissionRequirements = lazy(() => import('./pages/Admissions/AdmissionReq
 const Fees = lazy(() => import('./pages/Admissions/Fees/Fees'));
 const EntranceAssessment = lazy(() => import('./pages/Admissions/EntranceAssessment/EntranceAssessment'));
 const FinancialAidAndScholarships = lazy(() => import('./pages/Admissions/FinancialAidAndScholarships/FinancialAidAndScholarships'));
-const Registrar = lazy(() => import('./pages/Admissions/Registrar/Registrar'));
 const Dorms = lazy(() => import('./pages/Admissions/Dorms/Dorms'));
 const Transportation = lazy(() => import('./pages/Admissions/Transportation/Transportation'));
 const Centers = lazy(() => import('./pages/Admissions/Centers/Centers'));
@@ -26,7 +25,7 @@ const NonAcademicRegister = lazy(() => import('./pages/Register/NonAcademicRegis
 const Faculties = lazy(() => import('./pages/Academics/Faculties/Faculties'));
 const Majors = lazy(() => import('./pages/Academics/Majors/Majors'));
 const GradingSystem = lazy(() => import('./pages/Academics/GradingSystem/GradingSystem'));
-const AcademicCalendar = lazy(() => import('./pages/Academics/AcademicCalendar/AcademicCalendar'));
+const Registrar = lazy(() => import('./pages/Admissions/Registrar/Registrar'));
 const FacultyDetails = lazy(() => import('./pages/Academics/FacultyDetails/FacultyDetails'));
 const LifeOnCampus = lazy(() => import('./pages/LifeOnCampus/LifeOnCampus'));
 
@@ -141,10 +140,6 @@ const routes: CustomRouteProps[] = [
     component: FinancialAidAndScholarships,
   },
   {
-    path: '/admissions/registrar',
-    component: Registrar,
-  },
-  {
     path: '/admissions/dorms',
     component: Dorms,
   },
@@ -182,7 +177,7 @@ const routes: CustomRouteProps[] = [
   },
   {
     path: '/academics/academic-calendar',
-    component: AcademicCalendar,
+    component: Registrar,
   },
   {
     path: '/faculties/:id',
