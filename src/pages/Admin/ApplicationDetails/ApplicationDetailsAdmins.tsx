@@ -26,6 +26,7 @@ const ApplicationDetailsAdmins: React.FC = () => {
     user_id: userId,
     department_id: '', 
     admin_type: '',
+    salary: '',
     created_at: '', 
     updated_at: '', 
     deleted_at: '', 
@@ -38,6 +39,7 @@ const ApplicationDetailsAdmins: React.FC = () => {
         user_id: userId,
         department_id: admin.department_id || '', 
         admin_type: admin.admin_type || '',
+        salary: admin.salary || '', 
         created_at: admin.created_at || '', 
         updated_at: admin.updated_at || '', 
         deleted_at: admin.deleted_at || '', 
@@ -54,7 +56,7 @@ const ApplicationDetailsAdmins: React.FC = () => {
         ? value
         : value === '' 
           ? null 
-          : name === 'department_id' 
+          : name === 'department_id' || name === 'salary'
             ? parseInt(value, 10) 
             : value,
     }));
@@ -66,6 +68,7 @@ const ApplicationDetailsAdmins: React.FC = () => {
         ...formData,
         department_id: formData.department_id || null,
         admin_type: formData.admin_type || null,
+        salary: formData.salary || null, 
       };
 
       const result = await Swal.fire({
@@ -189,9 +192,20 @@ const ApplicationDetailsAdmins: React.FC = () => {
                     </select>
                   </div>
 
+                  <div className={styles.formGroup}>
+                    <label htmlFor="salary">Salary:</label>
+                    <input
+                      id="salary"
+                      name="salary"
+                      type="number"
+                      value={formData.salary || ''}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
                 </form>
                 <div className={styles.buttons}>
-                <button onClick={handleReject} className={styles.rejectBtn}>Reject Application</button>
+                  <button onClick={handleReject} className={styles.rejectBtn}>Reject Application</button>
                   <button onClick={handleAccept} className={styles.acceptBtn}>Accept Application</button>
                 </div>
               </div>
