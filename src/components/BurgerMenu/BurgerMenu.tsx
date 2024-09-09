@@ -16,87 +16,87 @@ const BurgerMenu: React.FC = () => {
   return (
     <Menu>
       <div className='menu_container'>
-      <div className="menu-logo">
-        <Link to='/'><img src={logo} alt="Menu Logo" /></Link>
-      </div>
-      <div className='accordion-item'>
-      <div className="menu-logo">
-        <Link to='/admin/profile'>
-        <img
-              src={user?.profile_picture || defaultProfile}
-              alt="profile"
-              className='profile-image'
-            />
-        </Link>
-      </div>
-      </div>
-      <div className='accordion-item'>
-      <div className="accordion-title">
-        <Link to='/admin/dashboard'>Dashboard</Link>
-      </div>
-      </div>
-      <div className="accordion-item">
-        <div
-          className={`accordion-title ${activeIndex === 0 ? 'active' : ''}`}
-          onClick={() => toggleAccordion(0)}
-        >
-          <h3>Academics</h3>
+        <div className="menu-logo">
+          <Link to='/'><img src={logo} alt="Menu Logo" /></Link>
         </div>
-        {activeIndex === 0 && (
-          <div className="accordion-content">
-            <a href="/admin/students">Students</a>
-            <a href="/admin/instructors">Instructors</a>
-            <a href="/admin/admins">Staff</a>
-            <a href="/admin/courses">Courses</a>
-            <a href="/admin/faculties">Faculties</a>
-            <a href="/admin/majors">Majors</a>
-            <a href="/admin/calendar">Academic Calendar</a>
-            <a href="/admin/exams">Exams</a>
-            <a href="/admin/semesters">Semesters</a>
+        <div className='accordion-item'>
+          <div className="menu-logo">
+            <Link to='/admin/profile'>
+              <img
+                src={user?.profile_picture || defaultProfile}
+                alt="profile"
+                className='profile-image'
+              />
+            </Link>
           </div>
-        )}
-      </div>
+        </div>
+        <div className='accordion-item'>
+          <div className="accordion-title">
+            <Link to='/admin/dashboard'>Dashboard</Link>
+          </div>
+        </div>
+        <div className="accordion-item">
+          <div
+            className={`accordion-title ${activeIndex === 0 ? 'active' : ''}`}
+            onClick={() => toggleAccordion(0)}
+          >
+            <h3>Academics</h3>
+          </div>
+          {activeIndex === 0 && (
+            <div className="accordion-content">
+              <Link to="/admin/students">Students</Link>
+              <Link to="/admin/instructors">Instructors</Link>
+              <Link to="/admin/admins">Staff</Link>
+              <Link to="/admin/courses">Courses</Link>
+              <Link to="/admin/faculties">Faculties</Link>
+              <Link to="/admin/majors">Majors</Link>
+              <Link to="/admin/calendar">Academic Calendar</Link>
+              <Link to="/admin/exams">Exams</Link>
+              <Link to="/admin/semesters">Semesters</Link>
+            </div>
+          )}
+        </div>
 
-      <div className="accordion-item">
-        <div
-          className={`accordion-title ${activeIndex === 1 ? 'active' : ''}`}
-          onClick={() => toggleAccordion(1)}
-        >
-          <h3>Administration</h3>
-        </div>
-        {activeIndex === 1 && (
-          <div className="accordion-content">
-            <a href="/admin/applications/students">Students Applications</a>
-            <a href="/admin/applications/instructors">Instructors Applications</a>
-            <a href="/admin/applications/admins">Staff Applications</a>
-            <a href="/admin/payment-settings">Payment Settings</a>
-            <a href="/admin/rooms">Rooms</a>
-            <a href="/admin/blocks">Blocks</a>
-            <a href="/admin/centers">Centers</a>
-            <a href="/admin/campuses">Campuses</a>
-            <a href="/admin/departments">Departments</a>
-            <a href="/admin/dorms">Dorms</a>
-            <a href="/admin/buses">Transportation</a>
+        <div className="accordion-item">
+          <div
+            className={`accordion-title ${activeIndex === 1 ? 'active' : ''}`}
+            onClick={() => toggleAccordion(1)}
+          >
+            <h3>Administration</h3>
           </div>
-        )}
-      </div>
+          {activeIndex === 1 && (
+            <div className="accordion-content">
+              <Link to="/admin/applications/students">Students Applications</Link>
+              <Link to="/admin/applications/instructors">Instructors Applications</Link>
+              <Link to="/admin/applications/admins">Staff Applications</Link>
+              <Link to="/admin/payment-settings">Payment Settings</Link>
+              <Link to="/admin/rooms">Rooms</Link>
+              <Link to="/admin/blocks">Blocks</Link>
+              <Link to="/admin/centers">Centers</Link>
+              <Link to="/admin/campuses">Campuses</Link>
+              <Link to="/admin/departments">Departments</Link>
+              <Link to="/admin/dorms">Dorms</Link>
+              <Link to="/admin/buses">Transportation</Link>
+            </div>
+          )}
+        </div>
 
-      <div className="accordion-item">
-        <div
-          className={`accordion-title ${activeIndex === 2 ? 'active' : ''}`}
-          onClick={() => toggleAccordion(2)}
-        >
-          <h3>Communication</h3>
-        </div>
-        {activeIndex === 2 && (
-          <div className="accordion-content">
-            <a href="/admin/library">Library</a>
-            <a href="/admin/announcements">Announcements</a>
-            <a href="#">Chat</a>
-            <a href="/admin/news">News</a>
+        <div className="accordion-item">
+          <div
+            className={`accordion-title ${activeIndex === 2 ? 'active' : ''}`}
+            onClick={() => toggleAccordion(2)}
+          >
+            <h3>Communication</h3>
           </div>
-        )}
-      </div>
+          {activeIndex === 2 && (
+            <div className="accordion-content">
+              <Link to="/admin/library">Library</Link>
+              <Link to="/admin/announcements">Announcements</Link>
+              <Link to="#">Chat</Link>
+              <Link to="/admin/news">News</Link>
+            </div>
+          )}
+        </div>
       </div>
     </Menu>
   );
