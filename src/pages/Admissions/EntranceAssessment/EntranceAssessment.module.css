@@ -44,10 +44,14 @@
   
   @media (max-width: 768px) {
     .headingPrimary {
-      font-size: 1.75rem;
+      font-size: 1.45rem;
+    }
+
+    .container {
+      margin-top: -13rem;
     }
   
-    .headingSecondary {
+    .headingSecondary, .text {
       font-size: 1rem;
     }
   }

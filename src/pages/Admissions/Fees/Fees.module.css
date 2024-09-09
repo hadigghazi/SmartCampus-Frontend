@@ -76,11 +76,25 @@
   
   @media (max-width: 768px) {
     .headingPrimary {
-      font-size: 1.75rem;
+      font-size: 1.45rem;
     }
   
     .headingSecondary {
       font-size: 1rem;
+    }
+
+    .container {
+      margin-top: -13rem;
+    }
+
+    .text , caption{
+      font-size: 1rem;
+    }
+    th {
+      font-size: .8rem;
+    }
+    tr {
+      font-size: .8rem;
     }
   }
   
