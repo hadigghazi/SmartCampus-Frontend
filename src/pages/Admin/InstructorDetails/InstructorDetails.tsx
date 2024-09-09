@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import ConfirmationDialog from '../../../components/DialogAndToast/ConfirmationDialog';
 import { toASCII } from 'punycode';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 
 const InstructorDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -165,6 +166,7 @@ const InstructorDetails: React.FC = () => {
           </div>
         </div>
       </div>
+      <ToastNotifications />
     </AdminLayout>
   );
 };
