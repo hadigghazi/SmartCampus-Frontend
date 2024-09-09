@@ -16,6 +16,8 @@ export type RegisterRequest = {
     gender: 'Male' | 'Female';
     marital_status: 'Single' | 'Married' | 'Divorced' | 'Widowed';
     profile_picture: string;
+    address: string;
+    emergency_contact_number: string;
   };
   
   export type LoginRequest = {
@@ -143,6 +145,8 @@ export type User = {
   gender: 'Male' | 'Female';
   marital_status: 'Single' | 'Married' | 'Divorced' | 'Widowed';
   profile_picture?: string;
+  address: string;
+  emergency_contact_number: string;
   created_at?: string;
   updated_at?: string;
   deleted_at?: string;
