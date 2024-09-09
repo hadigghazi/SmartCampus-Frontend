@@ -1,89 +1,102 @@
 .wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    padding: 10px; 
-    margin-top: 100px;
-  }
-  
-  .registerContainer {
-    background-color: var(--secondary-color);
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 800px; 
-    width: 100%;
-    text-align: center;
-  }
-  
-  .header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  .logo {
-    width: 60px; 
-    margin-right: 8px;
-  }
-  
-  .title {
-    font-size: 30px;
-    font-weight: bold;
-    margin-bottom: -10px;
-    color: var(--primary-color);
-  }
-  
-  .registerTitle {
-    font-size: 28px;
-    font-weight: bold;
-    color: var(--primary-color);
-    margin-bottom: 10px;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.registerContainer {
+  padding: 40px 30px;
+  border-radius: 10px;
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+  margin-top: 5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 60px;
+  margin-right: 10px;
+  margin-top: -1rem;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1c0b62; 
+}
+
+.registerTitle {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1c0b62; 
+  margin-bottom: 20px;
+}
+
+.formGroup {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.inputField, .selectField {
+  width: 100%;
+  height: 45px;
+  border-radius: 5px;
+  border: 1px solid #dcdcdc; 
+  background-color: white; 
+  padding: 0 15px;
+  font-size: 16px;
+  color: #1c0b62; 
+}
+
+.inputField::placeholder, .selectField {
+  color: #a9a9a9;
+}
+
+.inputField:focus, .selectField:focus {
+  border-color: #1c0b62; 
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); 
+}
+
+.submitButton {
+  width: 100%;
+  height: 45px;
+  border-radius: 5px;
+  border: none;
+  background-color: #1c0b62; 
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submitButton:hover {
+  background-color: #074b93; 
+}
+
+.submitButton:active {
+  background-color: #09396d; 
+}
+
+@media (max-width: 768px) {
   .formGroup {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 8px; 
-    margin-bottom: 12px; 
+    grid-template-columns: 1fr;
+    gap: 15px;
   }
-  
-  .inputField, .selectField {
-    width: 100%; 
-    height: 36px;
-    border-radius: 4px;
-    border: 2px solid #fff;
-    background-color: #fff;
-    padding: 0 8px;
-    font-size: 14px; 
-    color: var(--primary-color);
+
+  .registerContainer {
+    padding: 30px 20px;
   }
-  
-  .inputField::placeholder, .selectField {
-    color: var(--primary-color);
-  }
-  
-  .inputField:focus, .selectField:focus {
-    border-color: var(--primary-color);
-    outline: none;
-  }
-  
-  .submitButton {
-    width: 100%;
-    height: 36px; 
-    border-radius: 4px;
-    border: none;
-    background-color: var(--primary-color);
-    color: #fff;
-    font-size: 14px; 
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .submitButton:hover {
-    background-color: #1c0b623f;
-  }
-  
+}

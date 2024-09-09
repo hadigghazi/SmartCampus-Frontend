@@ -49,9 +49,8 @@ const Register: React.FC = () => {
       <div className={styles.registerContainer}>
         <div className={styles.header}>
           <img src={logo} alt="SmartCampus Logo" className={styles.logo} />
-          <div className={styles.title}>SmartCampus</div>
+          <div className={styles.title}>Apply To SmartCampus</div>
         </div>
-        <div className={styles.registerTitle}>Apply Now</div>
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
             <input
