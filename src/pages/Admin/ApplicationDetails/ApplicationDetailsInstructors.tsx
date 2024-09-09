@@ -26,6 +26,7 @@ const ApplicationDetailsInstructors: React.FC = () => {
     user_id: userId,
     department_id: '', 
     specialization: '',
+    salary: '', 
     created_at: '', 
     updated_at: '', 
     deleted_at: '', 
@@ -38,6 +39,7 @@ const ApplicationDetailsInstructors: React.FC = () => {
         user_id: userId,
         department_id: instructor.department_id || '', 
         specialization: instructor.specialization || '',
+        salary: instructor.salary || '', 
         created_at: instructor.created_at || '', 
         updated_at: instructor.updated_at || '', 
         deleted_at: instructor.deleted_at || '', 
@@ -66,6 +68,7 @@ const ApplicationDetailsInstructors: React.FC = () => {
         ...formData,
         department_id: formData.department_id || null,
         specialization: formData.specialization || null,
+        salary: formData.salary || null,
       };
 
       const result = await Swal.fire({
@@ -186,9 +189,22 @@ const ApplicationDetailsInstructors: React.FC = () => {
                     />
                   </div>
 
+                  <div className={styles.formGroup}>
+                    <label htmlFor="salary">Salary:</label>
+                    <input
+                      type="number"
+                      id="salary"
+                      name="salary"
+                      value={formData.salary}
+                      onChange={handleInputChange}
+                      required
+                      step="0.01"
+                      min="0"
+                    />
+                  </div>
                 </form>
                 <div className={styles.buttons}>
-                <button onClick={handleReject} className={styles.rejectBtn}>Reject Application</button>
+                  <button onClick={handleReject} className={styles.rejectBtn}>Reject Application</button>
                   <button onClick={handleAccept} className={styles.acceptBtn}>Accept Application</button>
                 </div>
               </div>
