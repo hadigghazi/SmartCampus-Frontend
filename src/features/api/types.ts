@@ -466,3 +466,12 @@ export type BusRoute = {
   campus_id: number;
 };
 
+export type BusRegistration = {
+  id: number;
+  student_id: number;
+  bus_route_id: number;
+  registration_date: string;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
+};
