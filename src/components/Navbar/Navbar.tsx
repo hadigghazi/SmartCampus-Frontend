@@ -6,6 +6,8 @@ import { logout } from '../../features/auth/authSlice';
 import NavbarLogo from '../../assets/images/NavBar_logo.png';
 import styles from './Navbar.module.css';
 import { useAppSelector } from '../../hooks';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faComments } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar: React.FC = () => {
   const dispatch = useDispatch();
@@ -64,7 +66,11 @@ const Navbar: React.FC = () => {
             <Link to="/login">Portal</Link>
           </li>
         )}
-      </ul>
+       <li className={styles.menuItem}>
+  <a href={import.meta.env.VITE_CHAT_URL} target="_blank" rel="noopener noreferrer">        <FontAwesomeIcon icon={faComments} />
+  </a>
+</li>
+</ul>
     </nav>
   );
 };
