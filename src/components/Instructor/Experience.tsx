@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import Instructor from "../../../public/models/Instructor";
 import { CameraManager } from "./CameraManager";
 
-const Experience: React.FC = () => {
+const Experience: React.FC<{ isSpeaking: boolean }> = ({ isSpeaking }) => {
   return (
     <Canvas className="canvas" camera={{ position: [-4, 1.5, 0], fov: 40 }}>
       <CameraManager />
@@ -24,9 +24,10 @@ const Experience: React.FC = () => {
       />
 
       <Instructor
+        isSpeaking={isSpeaking}
         scale={1.1}
         position={[0.7, 0, -2]}
-        rotation={[0, -0.4, 0]}
+        rotation={[0, -1, 0]}
       />
     </Canvas>
   );

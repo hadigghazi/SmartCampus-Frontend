@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
-import * as THREE from 'three'; // Importing THREE namespace
+import * as THREE from 'three';
 import { Group, SkinnedMesh, Object3D, Material } from "three";
 import modelPath from "./avatar.glb";
 
@@ -18,21 +18,33 @@ type GLTFResult = {
     avaturn_look_0_material: Material;
     avaturn_shoes_0_material: Material;
   };
-  animations: THREE.AnimationClip[]; 
+  animations: THREE.AnimationClip[];
 };
 
-export default function Instructor(props: JSX.IntrinsicElements["group"]) {
+type InstructorProps = JSX.IntrinsicElements["group"] & {
+  isSpeaking: boolean;
+};
+
+export default function Instructor({ isSpeaking, ...props }: InstructorProps) {
   const group = useRef<Group>(null);
   
   const { nodes, materials, animations } = useGLTF(modelPath) as unknown as GLTFResult;
-  const { mixer } = useAnimations(animations, group);
+  const { actions, mixer } = useAnimations(animations, group);
 
   useEffect(() => {
-    const idleAction = mixer.clipAction(
-      animations.find((a) => a.name === "IdleV4.2(maya_head)")!
-    );
-    idleAction.play();
-  }, [mixer, animations]);
+    const idleAction = actions["IdleV4.2(maya_head)"];
+    const handsAction = actions["Hands"];
+
+    if (idleAction && handsAction) {
+      if (isSpeaking) {
+        idleAction.stop();
+        handsAction.reset().play();
+      } else {
+        handsAction.stop();
+        idleAction.reset().play();
+      }
+    }
+  }, [isSpeaking, actions]);
 
   return (
     <group ref={group} {...props} dispose={null}>

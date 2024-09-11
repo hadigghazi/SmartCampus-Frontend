@@ -2,22 +2,27 @@ import React, { useState } from "react";
 import Experience from '../../components/Instructor/Experience';
 import { Chat } from '../../components/Instructor/Chat/Chat';
 import { ChatHistory } from '../../components/Instructor/ChatHistory/ChatHistory';
-import FloatingButton from '../../components/FloatingButton/FloatingButton'; // Import the reusable button
-import { faUser, faBook } from '@fortawesome/free-solid-svg-icons'; // Import icons as needed
-import "./InstructorPage.css";
+import './InstructorPage.css';
 
 const InstructorPage: React.FC = () => {
-  const [chatHistory, setChatHistory] = useState<Interaction[]>([]);
+  const [chatHistory, setChatHistory] = useState<any[]>([]);
+  const [isSpeaking, setIsSpeaking] = useState(false);  
 
-  const updateChatHistory = (newHistory: Interaction[]) => {
+  const updateChatHistory = (newHistory: any[]) => {
     setChatHistory(newHistory);
   };
 
   return (
     <>
-      <Experience />
+      <Experience isSpeaking={isSpeaking} />
+      
       <ChatHistory chatHistory={chatHistory} updateChatHistory={updateChatHistory} />
-      <Chat chatHistory={chatHistory} updateChatHistory={updateChatHistory} />
+      <Chat
+        chatHistory={chatHistory}
+        updateChatHistory={updateChatHistory}
+        isSpeaking={isSpeaking}
+        setIsSpeaking={setIsSpeaking}
+      />
     </>
   );
 };

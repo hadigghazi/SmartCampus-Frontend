@@ -16,12 +16,11 @@ type Props = {
   updateChatHistory: (newHistory: Interaction[]) => void;
 };
 
-export const Chat: React.FC<Props> = ({ chatHistory, updateChatHistory }) => {
+export const Chat: React.FC<Props> = ({ chatHistory, updateChatHistory, isSpeaking, setIsSpeaking }) => {
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const synthesisRef = useRef<SpeechSynthesis>(window.speechSynthesis);
 
