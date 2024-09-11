@@ -19,7 +19,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
         className={styles.image}
       />
       <div className={styles.content}>
-        <p className={styles.date}>{published_date}</p>
+        <p className={styles.date}>- {published_date}</p>
         <h3 className={styles.title}>
           <Link to={`/news/${id}`}>{title}</Link>
         </h3>

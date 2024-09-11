@@ -120,7 +120,7 @@ const Dashboard: React.FC = () => {
         {exams ? (
           <Table columns={examColumns} data={exams} />
         ) : (
-          <Spinner />
+          <p>No exams available</p>
         )}
       </div>
     </StudentLayout>
