@@ -17,7 +17,7 @@ import Spinner from '../../../components/Spinner/Spinner';
 const Courses: React.FC = () => {
   const { data: courses, isLoading, error, refetch } = useGetCoursesQuery();
   const { data: faculties } = useGetFacultiesQuery();
-  const { data: majors } = useGetMajorsQuery(); // Fetch all majors
+  const { data: majors } = useGetMajorsQuery(); 
 
   const [selectedFacultyFilter, setSelectedFacultyFilter] = useState<number | 'all'>('all');
   const [selectedMajorFilter, setSelectedMajorFilter] = useState<number | 'all'>('all');

@@ -65,6 +65,8 @@ const FacultyCampusDetailsAdmin = lazy(() => import('./pages/Admin/FacultyCampus
 const PaymentSettings = lazy(() => import('./pages/Admin/PaymentSettings/PaymentSettings'));
 const StatementOfFees = lazy(() => import('./pages/Student/StatementOfFees/StatementOfFees'));
 const InstructorProfile = lazy(() => import('./pages/Instructor/InstructorDetails/InstructorDetails'));
+const Channels = lazy(() => import('./pages/Student/Channels/Channels'));
+const InstructorChannels = lazy(() => import('./pages/Instructor/Channels/Channels'));
 
 const StudentDashboard = lazy(() => import('./pages/Student/StudentDashboard/StudentDashboard'));
 const AcademicHistory = lazy(() => import('./pages/Student/AcademicHistory/AcademicHistory'));
@@ -454,6 +456,14 @@ const routes: CustomRouteProps[] = [
   {
     path: '/instructor-profile',
     component: InstructorProfile,
+  },
+  {
+    path: '/channels',
+    component: Channels,
+  },
+  {
+    path: '/instructor-channels',
+    component: InstructorChannels,
   },
 ];
 

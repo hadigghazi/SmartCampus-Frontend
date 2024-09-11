@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
           <Link to="/instructor-history">Instructor History</Link>
         </li>
         <li className={`${styles.menuItem} ${styles.spmenuItem}`}>
-          <Link to="/channels">Channels</Link>
+          <Link to="/instructor-channels">Channels</Link>
         </li>
         <li className={`${styles.menuItem} ${styles.spmenuItem}`}>
           <Link to="/instructor-courses">Courses</Link>

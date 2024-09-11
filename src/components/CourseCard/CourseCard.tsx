@@ -6,10 +6,15 @@ import { Course } from '../../features/api/types';
 
 type CourseCardProps = {
   course: Course;
-  isInstructorView?: boolean; 
+  isInstructorView?: boolean;
+  isChannel?: boolean; 
 };
 
-const CourseCard: React.FC<CourseCardProps> = ({ course, isInstructorView = false }) => {
+const CourseCard: React.FC<CourseCardProps> = ({ course, isInstructorView = false, isChannel = false }) => {
+  const linkTo = isChannel 
+    ? (isInstructorView ? `/instructor-channels/${course.id}` : `/channels/${course.course_instructor_id}`)
+    : (isInstructorView ? `/instructor-courses/${course.id}` : `/courses/${course.course_instructor_id}`);
+  
   return (
     <div className={styles.card}>
       <img 
@@ -17,7 +22,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, isInstructorView = fals
         alt="Course Image" 
         className={styles.image} 
       />
-      <Link to={isInstructorView ? `/instructor-courses/${course.id}` : `/courses/${course.course_instructor_id}`}>
+      <Link to={linkTo}>
         <div className={styles.overlay}>
           <div className={styles.textContainer}>
             <p className={styles.courseSemester}>- {course.semester_name}</p>
