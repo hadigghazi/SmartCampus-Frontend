@@ -77,6 +77,7 @@ const CourseDetailsStudent = lazy(() => import('./pages/Student/CourseDetails/Co
 const AssignmentDetailsStudent = lazy(() => import('./pages/Student/AssignmentDetails/AssignmentDetails'));
 const LibraryBooksStudent = lazy(() => import('./pages/Student/LibraryBooks/LibraryBooks'));
 const BookDetailsStudent = lazy(() => import('./pages/Student/BookDetails/BookDetails'));
+const CourseEvaluation = lazy(() => import('./pages/Student/CourseEvaluation/CourseEvaluation'));
 
 const InstructorDashboard = lazy(() => import('./pages/Instructor/InstructorDashboard/InstructorDashboard'));
 const InstructorHistory = lazy(() => import('./pages/Instructor/InstructorHistory/InstructorHistory'));
@@ -474,6 +475,10 @@ const routes: CustomRouteProps[] = [
   {
     path: '/instructor-channels/:id',
     component: InstructorChannel,
+  },
+  {
+    path: '/course-evaluations/:id',
+    component: CourseEvaluation,
   },
 ];
 
