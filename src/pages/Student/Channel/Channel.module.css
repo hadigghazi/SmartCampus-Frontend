@@ -1,12 +1,20 @@
 .chat {
   flex: 2;
-  border-left: 1px solid #dddddd35;
-  border-right: 1px solid #dddddd35;
   height: 80vh;
   display: flex;
   flex-direction: column;
-  background-color: #1e1e1e;
+  width: 80vw;
+  margin: 1rem auto;
+  background-color:#123961ee;
+  backdrop-filter: blur(19px) saturate(180%);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
 }
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
 
 .chat .center {
   padding: 20px;

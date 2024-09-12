@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom"; 
 import { useSelector } from "react-redux"; 
-import "./Channel.css";
+import styles from "./Channel.module.css";
 import EmojiPicker from "emoji-picker-react";
 import { format } from "timeago.js";
 import { RootState } from "../../../store";
@@ -41,17 +41,14 @@ const Chat = () => {
 
   useEffect(() => {
     if (course_instructor_id && user) {
-      console.log("Setting up Firestore listener for course_instructor_id:", course_instructor_id);
       const messagesRef = collection(db, "chats", course_instructor_id, "messages");
       const q = query(messagesRef, orderBy("createdAt"));
 
       const unsubscribe = onSnapshot(q, (snapshot: QuerySnapshot<DocumentData>) => {
-        console.log("Firestore snapshot received:", snapshot.docs);
         const msgs = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        console.log("Messages mapped:", msgs);
         setMessages(msgs);
       }, (error) => {
         console.error("Error fetching Firestore data:", error);
@@ -116,14 +113,14 @@ const Chat = () => {
 
   return (
     <StudentLayout>
-    <div className="chat">
-      <div className="center">
+    <div className={styles.chat}>
+      <div className={styles.center}>
         {messages.map((message, idx) => (
           <div
-            className={message.senderId === user?.id ? "message own" : "message"}
-            key={idx}
+          className={message.senderId === user?.id ? `${styles.message} ${styles.own}` : styles.message}
+          key={idx}
           >
-            <div className="texts">
+            <div className={styles.texts}>
               {message.img && <img src={message.img} alt="attached" />}
               <p>{message.text}</p>
               <span>{format(message.createdAt?.toDate())} - {message.senderName}</span>
@@ -131,16 +128,16 @@ const Chat = () => {
           </div>
         ))}
         {img.url && (
-          <div className="message own">
-            <div className="texts">
+            <div className={`${styles.message} ${styles.own}`}>
+            <div className={styles.texts}>
               <img src={img.url} alt="preview" />
             </div>
           </div>
         )}
         <div ref={endRef}></div>
       </div>
-      <div className="bottom">
-        <div className="icons">
+      <div className={styles.bottom}>
+        <div className={styles.icons}>
           <label htmlFor="file">
             <img src={image} alt="upload" />
           </label>
@@ -158,17 +155,17 @@ const Chat = () => {
           onChange={(e) => setText(e.target.value)}
           disabled={!user} 
         />
-        <div className="emoji">
+        <div className={styles.emoji}>
           <img
             src={emoji}
             alt="emoji"
             onClick={() => setOpen((prev) => !prev)}
           />
-          <div className={`picker ${open ? "open" : ""}`}>
+            <div className={`${styles.picker} ${open ? styles.open : ""}`}>
             <EmojiPicker open={open} onEmojiClick={handleEmoji} />
           </div>
         </div>
-        <button className="sendButton" onClick={handleSend} disabled={!user}>
+        <button className={styles.sendButton} onClick={handleSend} disabled={!user}>
           ➤
         </button>
       </div>
