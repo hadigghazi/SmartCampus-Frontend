@@ -10,11 +10,9 @@
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
 }
-
-::-webkit-scrollbar {
+.chat :global(::-webkit-scrollbar) {
   width: 0px;
 }
-
 
 .chat .center {
   padding: 20px;
@@ -75,6 +73,7 @@
 
 .chat .center .message .texts span {
   font-size: 13px;
+  font-family: "Metrophobic", sans-serif;
 }
 
 .chat .bottom .icons img {
@@ -126,10 +125,11 @@
 }
 
 .chat .bottom .sendButton {
-  background-color: #5183fe;
+  background-color: #123961;
   color: white;
   padding: 10px 20px;
   border: none;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
   border-radius: 5px;
   cursor: pointer;
 }
