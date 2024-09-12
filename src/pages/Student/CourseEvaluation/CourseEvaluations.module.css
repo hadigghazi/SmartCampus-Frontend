@@ -1,0 +1,143 @@
+.layout {
+    font-family: 'Metrophobic', sans-serif;
+    margin-top: -100px;
+  }
+  
+  .header {
+    position: relative;
+  }
+
+  .headingPrimary {
+    color: var(--primary-color); 
+    font-size: 2.5rem;
+    font-weight: 700; 
+    margin-bottom: 2rem;
+    font-family: 'Merriweather', serif; 
+    text-align: left;
+  }
+  
+  .pageTitle {
+    color: var(--primary-color);
+    font-size: 2.8rem;
+    font-weight: 500;
+    font-family: 'Merriweather', serif;
+  }
+  
+  .container {
+    padding: 2rem;
+    background-color: white;
+    margin-top: 20px;
+  }
+  
+  .headingSecondary {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-family: 'Merriweather', serif;
+  }
+  
+  .form {
+    margin-top: 2rem;
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .formGroup {
+    margin-bottom: 1.5rem;
+  }
+  
+  .featureTitle {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: 'Merriweather', serif;
+    margin-bottom: 0.5rem;
+  }
+  
+  .featureDescription {
+    color: var(--primary-color);
+    font-family: 'Metrophobic', sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .radioGroup label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-family: 'Metrophobic', sans-serif;
+    font-size: 1rem;
+    position: relative;
+    padding-left: 2rem;
+  }
+  
+  .radioGroup input[type="radio"] {
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    cursor: pointer;
+  }
+  
+  .radioGroup input[type="radio"]:checked + span {
+    color: var(--primary-color);
+  }
+  
+  textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    font-family: 'Metrophobic', sans-serif;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+  
+  textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+  }
+  
+  .submitButton {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Merriweather', serif;
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+  
+    .headingSecondary {
+      font-size: 1rem;
+    }
+
+    .headingPrimary {
+        font-size: 1.45rem;
+        margin-top: 2rem;
+      }
+  
+    .featureTitle {
+      font-size: 1.25rem;
+    }
+  
+    .featureDescription {
+      font-size: 1rem;
+    }
+  
+    .submitButton {
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+    }
+  }
+  
