@@ -64,40 +64,39 @@
   .materialsList {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 50px;
     margin-top: 40px;
     justify-content: center;
   }
   
   .materialCard {
-    width: 200px;
-    min-height: 200px;
-    padding: 20px;
-    background-color: var(--primary-color);
-    border-radius: 10px;
-    text-align: left;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 220px;
+    min-height: 240px;
+    background-color: #123962;
+    border-radius: 12px;
+    padding: 25px;
     color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
   }
   
   .cardHeader {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
-    margin-top: 40px;
+    margin-bottom: 15px;
   }
   
   .title {
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: bold;
     color: white;
-    margin-left: 10px; 
-    flex: 1;
+    margin-left: 20px;
+    flex-grow: 1;
+    font-family: 'Roboto', sans-serif;
   }
-  
+
   .fileIcon {
     font-size: 2rem;
     color: white;
@@ -106,14 +105,15 @@
   .description {
     font-size: 0.9rem;
     color: white;
-    margin-top: 15px; 
+    margin-top: 25px; 
+    width: 100%;
     font-family: 'Metrophobic', sans-serif;
   }
   
   .materialCard a {
     position: absolute;
-    top: 15px;
-    left: 20px;
+    bottom: 15px;
+    right: 20px;
     color: white;
     text-decoration: none;
     font-size: 1.2rem;
@@ -126,8 +126,8 @@
 
   .deleteButton {
     position: absolute;
-    top: 15px;
-    right: 20px;
+    bottom: 15px;
+    left: 20px;
     background: transparent;
     border: none;
     color: white;

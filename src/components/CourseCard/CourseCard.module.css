@@ -33,18 +33,22 @@
     position: absolute;
     width: 100%;
     bottom: 30px;
+    color: white;
   }
   .courseCode {
     margin-left: 1.5rem;
     font-size: 1.6rem; 
+    color: white;
   }
   .courseName {
     margin-left: 1.5rem;
+    color: white;
     font-size: 1.3rem; 
   }
   .courseSemester {
     margin-left: 1.5rem;
     font-size: .8rem; 
+    color: white;
   }
   
   @media (max-width: 360px) {

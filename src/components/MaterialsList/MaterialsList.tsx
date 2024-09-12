@@ -58,6 +58,11 @@ const MaterialsList: React.FC<MaterialsListProps> = ({
         {materials?.length > 0 ? (
           materials.map((material) => (
             <div className={styles.materialCard} key={material.id}>
+              <div className={styles.cardHeader}>
+                <i className={`fas fa-file-alt ${styles.fileIcon}`}></i>
+                <p className={styles.title}>{material.title}</p>
+              </div>
+              <p className={styles.description}>{material.description}</p>
               <a href={`${apiUrl}/course-materials/${material.id}/download`} download>
                 <i className="fas fa-download"></i>
               </a>
@@ -66,11 +71,6 @@ const MaterialsList: React.FC<MaterialsListProps> = ({
                   <i className="fas fa-trash-alt"></i>
                 </button>
               )}
-              <div className={styles.cardHeader}>
-                <i className={`fas fa-file-alt ${styles.fileIcon}`}></i>
-                <p className={styles.title}>{material.title}</p>
-              </div>
-              <p className={styles.description}>{material.description}</p>
             </div>
           ))
         ) : (

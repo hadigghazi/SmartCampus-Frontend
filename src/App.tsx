@@ -4,6 +4,7 @@ import routes from './routes';
 import PublicRoute from './components/ProtectedRoutes/PublicRoute';
 import AuthCheckComponent from './components/AuthCheckComponent';
 import Spinner from './components/Spinner/Spinner';
+import PrivateRoute from './components/ProtectedRoutes/PrivateRoute';
 
 const App: React.FC = () => {
   return (
@@ -26,6 +27,22 @@ const App: React.FC = () => {
                         <Element />
                       </Layout>
                     </PublicRoute>
+                  }
+                />
+              );
+            }
+
+            if (route.path === '/instructor') {
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <PrivateRoute>
+                      <Layout>
+                        <Element />
+                      </Layout>
+                    </PrivateRoute>
                   }
                 />
               );

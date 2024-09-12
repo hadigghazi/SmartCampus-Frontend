@@ -4,6 +4,7 @@ import headerImage from '../../assets/images/Pages_header.jpg';
 import styles from './AIMajorSuggestor.module.css';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 const AIMajorSuggestor: React.FC = () => {
   const [interests, setInterests] = useState('');
@@ -14,7 +15,7 @@ const AIMajorSuggestor: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/suggest-major', {
+      const response = await axios.post(`${apiUrl}/suggest-major`, {
         interests,
         skills,
         preferences
