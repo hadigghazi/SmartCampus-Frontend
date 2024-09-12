@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './CourseEvaluations.module.css';
 import { useCreateCourseEvaluationMutation } from '../../../features/api/courseEvaluationsApi';
 import StudentLayout from '../StudentLayout';
 import { toast } from 'react-toastify';
 import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
+import { useSelector } from 'react-redux';
+import { useGetStudentByUserIdQuery } from '../../../features/api/studentsApi';
 
 const CourseEvaluationsPage = () => {
-  const { id } = useParams();
+  const { id: course_instructor_id } = useParams(); 
+  const auth = useSelector((state: any) => state.auth);
+  const userId = auth?.user?.id; 
+  const { data: studentData, isSuccess: studentLoaded } = useGetStudentByUserIdQuery(userId); 
   const [createCourseEvaluation] = useCreateCourseEvaluationMutation();
+  
   const [evaluation, setEvaluation] = useState({
     teaching_number: 0,
     teaching: '',
@@ -22,8 +28,18 @@ const CourseEvaluationsPage = () => {
     library_facilities: '',
     extracurricular_number: 0,
     extracurricular: '',
-    course_instructor_id: id || '',
+    course_instructor_id: course_instructor_id || '',
+    student_id: '',
   });
+
+  useEffect(() => {
+    if (studentLoaded && studentData) {
+      setEvaluation((prev) => ({
+        ...prev,
+        student_id: studentData.id, 
+      }));
+    }
+  }, [studentLoaded, studentData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,6 +51,11 @@ const CourseEvaluationsPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!evaluation.student_id) {
+      toast.error('Unable to retrieve student information.');
+      return;
+    }
+    
     try {
       await createCourseEvaluation(evaluation).unwrap();
       toast.success('Course Evaluation submitted successfully!');
