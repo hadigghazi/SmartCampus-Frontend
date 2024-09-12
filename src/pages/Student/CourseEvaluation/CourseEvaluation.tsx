@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import styles from './CourseEvaluations.module.css';
 import { useCreateCourseEvaluationMutation } from '../../../features/api/courseEvaluationsApi';
 import StudentLayout from '../StudentLayout';
+import { toast } from 'react-toastify';
+import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 
 const CourseEvaluationsPage = () => {
   const { id } = useParams();
@@ -35,9 +37,9 @@ const CourseEvaluationsPage = () => {
     e.preventDefault();
     try {
       await createCourseEvaluation(evaluation).unwrap();
-      alert('Course Evaluation submitted successfully!');
+      toast.success('Course Evaluation submitted successfully!');
     } catch (error) {
-      console.error('Failed to submit evaluation:', error);
+      toast.error('Failed to submit evaluation');
     }
   };
 
@@ -110,6 +112,7 @@ const CourseEvaluationsPage = () => {
           </form>
         </div>
       </div>
+      <ToastNotifications />
     </StudentLayout>
   );
 };
