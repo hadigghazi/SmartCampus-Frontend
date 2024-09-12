@@ -22,6 +22,7 @@ import emoji from '../../../assets/images/emoji.png';
 import StudentLayout from "../../Student/StudentLayout";
 import { useGetCurrentSemesterQuery } from "../../../features/api/semestersApi";
 import { useGetRegistrationsByStudentQuery } from "../../../features/api/registrationsApi";
+import { useGetStudentByUserIdQuery } from "../../../features/api/studentsApi";
 
 const Chat: React.FC<ChatProps> = () => {
   const { id: course_instructor_id } = useParams<{ course_instructor_id?: string }>(); 
@@ -39,6 +40,14 @@ const Chat: React.FC<ChatProps> = () => {
   const { data: registrations } = useGetRegistrationsByStudentQuery(studentId || 0);
   const endRef = useRef<HTMLDivElement | null>(null);
 
+  const { data: studentData } = useGetStudentByUserIdQuery(user?.id || 0);
+
+  useEffect(() => {
+    if (studentData) {
+      setStudentId(studentData.id);
+    }
+  }, [studentData]);
+  
   useEffect(() => {
     if (studentId && currentSemester) {
       const isRegistered = registrations?.some(registration => 

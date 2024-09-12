@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import StudentLayout from '../StudentLayout';
 import { useGetCurrentSemesterQuery } from '../../../features/api/semestersApi';
 import { useGetRegistrationsByStudentQuery } from '../../../features/api/registrationsApi';
-import { useGetStudentByIdQuery } from '../../../features/api/studentsApi';
+import { useGetStudentByUserIdQuery } from '../../../features/api/studentsApi';
 import Spinner from '../../../components/Spinner/Spinner';
 
 const StudentCourseDetailsPage: React.FC = () => {
@@ -42,7 +42,7 @@ const StudentCourseDetailsPage: React.FC = () => {
   const [practiceQuestions, setPracticeQuestions] = useState<string | null>(null);
   const [generatePracticeQuestions, { isLoading: isGenerating }] = useGeneratePracticeQuestionsMutation();
 
-  const { data: studentData } = useGetStudentByIdQuery(user?.id || 0);
+  const { data: studentData } = useGetStudentByUserIdQuery(user?.id || 0);
 
   useEffect(() => {
     if (studentData) {
