@@ -117,6 +117,7 @@
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   z-index: 1001;
+  height: 300px;
   display: none;
 }
 
@@ -144,6 +145,7 @@
     flex: 1;
     height: 80%;
     margin-top: 20%;
+    margin-bottom: 6rem;
   }
 
   .chat .center {
@@ -152,12 +154,12 @@
 
   .chat .bottom {
     padding: 10px;
-    gap: 10px;
+    gap: 5px;
   }
 
   .chat .center .message img {
-    width: 20px;
-    height: 20px;
+    width: 10px;
+    height: 10px;
   }
 
   .chat .center .message .texts img {
@@ -169,6 +171,9 @@
     bottom: 50px;
     width: 300px;
     right: 20px;
+  }
+  .chat .bottom input {
+    width: 150px;
   }
 }
 
