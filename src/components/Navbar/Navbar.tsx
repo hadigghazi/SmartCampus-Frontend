@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { useLogoutMutation } from '../../features/api/authApi';
 import { logout } from '../../features/auth/authSlice';
-import NavbarLogo from '../../assets/images/NavBar_logo.png';
+import NavbarLogo from '../../assets/images/logo.png';
 import styles from './Navbar.module.css';
 import { useAppSelector } from '../../hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
