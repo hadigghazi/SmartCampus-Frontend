@@ -13,6 +13,7 @@ import styles from './StudentDashboard.module.css';
 import StudentLayout from '../StudentLayout';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../../../components/Spinner/Spinner';
+import { Link } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
   const { data: user } = useGetUserQuery();
@@ -24,6 +25,7 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const announcementsPerPage = 6;
+  
   const filteredAnnouncements = announcements?.filter(
     (announcement) => announcement.visibility === 'Students' || announcement.visibility === 'General'
   )
@@ -48,19 +50,29 @@ const Dashboard: React.FC = () => {
 
   const filteredRegistrations = registrations?.filter(
     (registration) => registration.semester_id === currentSemester?.id
-  );
+  ).map(registration => ({
+    ...registration,
+    evaluationButton: (
+      <Link
+        to={`/course-evaluations/${registration.course_instructor_id}`}
+      >
+        Evaluate
+      </Link>
+    )
+  }));
 
   const registrationColumns = [
-       { header: 'Semester', accessor: 'semester_name' },
+    { header: 'Semester', accessor: 'semester_name' },
     { header: 'Code', accessor: 'course_code' },
-    { header: 'Course Name', accessor: 'course_name' },
+    { header: 'Name', accessor: 'course_name' },
     { header: 'Instructor', accessor: 'instructor_name' },
     { header: 'Schedule', accessor: 'schedule' },
     { header: 'Credits', accessor: 'credits' },
     { header: 'Status', accessor: 'status' },
     { header: 'From', accessor: 'start_date' },
     { header: 'To', accessor: 'end_date' },
-    { header: 'Grade', accessor: 'grade' }
+    { header: 'Grade', accessor: 'grade' },
+    { header: 'Evaluation', accessor: 'evaluationButton' } 
   ];
 
   const examColumns = [
@@ -110,11 +122,11 @@ const Dashboard: React.FC = () => {
           <Spinner />
         )}
         <button
-            className={styles.registerButton}
-            onClick={() => navigate('/registrations')}
-          >
-            Register Courses
-          </button>
+          className={styles.registerButton}
+          onClick={() => navigate('/registrations')}
+        >
+          Register Courses
+        </button>
 
         <h2 className={styles.headingPrimary}>Exams</h2>
         {exams ? (
