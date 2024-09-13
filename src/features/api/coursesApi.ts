@@ -85,6 +85,13 @@ export const coursesApi = createApi({
     getCourseDetailsByInstructorId: builder.query({
       query: (courseInstructorId) => `course-details/${courseInstructorId}`,
     }),
+    analyzeCourseInstructor: builder.mutation({
+      query: ({ course_instructor_id, status }) => ({
+        url: '/course-analysis',
+        method: 'POST',
+        body: { course_instructor_id, status },
+      }),
+    }),
   }),
 });
 
@@ -107,5 +114,6 @@ export const {
   useGetCourseInstructorByIdQuery,
   useGetInstructorNameByCourseInstructorQuery,
   useGetCourseNameByCourseInstructorQuery,
-  useGetInstructorByCourseInstructorQuery
+  useGetInstructorByCourseInstructorQuery,
+  useAnalyzeCourseInstructorMutation
 } = coursesApi;
