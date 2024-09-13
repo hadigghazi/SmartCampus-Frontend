@@ -2,10 +2,8 @@ import React from 'react';
 import styles from './Footer.module.css';
 import logo from '../../assets/images/NavBar_logo.png';
 
-// Import FontAwesomeIcon component
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-// Import the icons you need
 import { faLinkedin, faFacebook, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 const Footer: React.FC = () => {

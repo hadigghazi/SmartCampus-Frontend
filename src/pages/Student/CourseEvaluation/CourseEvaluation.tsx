@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from './CourseEvaluations.module.css';
 import { useCreateCourseEvaluationMutation } from '../../../features/api/courseEvaluationsApi';
 import StudentLayout from '../StudentLayout';
@@ -7,13 +7,18 @@ import { toast } from 'react-toastify';
 import ToastNotifications from '../../../components/DialogAndToast/ToastNotification';
 import { useSelector } from 'react-redux';
 import { useGetStudentByUserIdQuery } from '../../../features/api/studentsApi';
+import { useGetCurrentSemesterQuery } from '../../../features/api/semestersApi';
+import { useGetRegistrationsByStudentQuery } from '../../../features/api/registrationsApi';
 
 const CourseEvaluationsPage = () => {
   const { id: course_instructor_id } = useParams(); 
   const auth = useSelector((state: any) => state.auth);
   const userId = auth?.user?.id; 
+  const navigate = useNavigate();
   const { data: studentData, isSuccess: studentLoaded } = useGetStudentByUserIdQuery(userId); 
   const [createCourseEvaluation] = useCreateCourseEvaluationMutation();
+  const { data: currentSemester } = useGetCurrentSemesterQuery();
+  const { data: registrations } = useGetRegistrationsByStudentQuery(studentData?.id || 0);
   
   const [evaluation, setEvaluation] = useState({
     teaching_number: 0,
@@ -40,6 +45,20 @@ const CourseEvaluationsPage = () => {
       }));
     }
   }, [studentLoaded, studentData]);
+
+  useEffect(() => {
+    if (studentData?.id && currentSemester) {
+      const isRegistered = registrations?.some(registration => 
+        registration.course_instructor_id === Number(course_instructor_id) &&
+        registration.semester_id === currentSemester.id
+      );
+      
+      if (!isRegistered) {
+        navigate('/student-dashboard');
+      }
+    }
+  }, [studentData, currentSemester, registrations, course_instructor_id, navigate]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
