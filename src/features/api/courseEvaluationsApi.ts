@@ -31,6 +31,9 @@ export const courseEvaluationsApi = createApi({
         method: 'DELETE',
       }),
     }),
+    getCourseEvaluationsByInstructor: builder.query({
+        query: (courseInstructorId) => `/course-evaluations/instructor/${courseInstructorId}`,
+      }),
   }),
 });
 
@@ -40,4 +43,5 @@ export const {
   useCreateCourseEvaluationMutation,
   useUpdateCourseEvaluationMutation,
   useDeleteCourseEvaluationMutation,
+  useGetCourseEvaluationsByInstructorQuery
 } = courseEvaluationsApi;

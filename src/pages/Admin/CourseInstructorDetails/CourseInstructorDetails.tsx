@@ -8,6 +8,32 @@ import {
 import { useGetInstructorByCourseInstructorQuery, useGetCourseDetailsByInstructorIdQuery } from '../../../features/api/coursesApi'; 
 import AdminLayout from '../AdminLayout';
 import Spinner from '../../../components/Spinner/Spinner';
+import { useGetCourseEvaluationsByInstructorQuery } from '../../../features/api/courseEvaluationsApi';
+
+const transformEvaluation = (evaluation) => {
+  const numberToText = (number) => {
+    switch (number) {
+      case 1:
+        return 'Good';
+      case -1:
+        return 'Bad';
+      case 0:
+        return 'Average';
+      default:
+        return '';
+    }
+  };
+
+  return {
+    ...evaluation,
+    teaching: `${numberToText(evaluation.teaching_number)} - ${evaluation.teaching}`,
+    coursecontent: `${numberToText(evaluation.coursecontent_number)} - ${evaluation.coursecontent}`,
+    examination: `${numberToText(evaluation.examination_number)} - ${evaluation.examination}`,
+    labwork: `${numberToText(evaluation.labwork_number)} - ${evaluation.labwork}`,
+    library_facilities: `${numberToText(evaluation.library_facilities_number)} - ${evaluation.library_facilities}`,
+    extracurricular: `${numberToText(evaluation.extracurricular_number)} - ${evaluation.extracurricular}`,
+  };
+};
 
 const CourseInstructorDetails = () => {
   const { id: course_instructor_id } = useParams();
@@ -18,6 +44,7 @@ const CourseInstructorDetails = () => {
 
   const { data: instructorData, error: instructorError, isLoading: instructorLoading } = useGetInstructorByCourseInstructorQuery(course_instructor_id);
   const { data: courseData, error: courseError, isLoading: courseLoading } = useGetCourseDetailsByInstructorIdQuery(course_instructor_id);
+  const { data: evaluations, error: evaluationsError, isLoading: evaluationsLoading } = useGetCourseEvaluationsByInstructorQuery(course_instructor_id);
 
   React.useEffect(() => {
     if (course_instructor_id) {
@@ -27,8 +54,8 @@ const CourseInstructorDetails = () => {
     }
   }, [course_instructor_id, getPrediction, getCoursePerformanceOverview, getBenchmarkComparisonDiagram]);
 
-  if (predictLoading || overviewLoading || benchmarkLoading || instructorLoading || courseLoading) return <Spinner />;
-  if (predictError || overviewError || benchmarkError || instructorError || courseError) return <div>Error loading data</div>;
+  if (predictLoading || overviewLoading || benchmarkLoading || instructorLoading || courseLoading || evaluationsLoading) return <Spinner />;
+  if (predictError || overviewError || benchmarkError || instructorError || courseError || evaluationsError) return <div>Error loading data</div>;
 
   const performanceOverviewUrl = performanceOverviewBlob ? URL.createObjectURL(performanceOverviewBlob) : null;
   const benchmarkDiagramUrl = benchmarkDiagramBlob ? URL.createObjectURL(benchmarkDiagramBlob) : null;
@@ -61,6 +88,29 @@ const CourseInstructorDetails = () => {
         </div>
         <div><strong>Specialization:</strong> {instructorData?.specialization}</div>
         <div><strong>Department:</strong> {instructorData?.department_name}</div>
+      </section>
+
+      <section>
+        <h2>Course Evaluations</h2>
+        {evaluations && evaluations.length > 0 ? (
+          <ul>
+            {evaluations.map(evaluation => {
+              const transformedEvaluation = transformEvaluation(evaluation);
+              return (
+                <li key={transformedEvaluation.id}>
+                  <strong>Teaching:</strong> {transformedEvaluation.teaching} <br />
+                  <strong>Course Content:</strong> {transformedEvaluation.coursecontent} <br />
+                  <strong>Examination:</strong> {transformedEvaluation.examination} <br />
+                  <strong>Lab Work:</strong> {transformedEvaluation.labwork} <br />
+                  <strong>Library Facilities:</strong> {transformedEvaluation.library_facilities} <br />
+                  <strong>Extracurricular:</strong> {transformedEvaluation.extracurricular} <br />
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p>No evaluations available.</p>
+        )}
       </section>
 
       <div>
