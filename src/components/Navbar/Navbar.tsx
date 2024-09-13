@@ -67,7 +67,7 @@ const Navbar: React.FC = () => {
           </li>
         )}
        <li className={styles.menuItem}>
-  <a href={import.meta.env.VITE_CHAT_URL} target="_blank" rel="noopener noreferrer">        <FontAwesomeIcon icon={faComments} />
+  <a className={styles.chatlink} href={import.meta.env.VITE_CHAT_URL} target="_blank" rel="noopener noreferrer">        <FontAwesomeIcon icon={faComments} />
   </a>
 </li>
 </ul>
