@@ -1,46 +1,37 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseUrl = import.meta.env.VITE_FAST_API_URL;
-
-const baseQuery = fetchBaseQuery({
-  baseUrl,
-  prepareHeaders: (headers) => {
-    headers.set('Content-Type', 'application/json');
-    return headers;
-  },
-});
-
 export const performanceApi = createApi({
   reducerPath: 'performanceApi',
-  baseQuery,
+  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_FAST_API_URL }),
   endpoints: (builder) => ({
-    predict: builder.query({
+    getPrediction: builder.mutation({
       query: (course_instructor_id) => ({
         url: '/predict',
+        method: 'POST',
         params: { course_instructor_id },
       }),
     }),
-
-    getCoursePerformanceOverview: builder.query({
+    getCoursePerformanceOverview: builder.mutation({
       query: (course_instructor_id) => ({
         url: '/course-performance-overview',
+        method: 'POST',
         params: { course_instructor_id },
-        responseHandler: (response) => response.blob().then((blob) => URL.createObjectURL(blob)),
+        responseHandler: (response) => response.blob(), 
       }),
     }),
-
-    getBenchmarkComparisonDiagram: builder.query({
+    getBenchmarkComparisonDiagram: builder.mutation({
       query: (course_instructor_id) => ({
         url: '/benchmark-comparison-diagram',
+        method: 'POST',
         params: { course_instructor_id },
-        responseHandler: (response) => response.blob().then((blob) => URL.createObjectURL(blob)),
+        responseHandler: (response) => response.blob(),
       }),
     }),
   }),
 });
 
 export const {
-  usePredictQuery,
-  useGetCoursePerformanceOverviewQuery,
-  useGetBenchmarkComparisonDiagramQuery,
+  useGetPredictionMutation,
+  useGetCoursePerformanceOverviewMutation,
+  useGetBenchmarkComparisonDiagramMutation,
 } = performanceApi;
