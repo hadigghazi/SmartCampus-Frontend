@@ -136,6 +136,10 @@ const CourseDetails: React.FC = () => {
   }
   };
 
+  const handleViewClick = (courseInstructorId: any) => {
+    navigate(`/admin/course-options/${courseInstructorId}`);
+  }
+
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -233,16 +237,17 @@ const CourseDetails: React.FC = () => {
                 <div className={styles.btnsContainer}>
                   <button
                     onClick={() => handleDelete(option.id)}
-                    className={styles.deleteButton}
+                    className={styles.btnClick}
                   >
                     Delete
                   </button>
                   <button
                     onClick={() => handleOpenEditModal(option)}
-                    className={styles.editButton}
+                    className={styles.btnClick}
                   >
                     Edit
                   </button>
+                  <button onClick={() => handleViewClick(option.id)} className={styles.btnClick}>View</button>
                 </div>
               </li>
             ))}

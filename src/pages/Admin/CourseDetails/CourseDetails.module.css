@@ -15,6 +15,31 @@
     text-align: left;
 }
 
+.btnClick {
+  background-color: var(--secondary-color); 
+  color: var(--primary-color);            
+  border: none;        
+  margin-right: .5rem;    
+  margin-top: 1rem;
+  padding: 8px 16px;    
+  border-radius: 4px;  
+  cursor: pointer; 
+  font-size: 16px;  
+  text-align: center;
+  text-decoration: none; 
+  font-family: 'Metrophobic', sans-serif;
+  display: inline-block; 
+}
+
+.btnClick:hover {
+  background-color: #65a5ba; 
+}
+
+.btnClick:disabled {
+  background-color: #c0c0c0; 
+  cursor: not-allowed;     
+}
+
 .headingTertiary {
     color: var(--primary-color); 
     font-size: 2rem; 
@@ -53,6 +78,7 @@
     color: var(--primary-color);
     width: 90%;
     margin: 0 auto;
+    font-family: 'Metrophobic', sans-serif;
 }
 
 .text {
