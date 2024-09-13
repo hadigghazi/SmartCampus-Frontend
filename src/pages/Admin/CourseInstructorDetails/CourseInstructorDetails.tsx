@@ -1,14 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  useGetPredictionMutation,
-  useGetCoursePerformanceOverviewMutation,
-  useGetBenchmarkComparisonDiagramMutation,
-} from '../../../features/api/performanceApi';
+import { useGetPredictionMutation, useGetCoursePerformanceOverviewMutation, useGetBenchmarkComparisonDiagramMutation } from '../../../features/api/performanceApi';
 import { useGetInstructorByCourseInstructorQuery, useGetCourseDetailsByInstructorIdQuery, useAnalyzeCourseInstructorMutation } from '../../../features/api/coursesApi'; 
 import AdminLayout from '../AdminLayout';
 import Spinner from '../../../components/Spinner/Spinner';
 import { useGetCourseEvaluationsByInstructorQuery } from '../../../features/api/courseEvaluationsApi';
+import styles from './CourseInstructorDetails.module.css';  // Import CSS module
 
 const transformEvaluation = (evaluation) => {
   const numberToText = (number) => {
@@ -65,105 +62,113 @@ const CourseInstructorDetails = () => {
     }
   };
 
-  const formatAnalysisResponse = (text) => {
-    return text
-      .replace(/### /g, '<h3>')
+  const formatAnalysisResponse = (text: any) => {
+    if (typeof text !== 'string') {
+      console.error("Expected a string, but received:", text);
+      return ''; 
+    }
+      return text.replace(/### /g, '<h3>')
       .replace(/#### /g, '<h4>')
       .replace(/\n\n/g, '</p><p>')
       .replace(/\n/g, '<br />')
       .replace(/<\/p><p>/g, '</p><p>')
-      .replace(/<\/p><p>/g, '</p><p>')
       .replace(/<p><br \/>/g, '<p>')
-      .replace(/<\/p><p>$/g, '</p>');
+      .replace(/<\/p><p>$/g, '</p>')
+      .replace(/# /g, '<h2>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   };
 
-  if (predictLoading || overviewLoading || benchmarkLoading || instructorLoading || courseLoading || evaluationsLoading || analyzeLoading) return <Spinner />;
-  if (predictError || overviewError || benchmarkError || instructorError || courseError || evaluationsError || analyzeError) return <div>Error loading data</div>;
+  if (predictLoading || overviewLoading || benchmarkLoading || instructorLoading || courseLoading || evaluationsLoading ) return <Spinner />;
+  if (predictError || overviewError || benchmarkError || instructorError || courseError || evaluationsError ) return <div>Error loading data</div>;
 
   const performanceOverviewUrl = performanceOverviewBlob ? URL.createObjectURL(performanceOverviewBlob) : null;
   const benchmarkDiagramUrl = benchmarkDiagramBlob ? URL.createObjectURL(benchmarkDiagramBlob) : null;
 
   return (
     <AdminLayout>
-      <h1>Course and Instructor Details Report</h1>
+      <div className={styles.container}>
+        <h1>Course and Instructor Details Report</h1>
 
-      <section>
-        <h2>Course Details</h2>
-        <div><strong>Course Code:</strong> {courseData?.course_code}</div>
-        <div><strong>Course Name:</strong> {courseData?.course_name}</div>
-        <div><strong>Description:</strong> {courseData?.description}</div>
-        <div><strong>Credits:</strong> {courseData?.credits}</div>
-        <div><strong>Major:</strong> {courseData?.major_name}</div>
-        <div><strong>Faculty:</strong> {courseData?.faculty_name}</div>
-        <div><strong>Semester:</strong> {courseData?.semester_name}</div>
-        <div><strong>Capacity:</strong> {courseData?.capacity}</div>
-        <div><strong>Campus:</strong> {courseData?.campus_name}</div>
-        <div><strong>Schedule:</strong> {courseData?.schedule}</div>
-        <div><strong>Room Number:</strong> {courseData?.room_number}</div>
-        <div><strong>Block Name:</strong> {courseData?.block_name}</div>
-      </section>
+        <section className={styles.section}>
+          <h2>Course Details</h2>
+          <div className={styles.details}>
+            <div><strong>Course Code:</strong> {courseData?.course_code}</div>
+            <div><strong>Course Name:</strong> {courseData?.course_name}</div>
+            <div><strong>Description:</strong> {courseData?.description}</div>
+            <div><strong>Credits:</strong> {courseData?.credits}</div>
+            <div><strong>Major:</strong> {courseData?.major_name}</div>
+            <div><strong>Faculty:</strong> {courseData?.faculty_name}</div>
+            <div><strong>Semester:</strong> {courseData?.semester_name}</div>
+            <div><strong>Capacity:</strong> {courseData?.capacity}</div>
+            <div><strong>Campus:</strong> {courseData?.campus_name}</div>
+            <div><strong>Schedule:</strong> {courseData?.schedule}</div>
+            <div><strong>Room Number:</strong> {courseData?.room_number}</div>
+            <div><strong>Block Name:</strong> {courseData?.block_name}</div>
+          </div>
+        </section>
 
-      <section>
-        <h2>Instructor Details</h2>
-        <div><strong>Instructor Name:</strong> {`${instructorData?.first_name} ${instructorData?.middle_name} ${instructorData?.last_name}`}</div>
-        <div><strong>Profile Picture:</strong>
-          <img src={instructorData?.profile_picture} alt="Instructor" style={{ width: '100px', height: '100px' }} />
-        </div>
-        <div><strong>Specialization:</strong> {instructorData?.specialization}</div>
-        <div><strong>Department:</strong> {instructorData?.department_name}</div>
-      </section>
+        <section className={styles.section}>
+          <h2>Instructor Details</h2>
+          <div className={styles.details}>
+            <div><strong>Instructor Name:</strong> {`${instructorData?.first_name} ${instructorData?.middle_name} ${instructorData?.last_name}`}</div>
+            <div><strong>Profile Picture:</strong>
+              <img src={instructorData?.profile_picture} alt="Instructor" style={{ width: '100px', height: '100px' }} />
+            </div>
+            <div><strong>Specialization:</strong> {instructorData?.specialization}</div>
+            <div><strong>Department:</strong> {instructorData?.department_name}</div>
+          </div>
+        </section>
 
-      <section>
-        <h2>Course Evaluations</h2>
-        {evaluations && evaluations.length > 0 ? (
+        <section className={styles.section}>
+          <h2>Performance Overview</h2>
+          {performanceOverviewUrl && (
+            <div>
+              <p>Performance Overview Chart:</p>
+              <img src={performanceOverviewUrl} alt="Performance Overview" />
+            </div>
+          )}
+        </section>
+
+        <section className={styles.section}>
+          <h2>Benchmark Comparison</h2>
+          {benchmarkDiagramUrl && (
+            <div>
+              <p>Benchmark Comparison Diagram:</p>
+              <img src={benchmarkDiagramUrl} alt="Benchmark Comparison Diagram" />
+            </div>
+          )}
+        </section>
+
+        <section className={styles.section}>
+          <h2>Course Evaluations</h2>
           <ul>
-            {evaluations.map(evaluation => {
+            {evaluations?.map((evaluation, index) => {
               const transformedEvaluation = transformEvaluation(evaluation);
               return (
-                <li key={transformedEvaluation.id}>
-                  <strong>Teaching:</strong> {transformedEvaluation.teaching} <br />
-                  <strong>Course Content:</strong> {transformedEvaluation.coursecontent} <br />
-                  <strong>Examination:</strong> {transformedEvaluation.examination} <br />
-                  <strong>Lab Work:</strong> {transformedEvaluation.labwork} <br />
-                  <strong>Library Facilities:</strong> {transformedEvaluation.library_facilities} <br />
-                  <strong>Extracurricular:</strong> {transformedEvaluation.extracurricular} <br />
+                <li key={index}>
+                  <strong>Evaluation {index + 1}</strong>
+                  <p>Teaching: {transformedEvaluation.teaching}</p>
+                  <p>Course Content: {transformedEvaluation.coursecontent}</p>
+                  <p>Examination: {transformedEvaluation.examination}</p>
+                  <p>Lab Work: {transformedEvaluation.labwork}</p>
+                  <p>Library Facilities: {transformedEvaluation.library_facilities}</p>
+                  <p>Extracurricular: {transformedEvaluation.extracurricular}</p>
                 </li>
               );
             })}
           </ul>
-        ) : (
-          <p>No evaluations available.</p>
-        )}
-      </section>
-
-      <div>
-        <h2>Prediction</h2>
-        <p>Prediction: {prediction?.prediction}</p>
-      </div>
-
-      <button onClick={handleAnalyzeClick} disabled={analyzeLoading}>
-        {analyzeLoading ? 'Analyzing...' : 'Analyze Course'}
-      </button>
-
-      {analysis && (
-        <section>
-          <h2>Analysis Result</h2>
-          <div dangerouslySetInnerHTML={{ __html: formatAnalysisResponse(analysis.analysis) }} />
         </section>
-      )}
 
-      <div>
-        <h2>Course Performance Overview</h2>
-        {performanceOverviewUrl && (
-          <img src={performanceOverviewUrl} alt="Course Performance Overview" />
-        )}
-      </div>
+        <button onClick={handleAnalyzeClick} disabled={analyzeLoading || !prediction?.prediction}>
+          {analyzeLoading ? 'Analyzing...' : 'Analyze Instructor'}
+        </button>
 
-      <div>
-        <h2>Benchmark Comparison Diagram</h2>
-        {benchmarkDiagramUrl && (
-          <img src={benchmarkDiagramUrl} alt="Benchmark Comparison Diagram" />
-        )}
+        {analysis && (
+  <section className={styles.section}>
+    <h2>Analysis Report</h2>
+    <div dangerouslySetInnerHTML={{ __html: formatAnalysisResponse(analysis?.analysis) }} />
+  </section>
+)}
       </div>
     </AdminLayout>
   );
