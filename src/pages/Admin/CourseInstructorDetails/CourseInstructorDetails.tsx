@@ -5,7 +5,7 @@ import {
   useGetCoursePerformanceOverviewMutation,
   useGetBenchmarkComparisonDiagramMutation,
 } from '../../../features/api/performanceApi';
-import { useGetInstructorByCourseInstructorQuery, useGetCourseDetailsByInstructorIdQuery } from '../../../features/api/coursesApi'; 
+import { useGetInstructorByCourseInstructorQuery, useGetCourseDetailsByInstructorIdQuery, useAnalyzeCourseInstructorMutation } from '../../../features/api/coursesApi'; 
 import AdminLayout from '../AdminLayout';
 import Spinner from '../../../components/Spinner/Spinner';
 import { useGetCourseEvaluationsByInstructorQuery } from '../../../features/api/courseEvaluationsApi';
@@ -41,6 +41,7 @@ const CourseInstructorDetails = () => {
   const [getPrediction, { data: prediction, error: predictError, isLoading: predictLoading }] = useGetPredictionMutation();
   const [getCoursePerformanceOverview, { data: performanceOverviewBlob, error: overviewError, isLoading: overviewLoading }] = useGetCoursePerformanceOverviewMutation();
   const [getBenchmarkComparisonDiagram, { data: benchmarkDiagramBlob, error: benchmarkError, isLoading: benchmarkLoading }] = useGetBenchmarkComparisonDiagramMutation();
+  const [analyzeCourseInstructor, { data: analysis, error: analyzeError, isLoading: analyzeLoading }] = useAnalyzeCourseInstructorMutation();
 
   const { data: instructorData, error: instructorError, isLoading: instructorLoading } = useGetInstructorByCourseInstructorQuery(course_instructor_id);
   const { data: courseData, error: courseError, isLoading: courseLoading } = useGetCourseDetailsByInstructorIdQuery(course_instructor_id);
@@ -54,8 +55,30 @@ const CourseInstructorDetails = () => {
     }
   }, [course_instructor_id, getPrediction, getCoursePerformanceOverview, getBenchmarkComparisonDiagram]);
 
-  if (predictLoading || overviewLoading || benchmarkLoading || instructorLoading || courseLoading || evaluationsLoading) return <Spinner />;
-  if (predictError || overviewError || benchmarkError || instructorError || courseError || evaluationsError) return <div>Error loading data</div>;
+  const handleAnalyzeClick = async () => {
+    if (prediction?.prediction) {
+      try {
+        await analyzeCourseInstructor({ course_instructor_id, status: prediction.prediction }).unwrap();
+      } catch (err) {
+        console.error('Failed to analyze the course: ', err);
+      }
+    }
+  };
+
+  const formatAnalysisResponse = (text) => {
+    return text
+      .replace(/### /g, '<h3>')
+      .replace(/#### /g, '<h4>')
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\n/g, '<br />')
+      .replace(/<\/p><p>/g, '</p><p>')
+      .replace(/<\/p><p>/g, '</p><p>')
+      .replace(/<p><br \/>/g, '<p>')
+      .replace(/<\/p><p>$/g, '</p>');
+  };
+
+  if (predictLoading || overviewLoading || benchmarkLoading || instructorLoading || courseLoading || evaluationsLoading || analyzeLoading) return <Spinner />;
+  if (predictError || overviewError || benchmarkError || instructorError || courseError || evaluationsError || analyzeError) return <div>Error loading data</div>;
 
   const performanceOverviewUrl = performanceOverviewBlob ? URL.createObjectURL(performanceOverviewBlob) : null;
   const benchmarkDiagramUrl = benchmarkDiagramBlob ? URL.createObjectURL(benchmarkDiagramBlob) : null;
@@ -117,6 +140,17 @@ const CourseInstructorDetails = () => {
         <h2>Prediction</h2>
         <p>Prediction: {prediction?.prediction}</p>
       </div>
+
+      <button onClick={handleAnalyzeClick} disabled={analyzeLoading}>
+        {analyzeLoading ? 'Analyzing...' : 'Analyze Course'}
+      </button>
+
+      {analysis && (
+        <section>
+          <h2>Analysis Result</h2>
+          <div dangerouslySetInnerHTML={{ __html: formatAnalysisResponse(analysis.analysis) }} />
+        </section>
+      )}
 
       <div>
         <h2>Course Performance Overview</h2>
