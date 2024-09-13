@@ -85,7 +85,7 @@ const CourseInstructorDetails = () => {
   };
 
   if (predictLoading || overviewLoading || benchmarkLoading || instructorLoading || courseLoading || evaluationsLoading ) return <Spinner />;
-  if (predictError || overviewError || benchmarkError || instructorError || courseError || evaluationsError ) return <div>Error loading data</div>;
+  if (instructorError || courseError ) return <div>Error loading data</div>;
 
   const performanceOverviewUrl = performanceOverviewBlob ? URL.createObjectURL(performanceOverviewBlob) : null;
   const benchmarkDiagramUrl = benchmarkDiagramBlob ? URL.createObjectURL(benchmarkDiagramBlob) : null;
@@ -137,7 +137,7 @@ const CourseInstructorDetails = () => {
   };
   
   return (
-    <AdminLayout>
+    <AdminLayout requiredAdminType='Super Admin'>
       <div className={styles.buttonContainer}>
         <button onClick={downloadPdf}>
           <FontAwesomeIcon icon={faFilePdf} />
