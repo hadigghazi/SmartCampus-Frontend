@@ -50,6 +50,9 @@ export const coursesApi = createApi({
     getInstructorNameByCourseInstructor: builder.query<CourseOption[], number>({
       query: (id) => `/instructor_name_by_course_instructor/${id}`,
     }),
+    getInstructorByCourseInstructor: builder.query<CourseOption[], number>({
+      query: (id) => `/instructor_by_course/${id}`,
+    }),
     getCourseNameByCourseInstructor: builder.query<CourseOption[], number>({
       query: (id) => `/course_name_by_course_instructor/${id}`,
     }),
@@ -103,5 +106,6 @@ export const {
   useGetAvailableCourseOptionsQuery,
   useGetCourseInstructorByIdQuery,
   useGetInstructorNameByCourseInstructorQuery,
-  useGetCourseNameByCourseInstructorQuery
+  useGetCourseNameByCourseInstructorQuery,
+  useGetInstructorByCourseInstructorQuery
 } = coursesApi;

@@ -5,6 +5,8 @@ import {
   useGetCoursePerformanceOverviewMutation,
   useGetBenchmarkComparisonDiagramMutation,
 } from '../../../features/api/performanceApi';
+import AdminLayout from '../AdminLayout';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const CourseInstructorDetails = () => {
   const { id: course_instructor_id } = useParams();
@@ -21,14 +23,14 @@ const CourseInstructorDetails = () => {
     }
   }, [course_instructor_id, getPrediction, getCoursePerformanceOverview, getBenchmarkComparisonDiagram]);
 
-  if (predictLoading || overviewLoading || benchmarkLoading) return <div>Loading...</div>;
+  if (predictLoading || overviewLoading || benchmarkLoading) return <Spinner />;
   if (predictError || overviewError || benchmarkError) return <div>Error loading data</div>;
 
   const performanceOverviewUrl = performanceOverviewBlob ? URL.createObjectURL(performanceOverviewBlob) : null;
   const benchmarkDiagramUrl = benchmarkDiagramBlob ? URL.createObjectURL(benchmarkDiagramBlob) : null;
 
   return (
-    <div>
+    <AdminLayout>
       <h1>Test Endpoints</h1>
 
       <div>
@@ -49,7 +51,7 @@ const CourseInstructorDetails = () => {
           <img src={benchmarkDiagramUrl} alt="Benchmark Comparison Diagram" />
         )}
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 

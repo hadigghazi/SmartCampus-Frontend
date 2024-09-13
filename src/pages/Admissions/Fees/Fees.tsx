@@ -2,12 +2,13 @@ import React from 'react';
 import AdmissionsLayout from '../AdmissionsLayout';
 import styles from './Fees.module.css';
 import { useGetFacultiesQuery } from '../../../features/api/facultiesApi';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const Fees: React.FC = () => {
   const { data: faculties, error, isLoading } = useGetFacultiesQuery(); 
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Spinner />;
   }
 
   if (error) {
