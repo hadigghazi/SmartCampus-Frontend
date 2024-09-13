@@ -5,7 +5,7 @@ import {
   useGetCoursePerformanceOverviewMutation,
   useGetBenchmarkComparisonDiagramMutation,
 } from '../../../features/api/performanceApi';
-import { useGetInstructorByCourseInstructorQuery, useGetCourseDetailsByInstructorIdQuery } from '../../../features/api/coursesApi'; // Adjust import path as necessary
+import { useGetInstructorByCourseInstructorQuery, useGetCourseDetailsByInstructorIdQuery } from '../../../features/api/coursesApi'; 
 import AdminLayout from '../AdminLayout';
 import Spinner from '../../../components/Spinner/Spinner';
 
@@ -16,7 +16,6 @@ const CourseInstructorDetails = () => {
   const [getCoursePerformanceOverview, { data: performanceOverviewBlob, error: overviewError, isLoading: overviewLoading }] = useGetCoursePerformanceOverviewMutation();
   const [getBenchmarkComparisonDiagram, { data: benchmarkDiagramBlob, error: benchmarkError, isLoading: benchmarkLoading }] = useGetBenchmarkComparisonDiagramMutation();
 
-  // Queries for course and instructor details
   const { data: instructorData, error: instructorError, isLoading: instructorLoading } = useGetInstructorByCourseInstructorQuery(course_instructor_id);
   const { data: courseData, error: courseError, isLoading: courseLoading } = useGetCourseDetailsByInstructorIdQuery(course_instructor_id);
 
@@ -46,6 +45,12 @@ const CourseInstructorDetails = () => {
         <div><strong>Credits:</strong> {courseData?.credits}</div>
         <div><strong>Major:</strong> {courseData?.major_name}</div>
         <div><strong>Faculty:</strong> {courseData?.faculty_name}</div>
+        <div><strong>Semester:</strong> {courseData?.semester_name}</div>
+        <div><strong>Capacity:</strong> {courseData?.capacity}</div>
+        <div><strong>Campus:</strong> {courseData?.campus_name}</div>
+        <div><strong>Schedule:</strong> {courseData?.schedule}</div>
+        <div><strong>Room Number:</strong> {courseData?.room_number}</div>
+        <div><strong>Block Name:</strong> {courseData?.block_name}</div>
       </section>
 
       <section>
