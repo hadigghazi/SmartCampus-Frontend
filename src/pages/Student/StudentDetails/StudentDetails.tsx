@@ -51,40 +51,98 @@ const StudentDetails: React.FC = () => {
         <h1 className={styles.headingPrimary}>Student Details</h1>
         {student && user ? (
           <div className={styles.detailsWrapper}>
-            <div className={styles.profileCard}>
-              <div className={styles.profilePicture}>
-                <img src={user.profile_picture || defaultProfile} alt="Profile" />
-              </div>
-              <div className={styles.profileInfo}>
-                <p><strong>ID:</strong> {student.id}</p>
-                <p><strong>Name:</strong> {user.first_name} {user.middle_name} {user.last_name}</p>
-                <p><strong>Mother Full Name:</strong> {user.mother_full_name}</p>
-                <p><strong>Email:</strong> {user.email}</p>
-                <p><strong>Phone:</strong> {user.phone_number || 'N/A'}</p>
-                <p><strong>Role:</strong> {user.role}</p>
-                <p><strong>Status:</strong> {user.status}</p>
-                <p><strong>Date of Birth:</strong> {user.date_of_birth ? new Date(user.date_of_birth).toLocaleDateString() : 'N/A'}</p>
-                <p><strong>Nationality:</strong> {user.nationality}</p>
-                <p><strong>Second Nationality:</strong> {user.second_nationality || 'N/A'}</p>
-                <p><strong>Country of Birth:</strong> {user.country_of_birth}</p>
-                <p><strong>Gender:</strong> {user.gender}</p>
-                <p><strong>Marital Status:</strong> {user.marital_status}</p>
-              </div>
-            </div>
-
-            <div className={styles.studentCard}>
-              <h2 className={styles.headingSecondary}>More Details</h2>
-              <div className={styles.studentInfo}>
-                <p><strong>Government ID:</strong> {student.government_id}</p>
-                <p><strong>Civil Status Number:</strong> {student.civil_status_number}</p>
-                <p><strong>Passport Number:</strong> {student.passport_number || 'N/A'}</p>
-                <p><strong>Visa Status:</strong> {student.visa_status || 'N/A'}</p>
-                <p><strong>Native Language:</strong> {student.native_language}</p>
-                <p><strong>Secondary Language:</strong> {student.secondary_language}</p>
-                <p><strong>Major:</strong> {getMajorName(student.major_id) || 'N/A'}</p>
-                <p><strong>Additional Info:</strong> {student.additional_info || 'N/A'}</p>
-               </div>
-            </div>
+            <table className={styles.studentDetailsTable}>
+              <tbody>
+                <tr>
+                  <td rowSpan={2} className={styles.profilePictureCell}>
+                    <img
+                      src={user.profile_picture || defaultProfile}
+                      alt="Profile"
+                      className={styles.profileImage}
+                    />
+                  </td>
+                  <td>
+                    <strong>ID:</strong> {student?.id}
+                  </td>
+                  <td>
+                    <strong>Government ID:</strong> {student?.government_id}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Name:</strong> {user?.first_name} {user?.middle_name} {user?.last_name}
+                  </td>
+                  <td>
+                    <strong>Civil Status Number:</strong> {student?.civil_status_number}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    <strong>Email:</strong> {user?.email}
+                  </td>
+                  <td>
+                    <strong>Passport Number:</strong> {student?.passport_number || 'N/A'}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    <strong>Mother Full Name:</strong> {user?.mother_full_name}
+                  </td>
+                  <td>
+                    <strong>Country Of Birth:</strong> {user?.country_of_birth || 'N/A'}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    <strong>Marital Status:</strong> {user?.marital_status}
+                  </td>
+                  <td>
+                    <strong>Gender:</strong> {user?.gender || 'N/A'}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    <strong>Phone:</strong> {user?.phone_number || 'N/A'}
+                  </td>
+                  <td>
+                    <strong>Visa Status:</strong> {student?.visa_status || 'N/A'}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    <strong>Date of Birth:</strong>{' '}
+                    {user.date_of_birth ? new Date(user?.date_of_birth).toLocaleDateString() : 'N/A'}
+                  </td>
+                  <td>
+                    <strong>Native Language:</strong> {student?.native_language}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    <strong>Nationality:</strong> {user?.nationality}
+                  </td>
+                  <td>
+                    <strong>Secondary Language:</strong> {student?.secondary_language}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    <strong>Major:</strong> {getMajorName(student?.major_id) || 'N/A'}
+                  </td>
+                  <td>
+                    <strong>Additional Info:</strong> {student?.additional_info || 'N/A'}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    <strong>Address</strong> {user?.address || 'N/A'}
+                  </td>
+                  <td>
+                    <strong>Emergency Contact Number:</strong> {user?.emergency_contact_number|| 'N/A'}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
 
             <div className={styles.registrationsContainer} style={{ marginTop: '4rem' }}>
               <h2 className={styles.headingSecondary}>Course Registrations</h2>
