@@ -3,6 +3,8 @@
   color: var(--primary-color);
   width: 90%;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
   border-radius: 8px;
 }
 
@@ -25,6 +27,7 @@
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 2rem;
+  font-family: 'Metrophobic', sans-serif;
 }
 
 .studentDetailsTable td {
