@@ -25,6 +25,39 @@
   text-align: left;
 }
 
+.studentDetailsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+  font-family: 'Metrophobic', sans-serif;
+}
+
+.studentDetailsTable td {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+
+.profilePictureCell {
+  width: 150px;
+  text-align: center;
+  vertical-align: top;
+}
+
+.profileImage {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.profileCard, .studentCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+}
+
 .detailsWrapper {
   display: flex;
   flex-direction: column;
