@@ -1,61 +1,71 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    min-height: 100vh;
-    background-color: white;
-    padding: 2rem;
-    margin-top: -3rem;
-  }
-  
-  .text {
-    color: var(--primary-color);
-    font-family: 'Metrophobic', sans-serif;
-    line-height: 1.6;
-    font-size: 1.6rem;
-    width: 90%;
-    margin: 1rem 0;
-  }
-  
-  .headingSecondary {
-    color: var(--primary-color); 
-    font-size: 1.5rem; 
-    font-weight: 600; 
-    margin-bottom: 0.5rem;
-    font-family: 'Merriweather', sans-serif;
-    text-align: left;
-    margin-top: 2rem;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 100vh;
+  background-color: white;
+  padding: 2rem;
+  margin-top: -3rem;
+}
+
+.text {
+  color: var(--primary-color);
+  font-family: 'Metrophobic', sans-serif;
+  line-height: 1.6;
+  font-size: 1.2rem;
+  width: 90%;
+  margin: 1rem 0;
+}
+
+.headingSecondary {
+  color: var(--primary-color); 
+  font-size: 1.5rem; 
+  font-weight: 600; 
+  margin-bottom: 0.5rem;
+  font-family: 'Merriweather', sans-serif;
+  text-align: left;
+  margin-top: 2rem;
+}
+
+.headingPrimary {
+  color: var(--primary-color); 
+  font-size: 2.5rem;
+  font-weight: 700; 
+  margin-bottom: 2rem;
+  font-family: 'Merriweather', serif; 
+  text-align: left;
+}
+
+.list {
+  list-style-type: disc;
+  margin-left: 1.2rem; 
+}
+
+.list li {
+  color: var(--primary-color);
+  font-family: 'Metrophobic', sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
   .headingPrimary {
-    color: var(--primary-color); 
-    font-size: 2.5rem;
-    font-weight: 700; 
-    margin-bottom: 2rem;
-    font-family: 'Merriweather', serif; 
-    text-align: left;
+    font-size: 1rem;
   }
-  
-  .list {
-    list-style-type: disc;
+
+  .headingSecondary {
+    font-size: .8rem;
   }
-  
-  @media (max-width: 768px) {
-    .headingPrimary {
-      font-size: 1rem;
-    }
-  
-    .headingSecondary {
-      font-size: .8rem;
-    }
-    .text, .list {
-      font-size: .8rem;
-    }
-    .container {
-      margin-top: -13rem;
-    }
-    .headingSecondary {
-      margin-top: 1rem;
-    }
+
+  .text, .list {
+    font-size: .8rem;
   }
-  
+
+  .container {
+    margin-top: -13rem;
+  }
+
+  .headingSecondary {
+    margin-top: 1rem;
+  }
+}
