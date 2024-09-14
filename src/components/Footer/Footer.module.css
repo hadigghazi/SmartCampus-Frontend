@@ -55,7 +55,7 @@
 }
 
 .footerColumn a {
-  font-size: 0.9em; 
+  font-size: 1rem; 
   line-height: 2rem;
   color: var(--secondary-color);
   text-decoration: none;
@@ -63,7 +63,7 @@
 }
 
 .footerColumn p {
-  font-size: 0.9em; 
+  font-size: 1rem; 
   line-height: 1.8rem; 
   color: var(--secondary-color);
   text-decoration: none;

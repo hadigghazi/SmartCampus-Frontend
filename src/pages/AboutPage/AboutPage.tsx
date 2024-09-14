@@ -1,6 +1,6 @@
 import React from 'react';
 import HeroSection from '../../components/HeroSection/HeroSection';
-import aboutImage from '../../assets/images/Hero_about.jpg';
+import aboutImage from '../../assets/images/Hero.png';
 import VisionMission from '../../components/VisionMission/VisionMission';
 import Footer from '../../components/Footer/Footer';
 import Opening from '../../components/Opening/Opening';

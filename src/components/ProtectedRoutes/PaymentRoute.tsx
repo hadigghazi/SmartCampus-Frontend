@@ -14,7 +14,6 @@ const ProtectedRoute = ({ children }) => {
   }
 
   const { fees_paid } = data;
-
   if (!fees_paid ) {
     return <Navigate to="/remaining-payments" />;
   }

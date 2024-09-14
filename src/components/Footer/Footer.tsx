@@ -1,9 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
 import logo from '../../assets/images/NavBar_logo.png';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { faLinkedin, faFacebook, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 const Footer: React.FC = () => {
@@ -24,20 +24,19 @@ const Footer: React.FC = () => {
         </div>
         <div className={styles.footerColumn}>
           <h4>Discover More</h4>
-          <p><a href="#">About Us</a></p>
-          <p><a href="#">Fees</a></p>
-          <p><a href="#">Library</a></p>
-          <p><a href="#">AI Major Suggestion</a></p>
-          <p><a href="#">Faculties And Programs</a></p>
+          <p><Link to="/about">About Us</Link></p>
+          <p><Link to="/admissions/fees">Fees</Link></p>
+          <p><Link to="/major-suggestor">AI Major Suggestion</Link></p>
+          <p><Link to="/academics/faculties">Faculties And Programs</Link></p>
         </div>
         <div className={styles.footerColumn}>
           <h4>More Links</h4>
-          <p><a href="#">Careers</a></p>
-          <p><a href="#">Registrar</a></p>
-          <p><a href="#">News</a></p>
-          <p><a href="#">Financial Aid</a></p>
-          <p><a href="#">Contact Us</a></p>
-          <p><a href="#">Campus Location</a></p>
+          <p><Link to="/admissions/academic-careers">Academic Careers</Link></p>
+          <p><Link to="/admissions/non-academic-careers">Non-Academic Careers</Link></p>
+          <p><Link to="/academics/academic-calendar">Calendar</Link></p>
+          <p><Link to="/admissions/financial-aid">Financial Aid</Link></p>
+          <p><a href="mailto:hadigghazi@gmail.com">Contact Us</a></p>
+          <p><a href="https://www.google.com/maps?q=Beirut+City" target="_blank" rel="noopener noreferrer">Campus Location</a></p>
         </div>
       </div>
       <div className={styles.footerBottom}>
