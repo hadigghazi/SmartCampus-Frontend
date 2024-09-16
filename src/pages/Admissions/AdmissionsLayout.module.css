@@ -59,11 +59,11 @@
   }
   
   .nav a:hover {
-    text-decoration: underline;
+    color: rgba(9, 9, 107, 0.797);
   }
   
   .active {
-    text-decoration: underline;
+    color: rgba(9, 9, 107, 0.797);
   }
   
   .content {

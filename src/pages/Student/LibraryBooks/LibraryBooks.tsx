@@ -102,7 +102,7 @@ const LibraryBooksStudent: React.FC = () => {
             { header: 'Title', accessor: 'title' as keyof LibraryBook },
             { header: 'Author', accessor: 'author' as keyof LibraryBook },
             { header: 'Campus', accessor: 'campus_name' as keyof LibraryBook },
-            { header: 'Number of Copies', accessor: 'copies' as keyof LibraryBook },
+            { header: 'Copies', accessor: 'copies' as keyof LibraryBook },
           ]}
           data={currentEntries || []}
           actions={(book) => (
