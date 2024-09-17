@@ -140,7 +140,6 @@ const Faculties: React.FC = () => {
         <Table
           columns={[
             { header: 'Faculty Name', accessor: 'name' },
-            { header: 'Description', accessor: 'description' },
             { header: 'Credit Price (USD)', accessor: 'credit_price_usd' }, 
           ]}
           data={currentEntries || []}
