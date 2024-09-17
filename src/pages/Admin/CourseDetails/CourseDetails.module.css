@@ -136,45 +136,74 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center; 
-    gap: 3rem;
+    gap: 1rem;
     max-width: 1200px;
     margin: 0 auto; 
     padding: 0;
     list-style: none;
 }
-
 .optionItem {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px;
-    text-align: left;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: var(--primary-color);
-    max-width: 300px;
-    color: var(--secondary-color);
+  border: 1px solid #e0e0e0; 
+  border-radius: 10px; 
+  padding: 20px;
+  text-align: left;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+  background-color: #f9f9f9; 
+  transition: box-shadow 0.3s ease; 
+  color: var(--primary-color); 
+  max-width: 360px;
+  margin: 10px auto; 
+}
+
+.optionItem:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); 
 }
 
 .optionImage {
-    width: 100%;
-    height: auto;
-    border-radius: 5px;
-    margin-bottom: 12px;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px;
 }
 
 .optionHeading {
-    font-size: 1.3rem;
-    font-weight: bold;
-    margin-bottom: 8px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--primary-color); 
 }
 
 .optionText {
-    font-size: 1rem;
+  font-size: 1rem;
+  color: var(--primary-color); 
+  margin-bottom: 8px;
+}
+
+.btnsContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+.btnClick {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.btnClick:hover {
+  background-color: var(--secondary-color); 
 }
 
 .formContainer {
   margin-top: 20px;
   flex: 1;
-  max-width: 400px;
+  max-width: 320px;
   border: 1px solid #ccc;
   border-radius: 8px;
   height: fit-content;
