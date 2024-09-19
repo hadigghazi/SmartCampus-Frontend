@@ -8,7 +8,7 @@ import { useGetCourseEvaluationsByInstructorQuery } from '../../../features/api/
 import styles from './CourseInstructorDetails.module.css'; 
 import html2pdf from 'html2pdf.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilePdf, faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine, faDownload } from '@fortawesome/free-solid-svg-icons';
 import defaultProfileImage from '../../../assets/images/profileImage.jpg'; 
 
 const transformEvaluation = (evaluation) => {
@@ -138,12 +138,9 @@ const CourseInstructorDetails = () => {
   
   return (
     <AdminLayout requiredAdminType='Super Admin'>
-      <div className={styles.buttonContainer}>
+      <div className={styles.buttonContainer} style={{justifyContent: "flex-end"}}>
         <button onClick={downloadPdf}>
-          <FontAwesomeIcon icon={faFilePdf} />
-        </button>
-        <button onClick={handleAnalyzeClick} disabled={analyzeLoading || !prediction?.prediction}>
-            <FontAwesomeIcon icon={faChartLine} />
+          <FontAwesomeIcon icon={faDownload} />
         </button>
       </div>
       <div ref={pdfContentRef} className={styles.container}>
@@ -242,6 +239,9 @@ const CourseInstructorDetails = () => {
           <div dangerouslySetInnerHTML={{ __html: formatAnalysisResponse(analysis?.analysis || '') }} className={styles.analysis} />
         </section>
       </div>
+      <button id="chartButton" onClick={handleAnalyzeClick} disabled={analyzeLoading || !prediction?.prediction}>
+            <FontAwesomeIcon icon={faChartLine} />
+         </button>
     </AdminLayout>
   );
 };
