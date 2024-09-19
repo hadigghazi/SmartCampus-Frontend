@@ -63,29 +63,29 @@ const StatementOfFees: React.FC = () => {
       const percentage = parseFloat(aid.percentage);
       const totalAmount = currency === 'USD' ? totalUsd : totalLbp;
       const deduction = (percentage / 100) * totalAmount;
-
+  
       return {
-        date: aid.created_at,
+        date: new Date(aid.created_at).toISOString().slice(0, 10),
         description: `${aid.type} (${aid.percentage}%)`,
         dues: '',
         payment_deductions: deduction.toFixed(2),
       };
     });
-
+  
     const feeRows = fees.map(fee => ({
       date: currentSemester?.start_date,
       description: fee.description,
       dues: currency === 'USD' ? fee.amount_usd : fee.amount_lbp,
       payment_deductions: '',
     }));
-
+  
     const paymentRows = payments.filter(payment => payment.currency === currency).map(payment => ({
-      date: payment.payment_date,
+      date: new Date(payment.payment_date).toISOString().slice(0, 10),
       description: payment.description,
       dues: '',
       payment_deductions: payment.amount_paid,
     }));
-
+  
     return (
       <Table
         columns={columnsPayments}
@@ -103,6 +103,7 @@ const StatementOfFees: React.FC = () => {
       />
     );
   };
+  
 
   const calculateDeadlines = (startDate: string, endDate: string) => {
     const start = new Date(startDate);

@@ -67,8 +67,11 @@ const InstructorDetails: React.FC = () => {
     { header: 'Payment Date', accessor: 'payment_date' },
   ];
 
-  const filteredSalaryPayments = salaryPayments?.filter(payment => payment.recipient_id === userId);
-
+  const filteredSalaryPayments = salaryPayments?.filter(payment => payment.recipient_id === userId).map(payment => ({
+    ...payment,
+    payment_date: new Date(payment.payment_date).toISOString().slice(0, 10),
+  }));
+  
   const columns = [
     { header: 'Course Code', accessor: 'course_code' },
     { header: 'Course Name', accessor: 'course_name' },
