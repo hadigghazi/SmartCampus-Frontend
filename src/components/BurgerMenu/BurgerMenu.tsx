@@ -92,7 +92,7 @@ const BurgerMenu: React.FC = () => {
             <div className="accordion-content">
               <Link to="/admin/library">Library</Link>
               <Link to="/admin/announcements">Announcements</Link>
-              <Link to="#">Chat</Link>
+              <a href={import.meta.env.VITE_CHAT_URL} target="_blank" rel="noopener noreferrer"> Chat</a>
               <Link to="/admin/news">News</Link>
             </div>
           )}

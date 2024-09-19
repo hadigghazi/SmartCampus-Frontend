@@ -5,6 +5,7 @@ import { useAddInstructorMutation, useGetInstructorByUserIdQuery } from '../../.
 import { useGetDepartmentsQuery } from '../../../features/api/departmentsApi'; 
 import AdminLayout from '../AdminLayout';
 import styles from './ApplicationDetails.module.css';
+import styles2 from '../StudentDetails/StudentDetails.module.css';
 import defaultProfile from '../../../assets/images/profileImage.jpg';
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
@@ -132,30 +133,74 @@ const ApplicationDetailsInstructors: React.FC = () => {
       <div className={styles.applicationDetailsContainer}>
         <h1 className={styles.headingPrimary}>Application Details</h1>
         {user ? (
-          <div className={styles.detailsWrapper}>
-            <div className={styles.profileCard}>
-              <div className={styles.profilePicture}>
-                <img src={user.profile_picture || defaultProfile} alt="Profile" />
-              </div>
-              <div className={styles.profileInfo}>
-                <p><strong>ID:</strong> {user.id}</p>
-                <p><strong>Name:</strong> {user.first_name} {user.middle_name} {user.last_name}</p>
-                <p><strong>Mother Full Name:</strong> {user.mother_full_name}</p>
-                <p><strong>Email:</strong> {user.email}</p>
-                <p><strong>Phone:</strong> {user.phone_number || 'N/A'}</p>
-                <p><strong>Role:</strong> {user.role}</p>
-                <p><strong>Status:</strong> {user.status}</p>
-                <p><strong>Date of Birth:</strong> {user.date_of_birth ? new Date(user.date_of_birth).toLocaleDateString() : 'N/A'}</p>
-                <p><strong>Nationality:</strong> {user.nationality}</p>
-                <p><strong>Second Nationality:</strong> {user.second_nationality || 'N/A'}</p>
-                <p><strong>Country of Birth:</strong> {user.country_of_birth}</p>
-                <p><strong>Gender:</strong> {user.gender}</p>
-                <p><strong>Marital Status:</strong> {user.marital_status}</p>
-                <p><strong>Address:</strong> {user.address}</p>
-                <p><strong>Emergency Contact Number:</strong> {user.emergency_contact_number}</p>
-              </div>
-            </div>
-
+          <div className={styles2.detailsWrapper}>
+<table className={styles2.studentDetailsTable}>
+  <tbody>
+    <tr>
+      <td rowSpan={2} className={styles2.profilePictureCell}>
+        <img
+          src={user.profile_picture || defaultProfile}
+          alt="Profile"
+          className={styles2.profileImage}
+        />
+      </td>
+      <td>
+        <strong>ID:</strong> {user?.id}
+      </td>
+      <td>
+        <strong>Name:</strong> {user?.first_name} {user?.middle_name} {user?.last_name}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Email:</strong> {user?.email}
+      </td>
+      <td>
+        <strong>Phone:</strong> {user?.phone_number || 'N/A'}
+      </td>
+    </tr>
+    <tr>
+      <td colSpan={2}>
+        <strong>Date of Birth:</strong> {user.date_of_birth ? new Date(user.date_of_birth).toLocaleDateString() : 'N/A'}
+      </td>
+      <td>
+        <strong>Nationality:</strong> {user?.nationality}
+      </td>
+    </tr>
+    <tr>
+      <td colSpan={2}>
+        <strong>Mother Full Name:</strong> {user?.mother_full_name}
+      </td>
+      <td>
+        <strong>Second Nationality:</strong> {user?.second_nationality || 'N/A'}
+      </td>
+    </tr>
+    <tr>
+      <td colSpan={2}>
+        <strong>Country of Birth:</strong> {user?.country_of_birth || 'N/A'}
+      </td>
+      <td>
+        <strong>Gender:</strong> {user?.gender}
+      </td>
+    </tr>
+    <tr>
+      <td colSpan={2}>
+        <strong>Marital Status:</strong> {user?.marital_status}
+      </td>
+      <td>
+        <strong>Status:</strong> {user?.status}
+      </td>
+    </tr>
+    <tr>
+    <td colSpan={2}>
+        <strong>Emergency Contact Number:</strong> {user?.emergency_contact_number || 'N/A'}
+      </td>
+      <td>
+        <strong>Address:</strong> {user?.address || 'N/A'}
+      </td>
+    </tr>
+  </tbody>
+</table>
             {user.status === 'Pending' && (
               <div className={styles.applicationForm}>
                 <form>

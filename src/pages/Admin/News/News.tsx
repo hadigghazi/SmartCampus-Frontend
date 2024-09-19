@@ -134,7 +134,7 @@ const NewsPage: React.FC = () => {
   const columns = [
     { header: 'Title', accessor: 'title' },
     { header: 'Content', accessor: 'content' },
-    { header: 'Published Date', accessor: 'published_date' },
+    { header: 'Date', accessor: 'published_date' },
     { header: 'Category', accessor: 'category' },
     { header: 'Author', accessor: 'author_name' },
   ];
