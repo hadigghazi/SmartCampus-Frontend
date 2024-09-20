@@ -3,6 +3,8 @@
     "skipLibCheck": true,
     "noEmitOnError": false,
     "strict": false, 
+    "noEmit": true,
+    "noErrorTruncation": true,
     "outDir": "./build",
   },
   "files": [],
