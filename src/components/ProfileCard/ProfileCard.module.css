@@ -21,8 +21,9 @@
   .profileDetails p{
     color: var(--primary-color);
     font-family: 'Metrophobic', sans-serif;
-    margin-top: 30px;
-    font-size: 20px;
+    margin-top: 25px;
+    font-size: 18px;
+    text-align: left;
   }
 
   @media (max-width: 480px) {
