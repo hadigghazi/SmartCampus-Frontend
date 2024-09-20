@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
+    "skipLibCheck": true,
     "noEmitOnError": false,
+    "strict": false, 
+    "outDir": "./build",
   },
   "files": [],
   "references": [
