@@ -20,27 +20,27 @@ const GradingSystem: React.FC = () => {
             <tr>
               <td>A</td>
               <td>4</td>
-              <td>&gt;=90%</td>
+              <td>Over 90%</td>
             </tr>
             <tr>
               <td>B</td>
               <td>3</td>
-              <td>&gt;=80%</td>
+              <td>Over 80%</td>
             </tr>
             <tr>
               <td>C</td>
               <td>2</td>
-              <td>&gt;=70%</td>
+              <td>Over 70%</td>
             </tr>
             <tr>
               <td>D</td>
               <td>1</td>
-              <td>&gt;=60%</td>
+              <td>Over 60%</td>
             </tr>
             <tr>
               <td>F</td>
               <td>0</td>
-              <td>&lt;60%</td>
+              <td>Below 60%</td>
             </tr>
           </tbody>
         </table>
