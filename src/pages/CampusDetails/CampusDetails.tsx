@@ -11,6 +11,8 @@ import DeanCard from '../../components/DeanCard/DeanCard';
 import profileImage from '../../assets/images/profileImage.jpg';
 import FacultyAccordion from '../../components/FacultyAccordion/FacultyAccordion';
 import Spinner from '../../components/Spinner/Spinner';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 const CampusDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -28,12 +30,11 @@ const CampusDetails: React.FC = () => {
       <Navbar />
       <div className={styles.header}>
         <img src={headerImage} alt="Campus Header" className={styles.headerImage} />
-        <h1 className={styles.pageTitle}>{campus.name}</h1>
       </div>
       <div className={styles.container}>
         <h2 className={styles.headingSecondary}>- About The Campus</h2>
         <h1 className={styles.headingPrimary}>{campus.name}</h1>
-        <p className={styles.text}>{campus.location}</p>
+        <p className={styles.text}><FontAwesomeIcon style={{fontSize: "1rem", marginRight: "0.5rem", marginBottom: "0.2rem"}} icon={faMapMarkerAlt} />{campus.location}</p>
         <p className={styles.text}>{campus.description}</p>
 
         <h2 className={styles.headingSecondary} style={{ marginTop: '7rem' }}> - Deans Of Faculties</h2>
