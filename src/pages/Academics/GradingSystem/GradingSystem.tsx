@@ -6,7 +6,7 @@ const GradingSystem: React.FC = () => {
   return (
     <AcademicsLayout title="Grading System">
       <div className={styles.container}>
-      <h2 className={styles.headingSecondary}>- Here’s How We Measure Your Grades</h2>
+      <h2 className={styles.headingSecondary}>- How We Measure Your Grades</h2>
       <h1 className={styles.headingPrimary}>Our Grading System</h1>
         <table className={styles.table}>
           <thead>

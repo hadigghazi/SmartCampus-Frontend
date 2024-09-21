@@ -2,7 +2,7 @@ import React from 'react';
 import AdmissionsLayout from '../AdmissionsLayout';
 import styles from './Centers.module.css';
 import { useNavigate } from 'react-router-dom';
-import StudentImage from '../../../assets/images/student.png';
+import StudentImage from '../../../assets/images/UC-6.jpg';
 import { useGetCentersQuery } from '../../../features/api/centersApi';
 import Spinner from '../../../components/Spinner/Spinner';
 

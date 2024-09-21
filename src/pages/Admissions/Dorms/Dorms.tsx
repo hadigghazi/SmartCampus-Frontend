@@ -1,6 +1,6 @@
 import React from 'react';
 import AdmissionsLayout from '../AdmissionsLayout';
-import styles from "./Dorms.module.css";
+import styles from "../AdmissionRequirements/AdmissionRequirements.module.css";
 
 const Centers: React.FC = () => {
   return (

@@ -69,3 +69,24 @@
     }
   }
   
+  @media (max-width: 768px) {
+    .headingPrimary {
+      font-size: 1rem;
+    }
+
+    .headingSecondary {
+      font-size: .8rem;
+      margin-top: -5rem;
+    }
+  
+    .table {
+      width: 100%; 
+      margin: 0 auto; 
+    }
+  
+    .table th, .table td {
+      font-size: 1rem;
+      padding: 0.5rem;
+    }
+  }
+  

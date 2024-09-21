@@ -35,7 +35,7 @@ const CampusDetails: React.FC = () => {
         <h2 className={styles.headingSecondary}>- About The Campus</h2>
         <h1 className={styles.headingPrimary}>{campus.name}</h1>
         <p className={styles.text}><FontAwesomeIcon style={{fontSize: "1rem", marginRight: "0.5rem", marginBottom: "0.2rem"}} icon={faMapMarkerAlt} />{campus.location}</p>
-        <p className={styles.text}>{campus.description}</p>
+        <p className={styles.text} style={{marginBottom: "-3rem"}}>{campus.description}</p>
 
         <h2 className={styles.headingSecondary} style={{ marginTop: '7rem' }}> - Deans Of Faculties</h2>
         <h1 className={styles.headingPrimary}>Meet The Team</h1>

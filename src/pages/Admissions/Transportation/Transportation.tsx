@@ -1,6 +1,6 @@
 import React from 'react';
 import AdmissionsLayout from '../AdmissionsLayout';
-import styles from './Transportation.module.css';
+import styles from '../AdmissionRequirements/AdmissionRequirements.module.css';
 
 const Transportation: React.FC = () => {
   return (

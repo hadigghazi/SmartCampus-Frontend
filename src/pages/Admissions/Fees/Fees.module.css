@@ -14,7 +14,7 @@
   font-family: 'Metrophobic', sans-serif;
   line-height: 1.6;
   font-size: 1.2rem; 
-  width: 90%;
+  width: 100%;
   margin: 1rem 0;
 }
 
@@ -81,11 +81,11 @@
 
 @media (max-width: 768px) {
   .headingPrimary {
-    font-size: 1.45rem;
+    font-size: 1rem;
   }
 
   .headingSecondary {
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
 
   .container {
@@ -93,7 +93,7 @@
   }
 
   .text,
-  .list,
+  .list li,
   .table th,
   .table td,
   .table caption {

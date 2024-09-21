@@ -36,7 +36,7 @@ const AdmissionRequirements: React.FC = () => {
           Prospective applicants to SmartCampus must meet the university's undergraduate English language proficiency requirements. This can be done by either taking the SmartCampus Undergraduate English Language Placement Test or by submitting results from internationally recognized English language proficiency examinations (such as IELTS, TOEFL).
         </p>
 
-        <h2 className={styles.headingSecondary} style={{marginTop: '10rem'}}>- Requirements</h2>
+        <h2 className={styles.headingSecondary} style={{marginTop: '5rem'}}>- Requirements</h2>
       <h1 className={styles.headingPrimary}>Graduate Programs</h1>
         
         <p className={styles.text}>

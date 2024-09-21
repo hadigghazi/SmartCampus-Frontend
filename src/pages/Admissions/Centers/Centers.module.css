@@ -1,89 +1,120 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    min-height: 100vh;
-    background-color: white;
-    padding: 2rem;
-    margin-top: -3rem;
-  }
-  
-  .headingSecondary {
-    color: var(--primary-color); 
-    font-size: 1.5rem; 
-    font-weight: 600; 
-    margin-bottom: 0.5rem;
-    font-family: 'Merriweather', sans-serif;
-    text-align: left;
-    margin-top: 2rem;
-  }
-  
-  .headingPrimary {
-    color: var(--primary-color); 
-    font-size: 2.5rem;
-    font-weight: 700; 
-    margin-bottom: 2rem;
-    font-family: 'Merriweather', serif; 
-    text-align: left;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  min-height: 100vh;
+  background-color: white;
+  padding: 2rem;
+  margin-top: -3rem;
+}
+
+.headingSecondary {
+  color: var(--primary-color); 
+  font-size: 1.5rem; 
+  font-weight: 600; 
+  margin-bottom: 0.5rem;
+  font-family: 'Merriweather', sans-serif;
+  text-align: left;
+  margin-top: 2rem;
+}
+
+.headingPrimary {
+  color: var(--primary-color); 
+  font-size: 2.5rem;
+  font-weight: 700; 
+  margin-bottom: 2rem;
+  font-family: 'Merriweather', serif; 
+  text-align: left;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4rem;
+  width: 100%;
+  margin: 1rem auto;
+}
+
+.gridItem {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 5px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.gridItem:hover {
+  transform: scale(1.05); 
+}
+
+.gridItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5); 
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.gridItem:hover::before {
+  opacity: 0;
+}
+
+.gridImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 5px 5px 0 0;
+}
+
+.gridLabel {
+  position: absolute;
+  bottom: 10%; 
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.6); 
+  color: white;
+  font-size: 1.6rem;
+  font-weight: 600;
+  font-family: 'Merriweather', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.gridLabel:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+@media (max-width: 768px) {
   .grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 5rem;
-    width: 90%;
-    margin: 1rem auto;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
   }
-  
-  .gridItem {
-    cursor: pointer;
-    overflow: hidden;
-    border-radius: 5px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  .headingPrimary {
+    font-size: 1rem;
   }
-  
+
   .gridImage {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 5px 5px 0 0;
+    height: 100%;
   }
-  
+
   .gridLabel {
-    background-color: #f3c0e3;
-    color: var(--primary-color);
-    text-align: center;
-    padding: 2rem 1rem;
-    font-size: 1.6rem;
-    font-weight: 600;
-    font-family: 'Merriweather', sans-serif;
-    border-radius: 0 0 5px 5px;
+    font-size: .7rem;
+    margin-top: -4rem;
+    padding: 0.5rem;
   }
-  
-  @media (max-width: 768px) {
-    .grid {
-      grid-template-columns: 1fr;
-    }
-  
-    .headingPrimary {
-      font-size: 1.55rem;
-    }
 
-    .gridImage {
-      height: 80%;
-    }
-
-    .gridLabel {
-      font-size: 1rem;
-      margin-top: -1rem;
-    }
-
-    .container {
-      margin-top: -13rem;
-    }
-  
-    .headingSecondary {
-      font-size: 1rem;
-    }
+  .container {
+    margin-top: -13rem;
   }
-  
+
+  .headingSecondary {
+    font-size: .8rem;
+  }
+}

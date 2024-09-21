@@ -1,6 +1,6 @@
 import React from 'react';
 import AdmissionsLayout from '../AdmissionsLayout';
-import styles from './EntranceAssessment.module.css';
+import styles from '../AdmissionRequirements/AdmissionRequirements.module.css';
 
 const EntranceAssessment: React.FC = () => {
   return (
@@ -55,7 +55,7 @@ const EntranceAssessment: React.FC = () => {
         Each faculty requires an additional exam tailored to the specific knowledge and skills necessary for the graduate program. This ensures that all students have a strong foundational understanding of their chosen field before beginning their advanced studies.
       </p>
 
-      <h2 className={styles.headingSecondary} style={{marginTop: '10rem'}}>- How To Get Accepted?</h2>
+      <h2 className={styles.headingSecondary} style={{marginTop: '5rem'}}>- How To Get Accepted?</h2>
       <h1 className={styles.headingPrimary}>Graduate Programs</h1>
         <p className={styles.text}>
         For graduate programs, the English assessment is required, plus an interview with taking your undergraduate grades into consideration.

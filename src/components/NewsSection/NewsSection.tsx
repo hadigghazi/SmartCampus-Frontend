@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import NewsCard from '../NewsCard/NewsCard';
-import styles from './NewsSection.module.css';
+import styles from '../FacultiesSection/FacultiesSection.module.css';
 import ArrowButton from '../ArrowButton/ArrowButton';
 import { useGetNewsQuery } from '../../features/api/newsApi';
 import Spinner from '../Spinner/Spinner';

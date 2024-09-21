@@ -1,6 +1,6 @@
 import React from 'react';
 import AdmissionsLayout from '../AdmissionsLayout';
-import styles from './CenterPage.module.css';
+import styles from '../AdmissionRequirements/AdmissionRequirements.module.css';
 import { useParams } from 'react-router-dom';
 import { useGetCenterByIdQuery } from '../../../features/api/centersApi';
 import Spinner from '../../../components/Spinner/Spinner';

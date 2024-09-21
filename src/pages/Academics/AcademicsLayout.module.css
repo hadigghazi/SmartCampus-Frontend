@@ -131,7 +131,7 @@
     
     .headerImage {
       height: auto;
-      margin-top: 3rem;
+      margin-top: 4rem;
     }
     
     .pageTitle {
@@ -145,13 +145,18 @@
       background-color: var(--secondary-color);
       padding: 1rem;
       box-shadow: none;
-      margin-top: -1rem;
+      margin-top: 6rem;
+
     }
     
     .admissionsTitle {
       font-size: 1.4rem;
       margin-bottom: 0.5rem;
       text-align: left;
+    }
+
+    .pageTitle {
+      display: none;
     }
     
     .nav ul {

@@ -46,3 +46,8 @@
     transform: translateX(56px);
   }
   
+  @media (max-width: 468px) {
+    .arrowButton {
+      display: none;
+    }
+  }

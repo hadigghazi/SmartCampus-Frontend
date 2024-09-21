@@ -51,3 +51,19 @@
     margin-top: 15px;
     transform: skew(-50deg);
 }
+
+@media (max-width: 480px) {
+    .dateBox {
+        width: 120px;
+        height: 120px;
+    }
+    .date {
+        font-size: 3.5rem;
+    }
+    .month {
+        font-size: 1rem;
+    }
+    .description {
+        font-size: 1.2rem;
+    }
+}
