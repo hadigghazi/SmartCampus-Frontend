@@ -59,7 +59,7 @@
   
   @media (max-width: 768px) {
     .headingPrimary {
-      font-size: 1.75rem;
+      font-size: 1rem;
     }
 
     .text {
@@ -70,7 +70,7 @@
     }
   
     .headingSecondary {
-      font-size: 1rem;
+      font-size: .8rem;
     }
   }
   

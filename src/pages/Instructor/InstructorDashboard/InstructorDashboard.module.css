@@ -88,5 +88,13 @@
     .announcementsSection {
       margin-bottom: 0;
     }
+
+    .headingPrimary {
+      font-size: 1rem;
+    }
+
+    .headingSecondary {
+      font-size: .8rem;
+    }
   }
   

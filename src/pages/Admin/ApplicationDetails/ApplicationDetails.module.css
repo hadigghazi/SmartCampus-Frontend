@@ -103,3 +103,9 @@
     color: red;
     font-size: 0.875rem;
   }
+
+  @media (max-width: 468px) {
+    .headingPrimary {
+      font-size: 1rem;
+    }
+  }

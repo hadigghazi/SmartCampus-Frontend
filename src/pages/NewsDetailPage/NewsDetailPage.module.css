@@ -40,3 +40,12 @@
     width: 90%;
     margin: 1rem 0;
 }
+
+@media (max-width: 460px) {
+    .headingPrimary {
+        font-size: 1rem;
+    }
+    .headingSecondary {
+        font-size: .8rem;
+    }
+}
