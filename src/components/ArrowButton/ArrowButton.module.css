@@ -1,53 +1,52 @@
 .arrowButton {
-    display: block;
-    position: relative;
-    width: 56px;
-    height: 56px;
-    margin: 0;
-    overflow: hidden;
-    outline: none;
-    background-color: transparent;
-    cursor: pointer;
-    border: 0;
+  display: block;
+  position: relative;
+  width: 56px;
+  height: 56px;
+  margin: 0;
+  overflow: hidden;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+  border: 0;
+}
+
+.arrowButtonBox {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: 0.4s;
+}
+
+.arrowButtonElem {
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 17px 18px 0 18px;
+  fill: var(--secondary-color);
+}
+
+.arrowButtonLeft .arrowButtonElem {
+  transform: rotate(180deg);
+}
+
+.arrowButtonLeft:hover .arrowButtonBox,
+.arrowButtonLeft:focus .arrowButtonBox {
+  transform: translateX(-56px);
+}
+
+.arrowButtonRight .arrowButtonElem {
+  transform: rotate(0deg);
+}
+
+.arrowButtonRight:hover .arrowButtonBox,
+.arrowButtonRight:focus .arrowButtonBox {
+  transform: translateX(56px);
+}
+
+@media (max-width: 468px) {
+  .arrowButton {
+    display: none;
   }
-  
-  
-  .arrowButtonBox {
-    display: flex;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: 0.4s;
-  }
-  
-  .arrowButtonElem {
-    display: block;
-    width: 20px;
-    height: 20px;
-    margin: 17px 18px 0 18px;
-    fill: var(--secondary-color);
-  }
-  
-  .arrowButtonLeft .arrowButtonElem {
-    transform: rotate(180deg);
-  }
-  
-  .arrowButtonLeft:hover .arrowButtonBox,
-  .arrowButtonLeft:focus .arrowButtonBox {
-    transform: translateX(-56px);
-  }
-  
-  .arrowButtonRight .arrowButtonElem {
-    transform: rotate(0deg);
-  }
-  
-  .arrowButtonRight:hover .arrowButtonBox,
-  .arrowButtonRight:focus .arrowButtonBox {
-    transform: translateX(56px);
-  }
-  
-  @media (max-width: 468px) {
-    .arrowButton {
-      display: none;
-    }
-  }
+}

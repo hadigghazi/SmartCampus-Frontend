@@ -1,76 +1,74 @@
-
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    min-height: 100vh;
-    background-color: white;
-    padding: 2rem;
-    margin-top: 2rem;
-  }
-  
-  .text {
-    color: var(--primary-color);
-    font-family: 'Metrophobic', sans-serif;
-    line-height: 1.6;
-    font-size: 1.6rem;
-    width: 90%;
-    margin: 1rem 0;
-  }
-  
-  .headingSecondary {
-    color: var(--primary-color); 
-    font-size: 1.5rem; 
-    font-weight: 600; 
-    margin-bottom: 0.5rem;
-    font-family: 'Merriweather', sans-serif;
-    text-align: left;
-    margin-top: 7rem;
-  }
-  
-  .headingPrimary {
-    color: var(--primary-color); 
-    font-size: 2.5rem;
-    font-weight: 700; 
-    margin-bottom: 2rem;
-    font-family: 'Merriweather', serif; 
-    text-align: left;
-  }
-  
-  .imageContainer {
-    width: 100%;
-    margin: 2rem 0;
-  }
-  
-  .image {
-    width: 100%;
-    height: auto;
-  }
-  
-  .additionalText {
-    color: var(--primary-color);
-    font-family: 'Metrophobic', sans-serif;
-    line-height: 1.6;
-    font-size: 1.6rem;
-    width: 90%;
-    margin: 1rem 0;
-    text-align: left;
-  }
-  
-  @media (max-width: 768px) {
-    .headingPrimary {
-      font-size: 1rem;
-    }
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  min-height: 100vh;
+  background-color: white;
+  padding: 2rem;
+  margin-top: 2rem;
+}
 
-    .text {
-      font-size: 1rem;
-    }
-    .additionalText{
-      font-size: 1rem;
-    }
-  
-    .headingSecondary {
-      font-size: .8rem;
-    }
+.text {
+  color: var(--primary-color);
+  font-family: "Metrophobic", sans-serif;
+  line-height: 1.6;
+  font-size: 1.6rem;
+  width: 90%;
+  margin: 1rem 0;
+}
+
+.headingSecondary {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-family: "Merriweather", sans-serif;
+  text-align: left;
+  margin-top: 7rem;
+}
+
+.headingPrimary {
+  color: var(--primary-color);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  font-family: "Merriweather", serif;
+  text-align: left;
+}
+
+.imageContainer {
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+}
+
+.additionalText {
+  color: var(--primary-color);
+  font-family: "Metrophobic", sans-serif;
+  line-height: 1.6;
+  font-size: 1.6rem;
+  width: 90%;
+  margin: 1rem 0;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .headingPrimary {
+    font-size: 1rem;
   }
-  
+
+  .text {
+    font-size: 1rem;
+  }
+  .additionalText {
+    font-size: 1rem;
+  }
+
+  .headingSecondary {
+    font-size: 0.8rem;
+  }
+}
